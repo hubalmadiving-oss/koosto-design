@@ -1,0 +1,125 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+:root {
+  --surface-0:        #f7f5f0;
+  --surface-1:        #ffffff;
+  --surface-3:        #e8e4db;
+  --ocean-900:        #0a2540;
+  --ocean-700:        #1a3a5c;
+  --ocean-400:        #3b82c6;
+  --safety-green:     #16a34a;
+  --safety-green-bg:  #dcfce7;
+  --amber-alert:      #d97706;
+  --amber-alert-bg:   #fef3c7;
+  --red-critical:     #dc2626;
+  --red-critical-bg:  #fee2e2;
+  --accent-teal:      #0d9488;
+  --accent-teal-bg:   #ccfbf1;
+  --font-ui:   'Manrope', -apple-system, sans-serif;
+  --font-body: 'Inter',   -apple-system, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', ui-monospace, monospace;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin:0; padding:24px 28px; background:#f7f5f0; font-family:'Inter',-apple-system,sans-serif; -webkit-font-smoothing:antialiased; }
+
+.section-label {
+  font-family:'Manrope',-apple-system,sans-serif;
+  font-size:10px; font-weight:700; color:#3b82c6;
+  text-transform:uppercase; letter-spacing:0.08em;
+  margin-bottom:10px;
+}
+.section { margin-bottom:22px; }
+.divider { height:1px; background:#e8e4db; margin:4px 0 20px; }
+
+.swatch-row { display:flex; gap:10px; flex-wrap:wrap; }
+.swatch { display:flex; flex-direction:column; width:100px; }
+.chip { height:56px; border-radius:6px; border:1px solid rgba(0,0,0,0.06); display:flex; align-items:center; justify-content:center; }
+.swatch-name { font-family:'SF Mono','Fira Code',ui-monospace,monospace; font-size:9px; font-weight:700; color:#1a3a5c; margin-top:5px; }
+.swatch-hex  { font-family:'SF Mono','Fira Code',ui-monospace,monospace; font-size:9px; color:#3b82c6; }
+.swatch-use  { font-size:9px; color:#1a3a5c; margin-top:2px; line-height:1.3; }
+
+/* Paired swatches (fg + bg together) */
+.pair-group { display:flex; flex-direction:column; gap:3px; width:108px; }
+.pair-chip   { height:40px; border-radius:6px; border:1px solid rgba(0,0,0,0.05); display:flex; align-items:center; justify-content:center; gap:5px; }
+.chip-badge  { font-family:'Inter',-apple-system,sans-serif; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; padding:2px 6px; border-radius:3px; }
+
+/* Usage examples */
+.usage-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+.usage-item { display:flex; align-items:center; gap:7px; background:#fff; border:1px solid #e8e4db; border-radius:6px; padding:6px 10px; font-size:11px; color:#1a3a5c; }
+.usage-dot  { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+</style>
+</head><body>
+
+<!-- STATUS COLORS -->
+<div class="section">
+  <div class="section-label">Status colors — operational meaning only, never decorative</div>
+  <div class="swatch-row">
+
+    <!-- Green pair -->
+    <div class="pair-group">
+      <div class="pair-chip" style="background:#dcfce7">
+        <span class="chip-badge" style="background:#16a34a;color:#fff">Verified</span>
+      </div>
+      <div class="pair-chip" style="background:#16a34a"></div>
+      <div class="swatch-name">safety-green</div>
+      <div class="swatch-hex">#16a34a · bg #dcfce7</div>
+      <div class="swatch-use">Verified, completed, confirmed</div>
+    </div>
+
+    <!-- Amber pair -->
+    <div class="pair-group">
+      <div class="pair-chip" style="background:#fef3c7">
+        <span class="chip-badge" style="background:#d97706;color:#fff">Pending</span>
+      </div>
+      <div class="pair-chip" style="background:#d97706"></div>
+      <div class="swatch-name">amber-alert</div>
+      <div class="swatch-hex">#d97706 · bg #fef3c7</div>
+      <div class="swatch-use">Attention, pending, day-off conflicts</div>
+    </div>
+
+    <!-- Red pair -->
+    <div class="pair-group">
+      <div class="pair-chip" style="background:#fee2e2">
+        <span class="chip-badge" style="background:#dc2626;color:#fff">Danger</span>
+      </div>
+      <div class="pair-chip" style="background:#dc2626"></div>
+      <div class="swatch-name">red-critical</div>
+      <div class="swatch-hex">#dc2626 · bg #fee2e2</div>
+      <div class="swatch-use">Danger, rejected, action required</div>
+    </div>
+
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- ACCENT TEAL -->
+<div class="section">
+  <div class="section-label">Accent — teal (Nitrox &amp; specialty certs only)</div>
+  <div class="swatch-row">
+    <div class="pair-group">
+      <div class="pair-chip" style="background:#ccfbf1">
+        <span class="chip-badge" style="background:#0d9488;color:#fff">NX32</span>
+      </div>
+      <div class="pair-chip" style="background:#0d9488"></div>
+      <div class="swatch-name">accent-teal</div>
+      <div class="swatch-hex">#0d9488 · bg #ccfbf1</div>
+      <div class="swatch-use">Nitrox blends, specialty certs, secondary actions</div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- USAGE GUIDE -->
+<div class="section">
+  <div class="section-label">Usage — every color must answer "what does the operator do?"</div>
+  <div class="usage-row">
+    <div class="usage-item"><div class="usage-dot" style="background:#16a34a"></div>Cert verified · booking confirmed · diver autonomous</div>
+    <div class="usage-item"><div class="usage-dot" style="background:#d97706"></div>Cert unverified · day-off conflict · booking pending</div>
+    <div class="usage-item"><div class="usage-dot" style="background:#dc2626"></div>Action required · booking rejected · trip overbooked</div>
+    <div class="usage-item"><div class="usage-dot" style="background:#0d9488"></div>Nitrox gas blend · specialty qualification only</div>
+    <div class="usage-item" style="border-color:#dc2626;color:#dc2626"><div class="usage-dot" style="background:#dc2626"></div>Never use status colors for category coding or decoration</div>
+  </div>
+</div>
+
+</body></html>

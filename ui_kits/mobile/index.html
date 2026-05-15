@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1200">
+<title>AlmaDiving — Mobile App</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.4.0/dist/ionicons/ionicons.esm.js"></script>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #0a2540;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  padding: 40px;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+:root {
+  --s0:#f7f5f0;--s1:#ffffff;--s2:#f0ede6;--s3:#e8e4db;
+  --o900:#0a2540;--o700:#1a3a5c;--o500:#2563a8;--o400:#3b82c6;--o100:#dbeafe;--o50:#eff6ff;
+  --od:#003567;--od-lt:#034c8e;
+  --green:#16a34a;--green-bg:#dcfce7;
+  --amber:#d97706;--amber-bg:#fef3c7;
+  --red:#dc2626;--red-bg:#fee2e2;
+  --teal:#0d9488;--teal-bg:#ccfbf1;
+  --fd:'Space Grotesk','Manrope',system-ui,sans-serif;
+  --fu:'Manrope',system-ui,sans-serif;
+  --fb:'Inter',system-ui,sans-serif;
+}
+
+/* Screen label for verifier */
+[data-screen-label] { width: 100%; height: 100%; }
+
+/* ─── Shared mobile primitives ─────────────────────────── */
+.m-screen { width: 100%; height: 100%; background: var(--s0); overflow-y: auto; overflow-x: hidden; position: relative; -webkit-overflow-scrolling: touch; }
+.m-screen::-webkit-scrollbar { display: none; }
+
+/* Nav header */
+.m-nav { padding: 12px 20px 10px; display: flex; align-items: center; gap: 10px; background: var(--s0); position: sticky; top: 0; z-index: 10; }
+.m-nav-title { font-family: var(--fd); font-size: 22px; font-weight: 700; color: var(--o900); letter-spacing: -0.02em; flex: 1; }
+.m-nav-btn { width: 34px; height: 34px; border-radius: 50%; border: none; background: var(--s1); color: var(--o700); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.m-nav-btn ion-icon { font-size: 18px; display: block; }
+
+/* Bottom tab bar */
+.tab-bar {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: rgba(247,245,240,0.88); backdrop-filter: blur(20px);
+  border-top: 1px solid var(--s3);
+  display: flex; align-items: center;
+  padding: 8px 0 20px;
+  z-index: 20;
+}
+.tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 4px 0; border: none; background: transparent; }
+.tab-item ion-icon { font-size: 22px; display: block; }
+.tab-item span { font-size: 10px; font-weight: 600; }
+.tab-item.active ion-icon { color: var(--o500); }
+.tab-item.active span { color: var(--o500); }
+.tab-item ion-icon { color: var(--o400); }
+.tab-item span { color: var(--o400); }
+
+/* Section title */
+.m-section { padding: 0 20px 20px; }
+.m-section-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.m-section-title { font-family: var(--fd); font-size: 17px; font-weight: 700; color: var(--o900); letter-spacing: -0.01em; }
+.m-section-link { font-size: 13px; color: var(--o500); font-weight: 500; background: none; border: none; cursor: pointer; }
+
+/* Pill button */
+.pill-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: linear-gradient(135deg, var(--od), var(--od-lt));
+  color: #fff; border: none; border-radius: 9999px;
+  font-family: var(--fb); font-size: 14px; font-weight: 600;
+  padding: 10px 22px; cursor: pointer; transition: opacity 150ms;
+}
+.pill-btn:hover { opacity: 0.9; }
+.pill-btn ion-icon { font-size: 16px; display: block; }
+
+.pill-btn-sm {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: linear-gradient(135deg, var(--od), var(--od-lt));
+  color: #fff; border: none; border-radius: 9999px;
+  font-family: var(--fb); font-size: 12px; font-weight: 600;
+  padding: 7px 16px; cursor: pointer; transition: opacity 150ms;
+}
+
+/* Chip */
+.m-chip { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; padding: 2px 7px; border-radius: 9999px; white-space: nowrap; }
+.m-chip-cert { background: var(--o100); color: var(--o500); }
+.m-chip-teal { background: var(--teal-bg); color: var(--teal); }
+.m-chip-green { background: var(--green-bg); color: var(--green); }
+.m-chip-amber { background: var(--amber-bg); color: var(--amber); }
+.m-chip-red { background: var(--red-bg); color: var(--red); }
+.m-chip-surface { background: var(--s2); color: var(--o700); }
+
+/* Trip card */
+.trip-card {
+  background: var(--s1); border-radius: 12px;
+  overflow: hidden; margin-bottom: 10px;
+  box-shadow: 0 2px 8px rgba(10,37,64,0.08);
+}
+.tc-cover { height: 90px; position: relative; display: flex; align-items: flex-end; }
+.tc-cover::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(5,18,38,0.75) 0%, transparent 60%); }
+.tc-cover-bg-cenote { background: linear-gradient(158deg,#053f32 0%,#0d9488 100%); }
+.tc-cover-bg-wreck { background: linear-gradient(158deg,#07182e 0%,#1a3a5c 100%); }
+.tc-cover-bg-open { background: linear-gradient(158deg,#002952 0%,#0369a1 100%); }
+.tc-cover-bg-night { background: linear-gradient(158deg,#150f3a 0%,#2d1a6e 60%,#0d5a52 100%); }
+.tc-name { position: relative; z-index: 1; padding: 0 12px 8px; font-family: var(--fb); font-size: 14px; font-weight: 600; color: #fff; letter-spacing: -0.01em; }
+.tc-badge { position: absolute; top: 8px; left: 10px; z-index: 1; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 7px; border-radius: 3px; }
+.tc-badge-full { background: rgba(220,38,38,0.55); color: #fecaca; }
+.tc-badge-night { background: rgba(109,40,217,0.55); color: #e9d5ff; }
+.tc-body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 6px; }
+.tc-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.tc-meta { display: flex; align-items: center; gap: 3px; font-size: 11px; color: var(--o700); font-weight: 500; }
+.tc-meta ion-icon { font-size: 12px; color: var(--o400); display: block; }
+.tc-sep { width: 1px; height: 9px; background: var(--s3); }
+.tc-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 8px; border-top: 1px solid var(--s3); margin-top: 2px; }
+.tc-spots { font-size: 11px; color: var(--o700); font-weight: 500; display: flex; align-items: center; gap: 4px; }
+.tc-spots ion-icon { font-size: 13px; color: var(--o400); display: block; }
+
+/* Booking row */
+.booking-row {
+  background: var(--s1); border-radius: 10px; padding: 12px;
+  display: flex; gap: 11px; align-items: center; margin-bottom: 8px;
+  box-shadow: 0 1px 4px rgba(10,37,64,0.06);
+}
+.br-date { width: 46px; text-align: center; flex-shrink: 0; background: var(--s0); border-radius: 8px; padding: 5px 2px; }
+.br-month { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--o400); }
+.br-day { font-family: var(--fb); font-size: 20px; font-weight: 700; color: var(--o900); font-variant-numeric: tabular-nums; line-height: 1; }
+.br-info { flex: 1; min-width: 0; }
+.br-name { font-size: 13px; font-weight: 600; color: var(--o900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.br-meta { font-size: 11px; color: var(--o400); margin-top: 2px; font-variant-numeric: tabular-nums; }
+.br-status { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 9999px; flex-shrink: 0; }
+.br-confirmed { background: var(--green-bg); color: var(--green); }
+.br-pending { background: var(--amber-bg); color: var(--amber); }
+
+/* Cert card */
+.cert-card {
+  background: var(--s1); border-radius: 12px; padding: 14px;
+  margin-bottom: 10px; box-shadow: 0 1px 4px rgba(10,37,64,0.06);
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.cert-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--o100); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.cert-icon ion-icon { font-size: 20px; color: var(--o500); display: block; }
+.cert-info { flex: 1; min-width: 0; }
+.cert-name { font-size: 14px; font-weight: 600; color: var(--o900); }
+.cert-agency { font-size: 11px; color: var(--o400); margin-top: 2px; }
+.cert-chips { display: flex; gap: 5px; margin-top: 6px; flex-wrap: wrap; }
+
+/* Identity card */
+.identity-card {
+  margin: 0 20px 20px;
+  border-radius: 14px; overflow: hidden;
+  background: linear-gradient(135deg, #002d5a 0%, #03111f 100%);
+  padding: 18px 20px;
+  position: relative;
+}
+.identity-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(-52deg,transparent 0,transparent 40px,rgba(255,255,255,0.018) 40px,rgba(255,255,255,0.018) 41px),
+    radial-gradient(ellipse at 80% 10%, rgba(3,76,142,0.6) 0%, transparent 50%);
+}
+.ic-content { position: relative; z-index: 1; }
+.ic-top { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.ic-avatar { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, var(--o500), var(--od)); display: flex; align-items: center; justify-content: center; font-family: var(--fu); font-size: 18px; font-weight: 800; color: #fff; flex-shrink: 0; }
+.ic-name { font-family: var(--fu); font-size: 17px; font-weight: 800; color: #fff; }
+.ic-cert { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.55); margin-top: 3px; display: flex; align-items: center; gap: 5px; }
+.ic-stats { display: flex; gap: 0; }
+.ic-stat { flex: 1; text-align: center; padding: 8px 4px; border-right: 1px solid rgba(255,255,255,0.10); }
+.ic-stat:last-child { border-right: none; }
+.ic-stat-val { font-family: var(--fb); font-size: 22px; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; line-height: 1; }
+.ic-stat-lbl { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.38); margin-top: 3px; }
+
+/* Trip detail */
+.trip-detail-hero {
+  height: 200px; position: relative;
+  background: linear-gradient(158deg,#07182e 0%,#1a3a5c 100%);
+  display: flex; align-items: flex-end;
+}
+.trip-detail-hero::after { content:''; position:absolute; inset:0; background:linear-gradient(to top,rgba(5,18,38,0.85) 0%,transparent 55%); }
+.tdh-content { position:relative;z-index:1;padding:16px 20px; }
+.tdh-tag { display:inline-flex;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.09em; color:var(--amber);background:rgba(217,119,6,0.18);border:1px solid rgba(217,119,6,0.30); padding:2px 7px;border-radius:3px;margin-bottom:7px; }
+.tdh-name { font-family:var(--fd);font-size:24px;font-weight:700;color:#fff;line-height:1.1;letter-spacing:-0.02em; }
+.back-btn { position:absolute;top:12px;left:12px;z-index:10; width:32px;height:32px;border-radius:50%;border:none; background:rgba(0,0,0,0.35);color:#fff;cursor:pointer; display:flex;align-items:center;justify-content:center; backdrop-filter:blur(4px); }
+.back-btn ion-icon { font-size:18px;display:block; }
+.detail-section { padding:14px 20px;border-bottom:1px solid var(--s3); }
+.detail-row { display:flex;align-items:center;gap:8px;margin-bottom:8px; }
+.detail-row:last-child { margin-bottom:0; }
+.detail-icon { width:28px;height:28px;border-radius:7px;background:var(--s2);display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+.detail-icon ion-icon { font-size:14px;color:var(--o500);display:block; }
+.detail-lbl { font-size:11px;color:var(--o400);margin-bottom:1px; }
+.detail-val { font-size:13px;font-weight:600;color:var(--o900);font-variant-numeric:tabular-nums; }
+
+.label { font-family:var(--fu);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--o400);margin-bottom:8px; }
+
+/* Tweaks */
+.tweaks-panel{display:none;position:fixed;bottom:18px;right:18px;z-index:9999;background:var(--s1);border:1px solid var(--s3);border-radius:10px;padding:14px 16px;box-shadow:0 8px 32px -4px rgba(3,76,142,0.16);width:190px}
+.tweaks-panel.on{display:block}
+.tw-ttl{font-family:var(--fu);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.09em;color:var(--o400);margin-bottom:12px}
+.tw-grp{margin-bottom:10px}
+.tw-lbl{font-size:11px;font-weight:600;color:var(--o900);margin-bottom:5px}
+.tw-opts{display:flex;flex-direction:column;gap:4px}
+.tw-opt{padding:5px 8px;border:1px solid var(--s3);border-radius:6px;font-size:11px;font-weight:500;color:var(--o700);background:var(--s0);cursor:pointer;transition:all 150ms;text-align:left}
+.tw-opt.on{background:var(--o100);border-color:var(--o500);color:var(--o500);font-weight:700}
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<div class="tweaks-panel" id="tweakPanel">
+  <div class="tw-ttl">Tweaks</div>
+  <div class="tw-grp">
+    <div class="tw-lbl">Active screen</div>
+    <div class="tw-opts" id="screenOpts"></div>
+  </div>
+</div>
+
+<script type="text/babel">
+const { useState } = React;
+
+// ── Tokens
+const C = {
+  s0:'#f7f5f0',s1:'#ffffff',s2:'#f0ede6',s3:'#e8e4db',
+  o900:'#0a2540',o700:'#1a3a5c',o500:'#2563a8',o400:'#3b82c6',o100:'#dbeafe',o50:'#eff6ff',
+  od:'#003567',odlt:'#034c8e',
+  green:'#16a34a',greenBg:'#dcfce7',
+  amber:'#d97706',amberBg:'#fef3c7',
+  red:'#dc2626',redBg:'#fee2e2',
+  teal:'#0d9488',tealBg:'#ccfbf1',
+};
+
+// ── Icons helper
+const Icon = ({name, size=20, color, style={}}) => (
+  <ion-icon name={name} style={{fontSize:size, display:'block', color, ...style}}></ion-icon>
+);
+
+// ── Chip
+function Chip({v, c='surface'}) {
+  const map = {cert:'m-chip-cert',teal:'m-chip-teal',green:'m-chip-green',amber:'m-chip-amber',red:'m-chip-red',surface:'m-chip-surface'};
+  return <span className={`m-chip ${map[c]||map.surface}`}>{v}</span>;
+}
+
+// ── Tab bar
+function TabBar({active, onTab}) {
+  const tabs = [
+    {id:'home',icon:'home',label:'Home'},
+    {id:'trips',icon:'compass',label:'Discover'},
+    {id:'bookings',icon:'calendar',label:'Bookings'},
+    {id:'certs',icon:'ribbon',label:'Certs'},
+    {id:'profile',icon:'person',label:'Profile'},
+  ];
+  return (
+    <div className="tab-bar">
+      {tabs.map(t => (
+        <button key={t.id} className={`tab-item ${active===t.id?'active':''}`} onClick={()=>onTab(t.id)}>
+          <Icon name={active===t.id?`${t.icon}`:`${t.icon}-outline`} size={22}/>
+          <span>{t.label}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ── SCREEN: Home
+function HomeScreen({onNav}) {
+  return (
+    <div className="m-screen" data-screen-label="Home" style={{paddingBottom:80}}>
+      <div className="m-nav" style={{paddingTop:16}}>
+        <div className="m-nav-title" style={{fontFamily:"'Space Grotesk',system-ui"}}>Good morning, Alex</div>
+        <button className="m-nav-btn"><Icon name="notifications-outline" size={18}/></button>
+      </div>
+
+      {/* Identity card */}
+      <div className="identity-card">
+        <div className="ic-content">
+          <div className="ic-top">
+            <div className="ic-avatar">AR</div>
+            <div>
+              <div className="ic-name">Alex Rivers</div>
+              <div className="ic-cert">
+                <span style={{width:6,height:6,borderRadius:'50%',background:C.green,display:'inline-block'}}></span>
+                Master Scuba Diver · PADI
+              </div>
+            </div>
+          </div>
+          <div className="ic-stats">
+            <div className="ic-stat">
+              <div className="ic-stat-val">142</div>
+              <div className="ic-stat-lbl">Dives</div>
+            </div>
+            <div className="ic-stat">
+              <div className="ic-stat-val">3</div>
+              <div className="ic-stat-lbl">Centers</div>
+            </div>
+            <div className="ic-stat">
+              <div className="ic-stat-val">7</div>
+              <div className="ic-stat-lbl">Certs</div>
+            </div>
+            <div className="ic-stat">
+              <div className="ic-stat-val">48m</div>
+              <div className="ic-stat-lbl">Max depth</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Upcoming bookings */}
+      <div className="m-section">
+        <div className="m-section-hdr">
+          <div className="m-section-title">Upcoming</div>
+          <button className="m-section-link" onClick={()=>onNav('bookings')}>View all</button>
+        </div>
+
+        <div className="booking-row" onClick={()=>onNav('tripDetail')} style={{cursor:'pointer'}}>
+          <div className="br-date"><div className="br-month">MAY</div><div className="br-day">24</div></div>
+          <div className="br-info">
+            <div className="br-name">Ghost Armada Wreck Dive</div>
+            <div className="br-meta">08:30 · Pinnacle Reef</div>
+          </div>
+          <span className="br-status br-confirmed">Confirmed</span>
+        </div>
+
+        <div className="booking-row">
+          <div className="br-date"><div className="br-month">JUN</div><div className="br-day">12</div></div>
+          <div className="br-info">
+            <div className="br-name">Cenote Garden Drift</div>
+            <div className="br-meta">07:00 · Riviera Maya</div>
+          </div>
+          <span className="br-status br-pending">Pending</span>
+        </div>
+      </div>
+
+      {/* Current dive center */}
+      <div className="m-section">
+        <div className="m-section-hdr">
+          <div className="m-section-title">Your center</div>
+        </div>
+        <div style={{background:C.o900,borderRadius:12,padding:'14px 16px'}}>
+          <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:10}}>
+            <div style={{width:8,height:8,borderRadius:'50%',background:C.green,boxShadow:`0 0 0 2px rgba(22,163,74,0.25)`,flexShrink:0}}></div>
+            <div>
+              <div style={{fontFamily:"'Manrope',system-ui",fontSize:14,fontWeight:700,color:'#fff'}}>Deep Blue Horizon</div>
+              <div style={{fontSize:11,color:'rgba(255,255,255,0.45)',marginTop:2,display:'flex',alignItems:'center',gap:3}}>
+                <Icon name="location-outline" size={11} color="rgba(255,255,255,0.35)"/>
+                Belize City, Barrier Reef
+              </div>
+            </div>
+          </div>
+          <button className="pill-btn-sm" onClick={()=>onNav('trips')} style={{width:'100%',justifyContent:'center'}}>
+            <Icon name="compass-outline" size={14}/>Discover trips
+          </button>
+        </div>
+      </div>
+
+    </div>
+  );
+}
+
+// ── SCREEN: Trips
+function TripsScreen({onNav}) {
+  return (
+    <div className="m-screen" data-screen-label="Discover" style={{paddingBottom:80}}>
+      <div className="m-nav" style={{paddingTop:16}}>
+        <div className="m-nav-title" style={{fontFamily:"'Space Grotesk',system-ui"}}>Discover Trips</div>
+        <button className="m-nav-btn"><Icon name="search-outline" size={18}/></button>
+        <button className="m-nav-btn"><Icon name="options-outline" size={18}/></button>
+      </div>
+
+      <div style={{padding:'0 20px 12px',display:'flex',gap:6,overflowX:'auto',scrollbarWidth:'none'}}>
+        {['All','Fun dives','Night dives','Technical','Courses'].map((f,i) => (
+          <div key={f} style={{flexShrink:0,padding:'5px 14px',borderRadius:9999,background:i===0?C.o900:C.s1,color:i===0?'#fff':C.o700,border:`1px solid ${i===0?'transparent':C.s3}`,fontSize:12,fontWeight:600,cursor:'pointer',whiteSpace:'nowrap'}}>{f}</div>
+        ))}
+      </div>
+
+      <div style={{padding:'0 20px',paddingBottom:0}}>
+        {/* Trip 1 */}
+        <div className="trip-card" onClick={()=>onNav('tripDetail')} style={{cursor:'pointer'}}>
+          <div className="tc-cover tc-cover-bg-wreck">
+            <div className="tc-name" style={{position:'relative',zIndex:1,padding:'0 12px 8px'}}>Ghost Armada</div>
+          </div>
+          <div className="tc-body">
+            <div className="tc-row">
+              <span style={{fontSize:10,fontWeight:700,textTransform:'uppercase',letterSpacing:'0.07em',color:C.o500,background:C.o50,padding:'2px 6px',borderRadius:3}}>Pinnacle Reef</span>
+            </div>
+            <div className="tc-row">
+              <div className="tc-meta"><Icon name="calendar-outline" size={12}/>May 24</div>
+              <div className="tc-sep"></div>
+              <div className="tc-meta"><Icon name="time-outline" size={12}/>08:30</div>
+              <div className="tc-sep"></div>
+              <div className="tc-meta"><Icon name="layers-outline" size={12}/>1 dive</div>
+            </div>
+            <div className="tc-bottom">
+              <div className="tc-spots"><Icon name="people-outline" size={13}/>6 / 8 spots</div>
+              <button className="pill-btn-sm">Book</button>
+            </div>
+          </div>
+        </div>
+
+        {/* Trip 2 — Night */}
+        <div className="trip-card">
+          <div className="tc-cover tc-cover-bg-night">
+            <div className="tc-badge tc-badge-night">🌙 Night dive</div>
+            <div className="tc-name" style={{position:'relative',zIndex:1,padding:'0 12px 8px'}}>Neon Reefs</div>
+          </div>
+          <div className="tc-body">
+            <div className="tc-row">
+              <span style={{fontSize:10,fontWeight:700,textTransform:'uppercase',letterSpacing:'0.07em',color:C.o500,background:C.o50,padding:'2px 6px',borderRadius:3}}>Casa Mar Reef</span>
+            </div>
+            <div className="tc-row">
+              <div className="tc-meta"><Icon name="calendar-outline" size={12}/>Jun 7</div>
+              <div className="tc-sep"></div>
+              <div className="tc-meta"><Icon name="time-outline" size={12}/>20:15</div>
+              <div className="tc-sep"></div>
+              <div className="tc-meta"><Icon name="layers-outline" size={12}/>1 dive</div>
+            </div>
+            <div className="tc-bottom">
+              <div className="tc-spots" style={{color:C.amber}}><Icon name="people-outline" size={13} color={C.amber}/>1 / 4 spots</div>
+              <button className="pill-btn-sm">Book</button>
+            </div>
+          </div>
+        </div>
+
+        {/* Trip 3 — Full */}
+        <div className="trip-card">
+          <div className="tc-cover tc-cover-bg-open">
+            <div className="tc-badge tc-badge-full">Full</div>
+            <div className="tc-name" style={{position:'relative',zIndex:1,padding:'0 12px 8px'}}>Giant Migration</div>
+          </div>
+          <div className="tc-body">
+            <div className="tc-row">
+              <span style={{fontSize:10,fontWeight:700,textTransform:'uppercase',letterSpacing:'0.07em',color:C.o500,background:C.o50,padding:'2px 6px',borderRadius:3}}>Outer Barrier</span>
+            </div>
+            <div className="tc-row">
+              <div className="tc-meta"><Icon name="calendar-outline" size={12}/>Jun 3</div>
+              <div className="tc-sep"></div>
+              <div className="tc-meta"><Icon name="time-outline" size={12}/>05:45</div>
+              <div className="tc-sep"></div>
+              <div className="tc-meta"><Icon name="layers-outline" size={12}/>3 dives</div>
+            </div>
+            <div className="tc-bottom">
+              <div className="tc-spots"><Icon name="people-outline" size={13}/>Full · 8 / 8</div>
+              <button className="pill-btn-sm" style={{opacity:0.4}} disabled>Full</button>
+            </div>
+          </div>
+        </div>
+
+        {/* Trip 4 — Cenote */}
+        <div className="trip-card">
+          <div className="tc-cover tc-cover-bg-cenote">
+            <div className="tc-name" style={{position:'relative',zIndex:1,padding:'0 12px 8px'}}>Cenote Garden</div>
+          </div>
+          <div className="tc-body">
+            <div className="tc-row">
+              <span style={{fontSize:10,fontWeight:700,textTransform:'uppercase',letterSpacing:'0.07em',color:C.o500,background:C.o50,padding:'2px 6px',borderRadius:3}}>Riviera Maya</span>
+            </div>
+            <div className="tc-row">
+              <div className="tc-meta"><Icon name="calendar-outline" size={12}/>May 28</div>
+              <div className="tc-sep"></div>
+              <div className="tc-meta"><Icon name="time-outline" size={12}/>07:00</div>
+              <div className="tc-sep"></div>
+              <div className="tc-meta"><Icon name="layers-outline" size={12}/>2 dives</div>
+            </div>
+            <div className="tc-bottom">
+              <div className="tc-spots"><Icon name="people-outline" size={13}/>4 / 6 spots</div>
+              <button className="pill-btn-sm">Book</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── SCREEN: Bookings
+function BookingsScreen() {
+  return (
+    <div className="m-screen" data-screen-label="Bookings" style={{paddingBottom:80}}>
+      <div className="m-nav" style={{paddingTop:16}}>
+        <div className="m-nav-title" style={{fontFamily:"'Space Grotesk',system-ui"}}>My Bookings</div>
+      </div>
+      <div className="m-section">
+        <div className="label">Upcoming</div>
+        <div className="booking-row">
+          <div className="br-date"><div className="br-month">MAY</div><div className="br-day">24</div></div>
+          <div className="br-info">
+            <div className="br-name">Ghost Armada Wreck Dive</div>
+            <div className="br-meta">08:30 · Deep Drifter · Marco R.</div>
+          </div>
+          <span className="br-status br-confirmed">Confirmed</span>
+        </div>
+        <div className="booking-row">
+          <div className="br-date"><div className="br-month">JUN</div><div className="br-day">12</div></div>
+          <div className="br-info">
+            <div className="br-name">Cenote Garden Drift</div>
+            <div className="br-meta">07:00 · Sea Hawk</div>
+          </div>
+          <span className="br-status br-pending">Pending</span>
+        </div>
+      </div>
+      <div className="m-section">
+        <div className="label">Past</div>
+        {[
+          {name:'Blue Hole Abyss',date:'APR 15',meta:'06:30 · 3 dives · 48m max'},
+          {name:'Morning Reef Dive',date:'MAR 28',meta:'07:45 · 2 dives · 22m max'},
+          {name:'Wreck Discovery',date:'FEB 10',meta:'09:00 · 1 dive · 35m max'},
+        ].map(b => (
+          <div key={b.name} className="booking-row" style={{opacity:0.72}}>
+            <div className="br-date"><div className="br-month">{b.date.split(' ')[0]}</div><div className="br-day">{b.date.split(' ')[1]}</div></div>
+            <div className="br-info">
+              <div className="br-name">{b.name}</div>
+              <div className="br-meta">{b.meta}</div>
+            </div>
+            <span className="br-status" style={{background:C.s2,color:C.o700}}>Done</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── SCREEN: Certifications
+function CertsScreen() {
+  const certs = [
+    {name:'Master Scuba Diver',agency:'PADI · 2019',chips:[{v:'VERIFIED',c:'green'}],icon:'ribbon'},
+    {name:'Advanced Open Water',agency:'PADI · 2018',chips:[{v:'VERIFIED',c:'green'}],icon:'ribbon'},
+    {name:'Rescue Diver',agency:'PADI · 2020',chips:[{v:'VERIFIED',c:'green'}],icon:'shield-checkmark'},
+    {name:'Nitrox Specialty',agency:'PADI · 2021',chips:[{v:'NITROX',c:'teal'},{v:'VERIFIED',c:'green'}],icon:'flask'},
+    {name:'Deep Diver Specialty',agency:'PADI · 2021',chips:[{v:'VERIFIED',c:'green'}],icon:'arrow-down'},
+    {name:'DAN Insurance',agency:'Valid to Dec 2026',chips:[{v:'ACTIVE',c:'green'}],icon:'medkit'},
+    {name:'Emergency Contact',agency:'Sarah Rivers · +1 555 0184',chips:[{v:'ON FILE',c:'cert'}],icon:'call'},
+  ];
+  return (
+    <div className="m-screen" data-screen-label="Certifications" style={{paddingBottom:80}}>
+      <div className="m-nav" style={{paddingTop:16}}>
+        <div className="m-nav-title" style={{fontFamily:"'Space Grotesk',system-ui"}}>Certifications</div>
+        <button className="m-nav-btn"><Icon name="add-outline" size={20}/></button>
+      </div>
+      <div className="m-section">
+        <div className="label">Your credentials</div>
+        {certs.map(c => (
+          <div key={c.name} className="cert-card">
+            <div className="cert-icon"><Icon name={`${c.icon}-outline`} size={20} color={C.o500}/></div>
+            <div className="cert-info">
+              <div className="cert-name">{c.name}</div>
+              <div className="cert-agency">{c.agency}</div>
+              <div className="cert-chips">{c.chips.map(ch => <Chip key={ch.v} v={ch.v} c={ch.c}/>)}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── SCREEN: Profile
+function ProfileScreen() {
+  return (
+    <div className="m-screen" data-screen-label="Profile" style={{paddingBottom:80}}>
+      <div className="m-nav" style={{paddingTop:16}}>
+        <div className="m-nav-title" style={{fontFamily:"'Space Grotesk',system-ui"}}>Profile</div>
+        <button className="m-nav-btn"><Icon name="create-outline" size={18}/></button>
+      </div>
+      <div style={{padding:'0 20px 20px',display:'flex',flexDirection:'column',alignItems:'center',gap:10}}>
+        <div style={{width:72,height:72,borderRadius:'50%',background:`linear-gradient(135deg,${C.o500},${C.od})`,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'Manrope',system-ui",fontSize:24,fontWeight:800,color:'#fff'}}>AR</div>
+        <div style={{textAlign:'center'}}>
+          <div style={{fontFamily:"'Manrope',system-ui",fontSize:18,fontWeight:800,color:C.o900}}>Alex Rivers</div>
+          <div style={{fontSize:12,color:C.o400,marginTop:4}}>alex.rivers@email.com</div>
+          <div style={{display:'flex',gap:6,justifyContent:'center',marginTop:8}}>
+            <Chip v="MASTER SCUBA DIVER" c="cert"/>
+            <Chip v="PADI" c="surface"/>
+          </div>
+        </div>
+      </div>
+
+      {[
+        {icon:'person-outline',label:'Personal info',sub:'Name, DOB, nationality'},
+        {icon:'shield-outline',label:'Emergency contact',sub:'Sarah Rivers'},
+        {icon:'language-outline',label:'Language',sub:'English'},
+        {icon:'notifications-outline',label:'Notifications',sub:'Email & push'},
+        {icon:'card-outline',label:'Payment methods',sub:'Visa ····4242'},
+        {icon:'help-circle-outline',label:'Help & support',sub:''},
+        {icon:'log-out-outline',label:'Sign out',sub:'',danger:true},
+      ].map(item => (
+        <div key={item.label} style={{margin:'0 20px',padding:'12px 0',borderBottom:`1px solid ${C.s3}`,display:'flex',alignItems:'center',gap:12,cursor:'pointer'}}>
+          <div style={{width:34,height:34,borderRadius:9,background:item.danger?'#fee2e2':C.s2,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+            <Icon name={item.icon} size={17} color={item.danger?C.red:C.o500}/>
+          </div>
+          <div style={{flex:1}}>
+            <div style={{fontSize:14,fontWeight:600,color:item.danger?C.red:C.o900}}>{item.label}</div>
+            {item.sub && <div style={{fontSize:11,color:C.o400,marginTop:1}}>{item.sub}</div>}
+          </div>
+          {!item.danger && <Icon name="chevron-forward-outline" size={16} color={C.o400}/>}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ── SCREEN: Trip Detail
+function TripDetailScreen({onBack}) {
+  return (
+    <div className="m-screen" data-screen-label="Trip Detail" style={{paddingBottom:80}}>
+      <div className="trip-detail-hero">
+        <button className="back-btn" onClick={onBack}><Icon name="arrow-back-outline" size={18} color="#fff"/></button>
+        <div className="tdh-content">
+          <div className="tdh-tag">Wreck dive</div>
+          <div className="tdh-name">Ghost Armada</div>
+        </div>
+      </div>
+
+      <div className="detail-section">
+        <div style={{display:'flex',gap:8,flexWrap:'wrap',marginBottom:12}}>
+          <Chip v="PINNACLE REEF" c="cert"/>
+          <Chip v="1 DIVE" c="surface"/>
+          <Chip v="AIR" c="surface"/>
+        </div>
+        <div className="detail-row">
+          <div className="detail-icon"><Icon name="calendar-outline" size={14}/></div>
+          <div><div className="detail-lbl">Date</div><div className="detail-val">24 May 2026</div></div>
+        </div>
+        <div className="detail-row">
+          <div className="detail-icon"><Icon name="time-outline" size={14}/></div>
+          <div><div className="detail-lbl">Departure</div><div className="detail-val">08:30</div></div>
+        </div>
+        <div className="detail-row">
+          <div className="detail-icon"><Icon name="boat-outline" size={14}/></div>
+          <div><div className="detail-lbl">Vessel</div><div className="detail-val">Deep Drifter</div></div>
+        </div>
+        <div className="detail-row">
+          <div className="detail-icon"><Icon name="person-outline" size={14}/></div>
+          <div><div className="detail-lbl">Guide</div><div className="detail-val">Marco Rossi · DM</div></div>
+        </div>
+        <div className="detail-row">
+          <div className="detail-icon"><Icon name="people-outline" size={14}/></div>
+          <div><div className="detail-lbl">Availability</div><div className="detail-val">6 / 8 spots · 2 remaining</div></div>
+        </div>
+      </div>
+
+      <div className="detail-section">
+        <div style={{fontFamily:"'Manrope',system-ui",fontSize:14,fontWeight:600,color:C.o900,marginBottom:8}}>About this dive</div>
+        <div style={{fontSize:13,color:C.o700,lineHeight:1.6,fontFamily:"'Switzer',system-ui"}}>
+          Explore the legendary Ghost Armada — a cluster of wartime wrecks encrusted with coral at 28–35m. Suitable for Advanced Open Water and above. Torch recommended.
+        </div>
+      </div>
+
+      <div style={{padding:'16px 20px',position:'sticky',bottom:80}}>
+        <button className="pill-btn" style={{width:'100%',justifyContent:'center',padding:'14px 0'}}>
+          <Icon name="calendar-outline" size={16}/>Reserve your spot
+        </button>
+        <div style={{textAlign:'center',fontSize:11,color:C.o400,marginTop:8}}>Payment due at center</div>
+      </div>
+    </div>
+  );
+}
+
+// ── App shell with navigation
+function App() {
+  const [tab, setTab] = useState('home');
+  const [screen, setScreen] = useState('home');
+
+  const handleNav = (dest) => {
+    setScreen(dest);
+    if (['home','trips','bookings','certs','profile'].includes(dest)) setTab(dest);
+  };
+
+  const handleTab = (t) => { setTab(t); setScreen(t); };
+
+  const renderScreen = () => {
+    switch(screen) {
+      case 'home': return <HomeScreen onNav={handleNav}/>;
+      case 'trips': return <TripsScreen onNav={handleNav}/>;
+      case 'bookings': return <BookingsScreen/>;
+      case 'certs': return <CertsScreen/>;
+      case 'profile': return <ProfileScreen/>;
+      case 'tripDetail': return <TripDetailScreen onBack={()=>handleNav('trips')}/>;
+      default: return <HomeScreen onNav={handleNav}/>;
+    }
+  };
+
+  return (
+    <IOSDevice>
+      <div style={{position:'relative',height:'100%',display:'flex',flexDirection:'column'}}>
+        {renderScreen()}
+        {screen !== 'tripDetail' && <TabBar active={tab} onTab={handleTab}/>}
+      </div>
+    </IOSDevice>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+
+// Tweaks
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{"screen":"home"}/*EDITMODE-END*/;
+const SCREENS = ['home','trips','bookings','certs','profile','tripDetail'];
+const opts = document.getElementById('screenOpts');
+SCREENS.forEach(s => {
+  const d = document.createElement('div');
+  d.className = `tw-opt${s===TWEAK_DEFAULTS.screen?' on':''}`;
+  d.textContent = s;
+  d.onclick = () => {
+    document.querySelectorAll('#screenOpts .tw-opt').forEach(x=>x.classList.remove('on'));
+    d.classList.add('on');
+    // Communicate screen change — would require deeper integration in a real app
+    window.parent.postMessage({type:'__edit_mode_set_keys',edits:{screen:s}},'*');
+  };
+  opts.appendChild(d);
+});
+
+window.addEventListener('message', e => {
+  if (e.data?.type==='__activate_edit_mode')   document.getElementById('tweakPanel').classList.add('on');
+  if (e.data?.type==='__deactivate_edit_mode') document.getElementById('tweakPanel').classList.remove('on');
+});
+setTimeout(()=>window.parent.postMessage({type:'__edit_mode_available'},'*'),150);
+</script>
+</body>
+</html>

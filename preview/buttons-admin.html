@@ -1,0 +1,268 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<script type="module" src="https://unpkg.com/ionicons@7.4.0/dist/ionicons/ionicons.esm.js"></script>
+<style>
+/* Fallback tokens — active when colors_and_type.css fails to load */
+:root {
+  --surface-0:      #f7f5f0;
+  --surface-1:      #ffffff;
+  --surface-2:      #f0ede6;
+  --surface-3:      #e8e4db;
+  --ocean-900:      #0a2540;
+  --ocean-700:      #1a3a5c;
+  --ocean-500:      #2563a8;
+  --ocean-400:      #3b82c6;
+  --ocean-100:      #dbeafe;
+  --red-critical:   #dc2626;
+  --red-critical-bg:#fee2e2;
+  --font-ui:        'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body:      'Inter',   -apple-system, BlinkMacSystemFont, sans-serif;
+  --btn-shadow-primary:         0 1px 0 0 rgba(26,58,92,0.25), 0 1px 3px 0 rgba(10,37,64,0.08);
+  --btn-shadow-primary-hover:   0 2px 0 0 rgba(26,58,92,0.25), 0 2px 6px 0 rgba(10,37,64,0.10);
+  --btn-shadow-primary-active:  0 0 0 0 transparent,           0 1px 2px 0 rgba(10,37,64,0.06);
+  --btn-shadow-secondary:       0 1px 0 0 rgba(232,228,219,0.8);
+  --btn-shadow-secondary-hover: 0 2px 0 0 rgba(232,228,219,0.8), 0 1px 3px 0 rgba(10,37,64,0.06);
+  --btn-shadow-danger:          0 1px 0 0 rgba(153,27,27,0.35), 0 1px 3px 0 rgba(153,27,27,0.12);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 24px 28px;
+  background: var(--surface-0);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.section { margin-bottom: 24px; }
+.section-label {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ocean-400);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.divider { height: 1px; background: var(--surface-3); margin: 4px 0 20px; }
+
+/* ─── Base ─────────────────────────────────────────────────── */
+button {
+  font-family: var(--font-body);
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  line-height: 1;
+  white-space: nowrap;
+  transition: background 150ms ease-out, color 150ms ease-out,
+              border-color 150ms ease-out, box-shadow 150ms ease-out,
+              transform 150ms ease-out;
+}
+button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(37,99,168,0.40);
+}
+button:disabled {
+  opacity: 0.50;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ─── Sizes — strict 3-tier ─────────────────────────────────
+   sm ~30px  py-1.5 px-3   text-xs  rounded-md (6px)
+   md ~36px  py-2   px-4   text-sm  rounded-lg (8px)  [default]
+   lg ~44px  py-2.5 px-5   text-base rounded-lg (8px)
+──────────────────────────────────────────────────────────── */
+.btn-sm { font-size: 12px; padding: 6px 12px; border-radius: 6px; }
+.btn-md { font-size: 14px; padding: 8px 16px; border-radius: 8px; }
+.btn-lg { font-size: 15px; padding: 10px 20px; border-radius: 8px; }
+
+/* ─── Primary ────────────────────────────────────────────── */
+.btn-primary {
+  background: var(--ocean-500);
+  color: #fff;
+  box-shadow: var(--btn-shadow-primary);
+}
+.btn-primary:hover  { background: var(--ocean-400); transform: translateY(-1px); box-shadow: var(--btn-shadow-primary-hover); }
+.btn-primary:active { background: var(--ocean-500); transform: translateY(0);    box-shadow: var(--btn-shadow-primary-active); }
+
+/* ─── Secondary ──────────────────────────────────────────── */
+.btn-secondary {
+  background: var(--surface-1);
+  color: var(--ocean-700);
+  border: 1px solid var(--surface-3);
+  box-shadow: var(--btn-shadow-secondary);
+}
+.btn-secondary:hover  { border-color: var(--ocean-400); color: var(--ocean-900); transform: translateY(-1px); box-shadow: var(--btn-shadow-secondary-hover); }
+.btn-secondary:active { transform: translateY(0); box-shadow: none; background: var(--surface-2); }
+
+/* ─── Ghost ──────────────────────────────────────────────── */
+.btn-ghost { background: transparent; color: var(--ocean-700); }
+.btn-ghost:hover  { background: var(--surface-2); color: var(--ocean-900); }
+.btn-ghost:active { background: var(--surface-3); }
+
+/* ─── Danger ─────────────────────────────────────────────── */
+.btn-danger {
+  background: var(--red-critical);
+  color: #fff;
+  box-shadow: var(--btn-shadow-danger);
+}
+.btn-danger:hover  { background: #c52222; transform: translateY(-1px); box-shadow: 0 2px 0 0 rgba(153,27,27,0.40), 0 2px 6px 0 rgba(153,27,27,0.15); }
+.btn-danger:active { transform: translateY(0); box-shadow: none; }
+
+/* ─── Text link ───────────────────────────────────────────── */
+.btn-link {
+  background: transparent;
+  color: var(--ocean-500);
+  padding: 0;
+  border-radius: 2px;
+  text-underline-offset: 2px;
+  font-size: 14px;
+}
+.btn-link:hover  { color: var(--ocean-400); text-decoration: underline; }
+.btn-link:active { color: var(--ocean-700); }
+.btn-link-danger { color: var(--red-critical); }
+.btn-link-danger:hover { color: #c52222; }
+
+/* ─── Icon buttons ────────────────────────────────────────── */
+.btn-icon {
+  width: 32px; height: 32px;
+  padding: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ocean-700);
+}
+.btn-icon.btn-sm { width: 26px; height: 26px; border-radius: 6px; }
+.btn-icon.btn-lg { width: 40px; height: 40px; }
+.btn-icon:hover  { background: var(--surface-2); color: var(--ocean-900); }
+.btn-icon:active { background: var(--surface-3); }
+.btn-icon-danger:hover { background: var(--red-critical-bg); color: var(--red-critical); }
+
+.btn-icon-dark {
+  background: transparent;
+  color: rgba(255,255,255,0.50);
+  width: 32px; height: 32px;
+  padding: 0;
+  border-radius: 8px;
+}
+.btn-icon-dark:hover { background: rgba(255,255,255,0.10); color: rgba(255,255,255,0.90); }
+
+ion-icon { font-size: 16px; pointer-events: none; display: block; }
+.btn-sm ion-icon { font-size: 13px; }
+.btn-lg ion-icon { font-size: 18px; }
+
+/* ─── Loading spinner ─────────────────────────────────────── */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner {
+  width: 13px; height: 13px; flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.30);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+.btn-secondary .spinner { border-color: rgba(37,99,168,0.20); border-top-color: var(--ocean-500); }
+.btn-ghost    .spinner  { border-color: rgba(26,58,92,0.20);  border-top-color: var(--ocean-700); }
+</style>
+</head><body>
+
+<!-- PRIMARY -->
+<div class="section">
+  <div class="section-label">Primary</div>
+  <div class="row">
+    <button class="btn-primary btn-sm">Small</button>
+    <button class="btn-primary btn-md">Save changes</button>
+    <button class="btn-primary btn-lg">Large</button>
+    <button class="btn-primary btn-md" disabled>Disabled</button>
+    <button class="btn-primary btn-md"><span class="spinner"></span>Saving…</button>
+    <button class="btn-primary btn-md"><ion-icon name="add-outline"></ion-icon>Add trip</button>
+    <button class="btn-primary btn-md"><ion-icon name="checkmark-outline"></ion-icon>Confirm booking</button>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- SECONDARY -->
+<div class="section">
+  <div class="section-label">Secondary</div>
+  <div class="row">
+    <button class="btn-secondary btn-sm">Small</button>
+    <button class="btn-secondary btn-md">Edit details</button>
+    <button class="btn-secondary btn-lg">Large</button>
+    <button class="btn-secondary btn-md" disabled>Disabled</button>
+    <button class="btn-secondary btn-md"><span class="spinner"></span>Loading…</button>
+    <button class="btn-secondary btn-md"><ion-icon name="download-outline"></ion-icon>Export</button>
+    <button class="btn-secondary btn-md"><ion-icon name="filter-outline"></ion-icon>Filter</button>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- GHOST -->
+<div class="section">
+  <div class="section-label">Ghost</div>
+  <div class="row">
+    <button class="btn-ghost btn-sm">Small</button>
+    <button class="btn-ghost btn-md">Cancel</button>
+    <button class="btn-ghost btn-lg">Large</button>
+    <button class="btn-ghost btn-md" disabled>Disabled</button>
+    <button class="btn-ghost btn-md"><span class="spinner"></span>Loading…</button>
+    <button class="btn-ghost btn-md"><ion-icon name="close-outline"></ion-icon>Dismiss</button>
+    <button class="btn-ghost btn-md"><ion-icon name="ellipsis-horizontal-outline"></ion-icon>More</button>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- DANGER -->
+<div class="section">
+  <div class="section-label">Danger</div>
+  <div class="row">
+    <button class="btn-danger btn-sm">Small</button>
+    <button class="btn-danger btn-md">Remove diver</button>
+    <button class="btn-danger btn-lg">Large</button>
+    <button class="btn-danger btn-md" disabled>Disabled</button>
+    <button class="btn-danger btn-md"><ion-icon name="trash-outline"></ion-icon>Delete trip</button>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- TEXT LINK -->
+<div class="section">
+  <div class="section-label">Text link</div>
+  <div class="row" style="font-size:14px; color: var(--ocean-700); font-family: var(--font-body)">
+    <span>Marco Rossi</span>
+    <button class="btn-link">Edit</button>
+    <span style="color:var(--surface-3)">·</span>
+    <button class="btn-link btn-link-danger">Delete</button>
+    <span style="color:var(--surface-3)">·</span>
+    <button class="btn-link">View all</button>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- ICON BUTTONS -->
+<div class="section">
+  <div class="section-label">Icon buttons</div>
+  <div class="row">
+    <button class="btn-icon btn-sm"><ion-icon name="close-outline"></ion-icon></button>
+    <button class="btn-icon"><ion-icon name="close-outline"></ion-icon></button>
+    <button class="btn-icon btn-lg"><ion-icon name="close-outline"></ion-icon></button>
+    <div style="width:1px;height:24px;background:var(--surface-3);margin:0 4px"></div>
+    <button class="btn-icon"><ion-icon name="create-outline"></ion-icon></button>
+    <button class="btn-icon"><ion-icon name="ellipsis-horizontal-outline"></ion-icon></button>
+    <button class="btn-icon"><ion-icon name="refresh-outline"></ion-icon></button>
+    <button class="btn-icon"><ion-icon name="chevron-back-outline"></ion-icon></button>
+    <button class="btn-icon"><ion-icon name="chevron-forward-outline"></ion-icon></button>
+    <button class="btn-icon btn-icon-danger"><ion-icon name="trash-outline"></ion-icon></button>
+    <div style="width:1px;height:24px;background:var(--surface-3);margin:0 4px"></div>
+    <span style="display:inline-flex;gap:4px;background:var(--ocean-900);padding:6px 8px;border-radius:8px">
+      <button class="btn-icon-dark"><ion-icon name="close-outline"></ion-icon></button>
+      <button class="btn-icon-dark"><ion-icon name="refresh-outline"></ion-icon></button>
+      <button class="btn-icon-dark"><ion-icon name="chevron-forward-outline"></ion-icon></button>
+    </span>
+  </div>
+</div>
+
+</body></html>

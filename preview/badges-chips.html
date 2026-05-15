@@ -1,0 +1,48 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { padding: 20px; background: var(--surface-0); font-family: var(--font-body); }
+.label { font-family: var(--font-ui); font-size: 10px; font-weight: 600; color: var(--ocean-700); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.06em; }
+.row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:14px; }
+/* Badges — diver facing, pill shape */
+.badge { display:inline-flex; align-items:center; font-family:var(--font-body); font-weight:500; border-radius:9999px; }
+.badge-sm { padding:2px 8px; font-size:12px; }
+.badge-md { padding:4px 10px; font-size:14px; }
+/* Chips — admin, rectangular 4px */
+.chip { display:inline-flex; align-items:center; font-family:var(--font-ui); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; padding:2px 6px; border-radius:4px; }
+/* Status dot */
+.dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:5px; }
+</style></head><body>
+<div class="label">Badges (diver-facing · pill)</div>
+<div class="row">
+  <span class="badge badge-sm" style="background:var(--surface-2);color:var(--ocean-700)">Default</span>
+  <span class="badge badge-sm" style="background:var(--safety-green-bg);color:var(--safety-green)">Verified</span>
+  <span class="badge badge-sm" style="background:var(--amber-alert-bg);color:var(--amber-alert)">Pending</span>
+  <span class="badge badge-sm" style="background:var(--red-critical-bg);color:var(--red-critical)">Rejected</span>
+  <span class="badge badge-sm" style="background:var(--ocean-100);color:var(--ocean-500)">Info</span>
+</div>
+<div class="label">Chips (admin · rectangular 4px — cert/role/status codes)</div>
+<div class="row">
+  <span class="chip" style="background:var(--surface-2);color:var(--ocean-700)">AOWD</span>
+  <span class="chip" style="background:var(--surface-2);color:var(--ocean-700)">RESCUE</span>
+  <span class="chip" style="background:var(--accent-teal-bg);color:var(--accent-teal)">NX32</span>
+  <span class="chip" style="background:var(--ocean-100);color:var(--ocean-500)">INSTR</span>
+  <span class="chip" style="background:var(--ocean-100);color:var(--ocean-500)">DM</span>
+  <span class="chip" style="background:var(--amber-alert-bg);color:var(--amber-alert)">DAY OFF</span>
+  <span class="chip" style="background:var(--safety-green-bg);color:var(--safety-green)">AVAILABLE</span>
+  <span class="chip" style="background:var(--surface-mid);color:var(--ocean-700)">AIR</span>
+</div>
+<div class="label">Specialty Pills (admin planning panel · rounded 4px)</div>
+<div class="row">
+  <span style="font-family:var(--font-body);font-size:10px;font-weight:500;padding:2px 6px;border-radius:4px;background:var(--accent-teal-bg);color:var(--accent-teal)">Nitrox</span>
+  <span style="font-family:var(--font-body);font-size:10px;font-weight:500;padding:2px 6px;border-radius:4px;background:var(--accent-teal-bg);color:var(--accent-teal)">Deep</span>
+  <span style="font-family:var(--font-body);font-size:10px;font-weight:500;padding:2px 6px;border-radius:4px;background:var(--amber-alert-bg);color:var(--amber-alert)" title="Intro only">NX intro</span>
+  <span style="font-family:var(--font-body);font-size:10px;color:var(--ocean-700)">+2</span>
+</div>
+<div class="label">Status Indicators</div>
+<div class="row">
+  <span style="font-family:var(--font-body);font-size:12px;color:var(--ocean-700);display:flex;align-items:center"><span class="dot" style="background:var(--safety-green)"></span>Verified</span>
+  <span style="font-family:var(--font-body);font-size:12px;color:var(--ocean-700);display:flex;align-items:center"><span class="dot" style="background:var(--amber-alert)"></span>Pending</span>
+  <span style="font-family:var(--font-body);font-size:12px;color:var(--ocean-700);display:flex;align-items:center"><span class="dot" style="background:var(--red-critical)"></span>Rejected</span>
+</div>
+</body></html>

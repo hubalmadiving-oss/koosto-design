@@ -1,0 +1,174 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<script type="module" src="https://unpkg.com/ionicons@7.4.0/dist/ionicons/ionicons.esm.js"></script>
+<style>
+/* Fallback tokens */
+:root {
+  --surface-0:         #f7f5f0;
+  --surface-1:         #ffffff;
+  --surface-2:         #f0ede6;
+  --surface-3:         #e8e4db;
+  --ocean-900:         #0a2540;
+  --ocean-700:         #1a3a5c;
+  --ocean-500:         #2563a8;
+  --ocean-400:         #3b82c6;
+  --ocean-deep:        #003567;
+  --ocean-deep-light:  #034c8e;
+  --font-ui:           'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body:         'Inter',   -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:         'SF Mono', 'Fira Code', ui-monospace, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 24px 28px;
+  background: var(--surface-0);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.section { margin-bottom: 24px; }
+.section-label {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ocean-400);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.divider { height: 1px; background: var(--surface-3); margin: 4px 0 20px; }
+
+/* ─── Base pill ───────────────────────────────────────────── */
+button {
+  font-family: var(--font-body);
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  line-height: 1;
+  white-space: nowrap;
+  transition: opacity 150ms ease-out, background 150ms ease-out,
+              border-color 150ms ease-out, color 150ms ease-out,
+              box-shadow 150ms ease-out;
+}
+button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0,53,103,0.30);
+}
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ─── Sizes ─────────────────────────────────────────────────
+   sm  ~32px  py-1.5 px-4  text-xs
+   md  ~40px  py-2.5 px-6  text-sm  [default]
+   lg  ~52px  py-3.5 px-8  text-base
+────────────────────────────────────────────────────────────*/
+.pill-sm { font-size: 13px; padding: 6px 16px; }
+.pill-md { font-size: 14px; padding: 10px 24px; }
+.pill-lg { font-size: 16px; padding: 14px 32px; }
+
+/* ─── Primary gradient CTA ──────────────────────────────── */
+.pill-primary {
+  background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-deep-light));
+  color: #fff;
+  box-shadow: 0 2px 8px -1px rgba(0,53,103,0.30);
+}
+.pill-primary:hover  { opacity: 0.90; box-shadow: 0 4px 14px -2px rgba(0,53,103,0.36); }
+.pill-primary:active { opacity: 1.00; box-shadow: 0 1px 4px -1px rgba(0,53,103,0.20); }
+
+/* ─── Secondary pill ────────────────────────────────────── */
+.pill-secondary {
+  background: var(--surface-1);
+  color: var(--ocean-700);
+  border: 1px solid var(--surface-3);
+  box-shadow: 0 1px 2px rgba(10,37,64,0.05);
+}
+.pill-secondary:hover  { border-color: var(--ocean-400); color: var(--ocean-900); box-shadow: 0 2px 6px rgba(10,37,64,0.08); }
+.pill-secondary:active { background: var(--surface-2); }
+
+/* ─── Ghost pill (diver — on dark surface) ──────────────── */
+.pill-ghost-dark {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.20);
+}
+.pill-ghost-dark:hover  { background: rgba(255,255,255,0.20); }
+.pill-ghost-dark:active { background: rgba(255,255,255,0.10); }
+
+ion-icon { font-size: 15px; pointer-events: none; display: block; }
+.pill-sm ion-icon { font-size: 13px; }
+.pill-lg ion-icon { font-size: 18px; }
+
+.note {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--ocean-400);
+  margin-top: 8px;
+}
+</style>
+</head><body>
+
+<!-- PRIMARY GRADIENT CTA -->
+<div class="section">
+  <div class="section-label">Primary — gradient pill</div>
+  <div class="row">
+    <button class="pill-primary pill-sm">Get started</button>
+    <button class="pill-primary pill-md">Book this trip</button>
+    <button class="pill-primary pill-lg">Join now</button>
+    <button class="pill-primary pill-md" disabled>Trip full</button>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- PRIMARY WITH ICON -->
+<div class="section">
+  <div class="section-label">Primary — with icon</div>
+  <div class="row">
+    <button class="pill-primary pill-md"><ion-icon name="calendar-outline"></ion-icon>Book this trip</button>
+    <button class="pill-primary pill-md"><ion-icon name="add-outline"></ion-icon>Join waitlist</button>
+    <button class="pill-primary pill-md">Continue<ion-icon name="arrow-forward-outline"></ion-icon></button>
+    <button class="pill-primary pill-sm">Get started<ion-icon name="chevron-forward-outline"></ion-icon></button>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- SECONDARY PILL -->
+<div class="section">
+  <div class="section-label">Secondary pill</div>
+  <div class="row">
+    <button class="pill-secondary pill-sm">Switch center</button>
+    <button class="pill-secondary pill-md">See all upcoming trips</button>
+    <button class="pill-secondary pill-lg">Browse courses</button>
+    <button class="pill-secondary pill-md" disabled>Unavailable</button>
+    <button class="pill-secondary pill-md"><ion-icon name="filter-outline"></ion-icon>Filter trips</button>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- GHOST ON DARK -->
+<div class="section">
+  <div class="section-label">Ghost — on dark surface</div>
+  <div class="row">
+    <span style="display:inline-flex;gap:10px;background:linear-gradient(135deg,var(--ocean-deep),var(--ocean-deep-light));padding:20px 24px;border-radius:16px;align-items:center">
+      <button class="pill-ghost-dark pill-sm">Learn more</button>
+      <button class="pill-ghost-dark pill-md">View details</button>
+      <button class="pill-primary pill-md" style="background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25)">Dismiss</button>
+    </span>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- CONTEXT NOTE -->
+<div class="note">Diver-facing only — rounded-full pill + 135° gradient (#003567 → #034c8e). Admin uses rounded-lg (8px) flat ocean-500. Never mix contexts.</div>
+
+</body></html>

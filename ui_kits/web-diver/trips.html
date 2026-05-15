@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<title>AlmaDiving — Upcoming Trips</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+@font-face {
+  font-family: 'RealistNarrow';
+  src: url('../../fonts/RealistNarrow.otf') format('opentype');
+  font-weight: 400 700;
+  font-display: swap;
+}
+</style>
+<script type="module" src="https://unpkg.com/ionicons@7.4.0/dist/ionicons/ionicons.esm.js"></script>
+<style>
+/* ─── Tokens ─────────────────────────────────────────────── */
+:root {
+  --s0:#f7f5f0;--s1:#ffffff;--s2:#f0ede6;--s3:#e8e4db;--s-mid:#efeee9;
+  --o900:#0a2540;--o700:#1a3a5c;--o500:#2563a8;--o400:#3b82c6;--o100:#dbeafe;--o50:#eff6ff;
+  --od:#003567;--od-lt:#034c8e;
+  --green:#16a34a;--green-bg:#dcfce7;
+  --amber:#d97706;--amber-bg:#fef3c7;
+  --red:#dc2626;--red-bg:#fee2e2;
+  --teal:#0d9488;--teal-bg:#ccfbf1;
+  --fd:'RealistNarrow','Space Grotesk','Manrope',system-ui,sans-serif;
+  --fu:'Manrope',system-ui,sans-serif;
+  --fb:'Inter',system-ui,sans-serif;
+  --fm:'Inter',system-ui,sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--s0);font-family:var(--fb);font-size:14px;color:var(--o700);-webkit-font-smoothing:antialiased;text-wrap:pretty}
+
+/* ─── Shell ─────────────────────────────────────────────── */
+.app{display:flex;height:100vh;overflow:hidden}
+
+/* ═══════════════════════════════════════════════════════
+   SIDEBAR — identical to diver home
+═══════════════════════════════════════════════════════ */
+.sidebar{
+  width:248px;flex-shrink:0;
+  background:var(--s1);border-right:1px solid var(--s3);
+  display:flex;flex-direction:column;height:100vh;overflow-y:auto;
+}
+.sb-profile{padding:18px 16px 14px;background:var(--s1);border-bottom:1px solid var(--s3)}
+.profile-top{display:flex;align-items:center;gap:11px;margin-bottom:11px}
+.avatar{width:44px;height:44px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--o500),var(--od));display:flex;align-items:center;justify-content:center;font-family:var(--fu);font-size:15px;font-weight:800;color:#fff}
+.profile-id{flex:1;min-width:0}
+.profile-name{font-family:var(--fu);font-size:14px;font-weight:800;color:var(--o900);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.profile-cert{display:inline-flex;margin-top:3px;font-family:var(--fb);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--o500);background:var(--o100);padding:2px 8px;border-radius:9999px}
+.profile-stats{display:flex;border:1px solid var(--s3);border-radius:7px;overflow:hidden;margin-bottom:11px}
+.ps{flex:1;padding:7px 4px;text-align:center;border-right:1px solid var(--s3)}
+.ps:last-child{border-right:none}
+.ps-val{font-family:var(--fm);font-size:17px;font-weight:700;color:var(--o900);font-variant-numeric:tabular-nums;line-height:1}
+.ps-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--o400);margin-top:3px}
+.completion-row{display:flex;align-items:center;gap:8px;cursor:pointer;padding:6px 0;border-radius:5px;transition:background 150ms;user-select:none}
+.completion-row:hover{background:var(--s0);padding-left:4px;padding-right:4px;margin:0 -4px;width:calc(100% + 8px)}
+.completion-label{font-size:12px;font-weight:600;color:var(--o900);flex:1}
+.completion-pct{font-family:var(--fm);font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--green)}
+.completion-chevron{color:var(--o400);font-size:13px;transition:transform 200ms;display:block}
+.completion-chevron.open{transform:rotate(90deg)}
+.completion-track{height:4px;background:var(--s3);border-radius:2px;margin:7px 0 6px;overflow:hidden}
+.completion-fill{height:100%;background:var(--green);border-radius:2px}
+.completion-items{display:flex;flex-direction:column;gap:5px;max-height:0;overflow:hidden;transition:max-height 300ms ease,padding 300ms ease}
+.completion-items.open{max-height:120px;padding-top:8px}
+.ci{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--o700)}
+.ci ion-icon{font-size:13px;display:block;flex-shrink:0}
+.ci.ok ion-icon{color:var(--green)}
+.ci.warn{color:var(--amber)}.ci.warn ion-icon{color:var(--amber)}
+.sb-nav{padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 11px;border-radius:7px;font-family:var(--fb);font-size:13px;font-weight:500;color:var(--o700);cursor:pointer;border:none;background:transparent;transition:background 150ms,color 150ms;text-align:left;width:100%}
+.nav-item:hover{color:var(--o900);background:var(--s0)}
+.nav-item.active{color:var(--o500);background:var(--o50);font-weight:600}
+.nav-item ion-icon{font-size:17px;flex-shrink:0;display:block}
+.nav-item .nav-badge{margin-left:auto;font-size:9px;font-weight:700;background:var(--amber);color:#fff;padding:1px 5px;border-radius:9999px}
+.nav-section-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.09em;color:var(--o400);padding:10px 11px 3px}
+.sb-hr{height:1px;background:var(--s3);margin:0}
+.center-card{margin:12px 12px 4px;background:var(--o900);border-radius:9px;padding:13px 14px}
+.center-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.09em;color:rgba(255,255,255,0.36);margin-bottom:5px}
+.center-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:10px}
+.center-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:4px;box-shadow:0 0 0 2px rgba(22,163,74,0.24)}
+.center-name{font-family:var(--fu);font-size:13px;font-weight:700;color:#fff;line-height:1.2}
+.center-loc{font-size:11px;color:rgba(255,255,255,0.46);margin-top:2px;display:flex;align-items:center;gap:3px}
+.center-loc ion-icon{font-size:11px;display:block}
+.center-actions{display:flex;flex-direction:column;gap:5px}
+.center-btn{width:100%;padding:6px;border-radius:6px;border:none;cursor:pointer;font-family:var(--fb);font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:5px;transition:background 150ms,color 150ms}
+.center-btn ion-icon{font-size:13px;display:block}
+.center-btn.primary{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.16);color:rgba(255,255,255,0.85)}
+.center-btn.primary:hover{background:rgba(255,255,255,0.20)}
+.center-btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.10);color:rgba(255,255,255,0.42)}
+.center-btn.secondary:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.65)}
+.sb-foot{padding:12px 16px;margin-top:auto}
+
+/* ═══════════════════════════════════════════════════════
+   MAIN
+═══════════════════════════════════════════════════════ */
+.main{flex:1;overflow-y:auto;padding:26px 28px 56px;min-width:0;background:var(--s0)}
+
+/* ─── Page header ─────────────────────────────────────── */
+.page-hdr{margin-bottom:20px}
+.page-title{font-family:var(--fd);font-size:24px;font-weight:700;color:var(--o900);letter-spacing:-0.02em;line-height:1.2}
+.page-sub{font-size:13px;color:var(--o400);margin-top:3px}
+
+/* ─── Filter bar ──────────────────────────────────────── */
+.filter-bar{
+  display:flex;align-items:center;gap:10px;
+  background:var(--s1);border:1px solid var(--s3);border-radius:9px;
+  padding:10px 14px;margin-bottom:22px;flex-wrap:wrap;
+}
+.filter-group{display:flex;align-items:center;gap:6px}
+.filter-lbl{font-size:11px;font-weight:600;color:var(--o700);white-space:nowrap}
+.filter-input{
+  font-family:var(--fb);font-size:12px;color:var(--o900);
+  border:1px solid var(--s3);border-radius:6px;
+  background:var(--s0);padding:5px 9px;outline:none;
+  transition:border-color 150ms;cursor:pointer;
+}
+.filter-input:focus{border-color:var(--o500);background:var(--s1)}
+.filter-select{
+  font-family:var(--fb);font-size:12px;color:var(--o900);
+  border:1px solid var(--s3);border-radius:6px;
+  background:var(--s0);padding:5px 24px 5px 9px;outline:none;
+  cursor:pointer;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%231a3a5c' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 8px center;
+  transition:border-color 150ms;
+}
+.filter-select:focus{border-color:var(--o500);background-color:var(--s1)}
+.filter-sep{width:1px;height:20px;background:var(--s3);margin:0 4px}
+.filter-count{font-size:11px;color:var(--o400);margin-left:auto;white-space:nowrap}
+
+/* ─── Trip grid ───────────────────────────────────────── */
+.trips-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+
+/* Trip card */
+.tc{
+  background:var(--s1);border:1px solid var(--s3);border-radius:10px;
+  overflow:hidden;cursor:pointer;display:flex;flex-direction:column;
+  transition:box-shadow 200ms,transform 200ms;
+}
+.tc:hover{box-shadow:0 6px 20px -4px rgba(3,76,142,0.16);transform:translateY(-2px)}
+
+/* Cover */
+.tc-cover{height:110px;position:relative;overflow:hidden;flex-shrink:0}
+.tc-cover::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(5,18,38,0.78) 0%,transparent 58%)}
+
+.tc-cenote {background:linear-gradient(158deg,#053f32 0%,#0d9488 100%)}
+.tc-wreck  {background:linear-gradient(158deg,#07182e 0%,#1a3a5c 100%)}
+.tc-open   {background:linear-gradient(158deg,#002952 0%,#0369a1 100%)}
+.tc-night  {background:linear-gradient(158deg,#150f3a 0%,#2d1a6e 60%,#0d5a52 100%)}
+.tc-reef   {background:linear-gradient(158deg,#042d4a 0%,#0284c7 100%)}
+.tc-cave   {background:linear-gradient(158deg,#1a0a2e 0%,#3b1a6e 100%)}
+
+/* Date badge — top-left */
+.tc-date-badge{
+  position:absolute;top:8px;left:9px;z-index:2;
+  font-family:var(--fm);font-size:9px;font-weight:700;
+  color:rgba(255,255,255,0.90);letter-spacing:0.04em;
+  background:rgba(10,37,64,0.52);backdrop-filter:blur(4px);
+  padding:2px 7px;border-radius:3px;
+  font-variant-numeric:tabular-nums;
+  text-transform:uppercase;
+}
+
+/* Type badge — also top-left row */
+.tc-badges{position:absolute;top:8px;left:9px;right:9px;display:flex;gap:4px;z-index:2}
+.tc-badge{font-family:var(--fb);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;padding:2px 6px;border-radius:3px;backdrop-filter:blur(4px)}
+.tc-badge-type    {background:rgba(37,99,168,0.55);color:#bfdbfe}
+.tc-badge-night   {background:rgba(109,40,217,0.55);color:#e9d5ff}
+.tc-badge-private {background:rgba(0,0,0,0.38);color:rgba(255,255,255,0.82);border:1px solid rgba(255,255,255,0.16)}
+.tc-badge-full    {margin-left:auto;background:rgba(220,38,38,0.55);color:#fecaca}
+.tc-badge-almostfull {margin-left:auto;background:rgba(217,119,6,0.55);color:#fde68a}
+.tc-badge-course  {background:rgba(13,148,136,0.55);color:#a7f3d0}
+
+/* Cover footer */
+.tc-cover-foot{position:absolute;bottom:0;left:0;right:0;padding:6px 10px;z-index:2;display:flex;align-items:flex-end;justify-content:space-between}
+.tc-name{font-family:var(--fb);font-size:14px;font-weight:600;color:#fff;line-height:1.15;letter-spacing:-0.01em}
+.tc-mood{font-size:9px;color:rgba(255,255,255,0.52);margin-top:1px;font-style:italic}
+
+/* Card body */
+.tc-body{padding:10px 12px 12px;display:flex;flex-direction:column;gap:6px;flex:1}
+
+.tc-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.tc-meta{display:flex;align-items:center;gap:3px;font-size:11px;color:var(--o700);font-weight:500}
+.tc-meta ion-icon{font-size:12px;color:var(--o400);display:block;flex-shrink:0}
+.tc-sep{width:1px;height:10px;background:var(--s3);flex-shrink:0}
+
+.tc-dest{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--o500);background:var(--o50);padding:2px 6px;border-radius:3px;white-space:nowrap}
+.tc-dest-boat{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--o700);background:var(--s2);padding:2px 6px;border-radius:3px;display:inline-flex;align-items:center;gap:3px;white-space:nowrap}
+.tc-dest-boat ion-icon{font-size:11px;display:block}
+
+/* Weather row */
+.tc-weather{display:flex;align-items:center;gap:6px;padding:5px 0;border-top:1px solid var(--s3);border-bottom:1px solid var(--s3);margin:1px 0}
+.tc-wx-icon{font-size:16px;line-height:1;flex-shrink:0}
+.tc-wx-info{display:flex;align-items:center;gap:8px;flex:1;flex-wrap:wrap}
+.tc-wx-temp{font-family:var(--fm);font-size:12px;font-weight:700;color:var(--o900);font-variant-numeric:tabular-nums}
+.tc-wx-desc{font-size:10px;color:var(--o400);font-weight:500}
+.tc-wx-wave{font-size:10px;color:var(--o500);font-weight:600}
+
+/* Capacity bar */
+.tc-capacity{display:flex;flex-direction:column;gap:5px;padding-top:5px}
+.tc-cap-row{display:flex;align-items:center;justify-content:space-between}
+.tc-spots{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--o700);font-weight:500;white-space:nowrap}
+.tc-spots ion-icon{font-size:13px;color:var(--o400);display:block;flex-shrink:0}
+.tc-spots.tight{color:var(--amber)}
+.tc-spots.tight ion-icon{color:var(--amber)}
+.tc-spots.full-state{color:var(--red);font-weight:600}
+.tc-cta{padding:5px 13px;background:linear-gradient(135deg,var(--od),var(--od-lt));color:#fff;border:none;border-radius:9999px;font-family:var(--fb);font-size:11px;font-weight:600;cursor:pointer;transition:opacity 150ms;flex-shrink:0}
+.tc-cta:hover{opacity:0.88}
+.tc-cta:disabled{opacity:0.38;cursor:not-allowed;background:var(--s3);color:var(--o700)}
+
+/* Capacity bar track */
+.cap-track{height:3px;background:var(--s3);border-radius:2px;overflow:hidden}
+.cap-fill{height:100%;border-radius:2px;transition:width 400ms ease}
+.cap-fill.green {background:var(--green)}
+.cap-fill.amber {background:var(--amber)}
+.cap-fill.red   {background:var(--red)}
+
+/* ─── Tweaks ─────────────────────────────────────────── */
+.tweaks-panel{display:none;position:fixed;bottom:18px;right:18px;z-index:9999;background:var(--s1);border:1px solid var(--s3);border-radius:10px;padding:14px 16px;box-shadow:0 8px 32px -4px rgba(3,76,142,0.16);width:200px}
+.tweaks-panel.on{display:block}
+.tw-ttl{font-family:var(--fu);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.09em;color:var(--o400);margin-bottom:12px}
+.tw-grp{margin-bottom:10px}
+.tw-lbl{font-size:11px;font-weight:600;color:var(--o900);margin-bottom:5px}
+.tw-opts{display:flex;gap:4px}
+.tw-opt{flex:1;padding:5px;border:1px solid var(--s3);border-radius:6px;font-size:11px;font-weight:500;color:var(--o700);background:var(--s0);cursor:pointer;text-align:center;transition:all 150ms}
+.tw-opt.on{background:var(--o100);border-color:var(--o500);color:var(--o500);font-weight:700}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ══ SIDEBAR ══════════════════════════════════════ -->
+  <aside class="sidebar">
+    <div class="sb-profile">
+      <div class="profile-top">
+        <div class="avatar">AR</div>
+        <div class="profile-id">
+          <div class="profile-name">Alex Rivers</div>
+          <div class="profile-cert">Master Scuba Diver</div>
+        </div>
+      </div>
+      <div class="profile-stats">
+        <div class="ps"><div class="ps-val">142</div><div class="ps-lbl">Dives</div></div>
+        <div class="ps"><div class="ps-val">3</div><div class="ps-lbl">Centers</div></div>
+      </div>
+      <div class="completion-row" onclick="toggleCompletion()" id="compRow">
+        <span class="completion-label">Profile completion</span>
+        <span class="completion-pct">85%</span>
+        <ion-icon name="chevron-forward-outline" class="completion-chevron" id="compChevron"></ion-icon>
+      </div>
+      <div class="completion-track"><div class="completion-fill" style="width:85%"></div></div>
+      <div class="completion-items" id="compItems">
+        <div class="ci ok"><ion-icon name="checkmark-circle"></ion-icon>Advanced Open Water cert</div>
+        <div class="ci ok"><ion-icon name="checkmark-circle"></ion-icon>DAN insurance · valid</div>
+        <div class="ci ok"><ion-icon name="checkmark-circle"></ion-icon>Emergency contact</div>
+        <div class="ci warn"><ion-icon name="alert-circle-outline"></ion-icon>Gear service record</div>
+      </div>
+    </div>
+
+    <nav class="sb-nav">
+      <button class="nav-item"><ion-icon name="school-outline"></ion-icon>Courses</button>
+      <button class="nav-item active"><ion-icon name="compass-outline"></ion-icon>Discover trips</button>
+      <button class="nav-item"><ion-icon name="calendar-outline"></ion-icon>Bookings<span class="nav-badge">2</span></button>
+      <button class="nav-item"><ion-icon name="ribbon-outline"></ion-icon>Certifications</button>
+      <button class="nav-item"><ion-icon name="person-outline"></ion-icon>Profile</button>
+      <div class="nav-section-lbl">Operator</div>
+      <button class="nav-item" style="color:var(--o500)"><ion-icon name="settings-outline"></ion-icon>Admin dashboard</button>
+    </nav>
+
+    <div class="sb-hr"></div>
+
+    <div class="center-card">
+      <div class="center-lbl">Current base</div>
+      <div class="center-top">
+        <div class="center-dot"></div>
+        <div>
+          <div class="center-name">Deep Blue Horizon</div>
+          <div class="center-loc"><ion-icon name="location-outline"></ion-icon>Belize City, Barrier Reef</div>
+        </div>
+      </div>
+      <div class="center-actions">
+        <button class="center-btn primary"><ion-icon name="chatbubble-ellipses-outline"></ion-icon>Contact operator</button>
+        <button class="center-btn secondary"><ion-icon name="swap-horizontal-outline"></ion-icon>Manage dive centers</button>
+      </div>
+    </div>
+    <div class="sb-foot"></div>
+  </aside>
+
+  <!-- ══ MAIN ═════════════════════════════════════════ -->
+  <main class="main">
+
+    <div class="page-hdr">
+      <h1 class="page-title">Upcoming Trips</h1>
+      <p class="page-sub">Browse and book available dive trips at Deep Blue Horizon</p>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <span class="filter-lbl">From</span>
+        <input type="date" class="filter-input" value="2026-04-24">
+      </div>
+      <div class="filter-sep"></div>
+      <div class="filter-group">
+        <span class="filter-lbl">To</span>
+        <input type="date" class="filter-input" value="2026-06-01">
+      </div>
+      <div class="filter-sep"></div>
+      <div class="filter-group">
+        <span class="filter-lbl">Dive site</span>
+        <select class="filter-select">
+          <option>All sites</option>
+          <option>Pinnacle Reef</option>
+          <option>Casa Mar Reef</option>
+          <option>Riviera Maya</option>
+          <option>Outer Barrier</option>
+          <option>Blue Hole</option>
+        </select>
+      </div>
+      <div class="filter-sep"></div>
+      <div class="filter-group">
+        <span class="filter-lbl">Type</span>
+        <select class="filter-select">
+          <option>All types</option>
+          <option>Fun dive</option>
+          <option>Night dive</option>
+          <option>Open ocean</option>
+          <option>Course</option>
+          <option>Technical</option>
+        </select>
+      </div>
+      <span class="filter-count">28 trips available</span>
+    </div>
+
+    <!-- Trip grid -->
+    <div class="trips-grid" id="tripsGrid">
+
+      <!-- Trip 1 — Morning Reef -->
+      <div class="tc">
+        <div class="tc-cover tc-reef">
+          <div class="tc-badges">
+            <span class="tc-badge tc-badge-type">Fun dive</span>
+          </div>
+          <div class="tc-cover-foot">
+            <div><div class="tc-name">Morning Reef</div><div class="tc-mood">Barrier dive · Coral gardens</div></div>
+          </div>
+        </div>
+        <div class="tc-body">
+          <div class="tc-row">
+            <span class="tc-dest">Pinnacle Reef</span>
+          </div>
+          <div class="tc-row">
+            <div class="tc-meta"><ion-icon name="calendar-outline"></ion-icon>Fri 25 Apr</div>
+            <div class="tc-sep"></div>
+            <div class="tc-meta"><ion-icon name="time-outline"></ion-icon>08:15</div>
+            <div class="tc-sep"></div>
+            <div class="tc-meta"><ion-icon name="layers-outline"></ion-icon>2 dives</div>
+          </div>
+          <div class="tc-row">
+            <span class="tc-dest-boat"><ion-icon name="boat-outline"></ion-icon>Sea Hawk</span>
+          </div>
+          <div class="tc-weather">
+            <div class="tc-wx-icon">🌤</div>
+            <div class="tc-wx-info">
+              <span class="tc-wx-temp">28°C</span>
+              <span class="tc-wx-desc">Partly cloudy</span>
+              <span class="tc-wx-wave">∿ 0.3m</span>
+            </div>
+          </div>
+          <div class="tc-capacity">
+            <div class="cap-track"><div class="cap-fill green" style="width:58%"></div></div>
+            <div class="tc-cap-row">
+              <div class="tc-spots"><ion-icon name="people-outline"></ion-icon>7 / 12 spots</div>
+              <button class="tc-cta">Book</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trip 2 — Open Water Course -->
+      <div class="tc">
+        <div class="tc-cover tc-open">
+          <div class="tc-badges">
+            <span class="tc-badge tc-badge-course">Course</span>
+          </div>
+          <div class="tc-cover-foot">
+            <div><div class="tc-name">Open Water Course</div><div class="tc-mood">Certification · 4 dives</div></div>
+          </div>
+        </div>
+        <div class="tc-body">
+          <div class="tc-row">
+            <span class="tc-dest">Local Sites</span>
+          </div>
+          <div class="tc-row">
+            <div class="tc-meta"><ion-icon name="calendar-outline"></ion-icon>Fri 25 Apr</div>
+            <div class="tc-sep"></div>
+            <div class="tc-meta"><ion-icon name="time-outline"></ion-icon>09:00</div>
+            <div class="tc-sep"></div>
+            <div class="tc-meta"><ion-icon name="layers-outline"></ion-icon>4 dives</div>
+          </div>
+          <div class="tc-row">
+            <span class="tc-dest-boat"><ion-icon name="boat-outline"></ion-icon>Deep Drifter</span>
+          </div>
+          <div class="tc-weather">
+            <div class="tc-wx-icon">🌤</div>
+            <div class="tc-wx-info">
+              <span class="tc-wx-temp">28°C</span>
+              <span class="tc-wx-desc">Partly cloudy</span>
+              <span class="tc-wx-wave">∿ 0.3m</span>
+            </div>
+          </div>
+          <div class="tc-capacity">
+            <div class="cap-track"><div class="cap-fill green" style="width:33%"></div></div>
+            <div class="tc-cap-row">
+              <div class="tc-spots"><ion-icon name="people-outline"></ion-icon>2 / 6 spots</div>
+              <button class="tc-cta">Book</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trip 3 — Saturday Reef -->
+      <div class="tc">
+        <div class="tc-cover tc-reef">
+          <div class="tc-badges">
+            <span class="tc-badge tc-badge-type">Fun dive</span>
+          </div>
+          <div class="tc-cover-foot">
+            <div><div class="tc-name">Morning Reef</div><div class="tc-mood">Barrier dive · Coral gardens</div></div>
+          </div>
+        </div>
+        <div class="tc-body">
+          <div class="tc-row"><span class="tc-dest">Pinnacle Reef</span></div>
+          <div class="tc-row">
+            <div class="tc-meta"><ion-icon name="calendar-outline"></ion-icon>Sat 26 Apr</div>
+            <div class="tc-sep"></div>
+            <div class="tc-meta"><ion-icon name="time-outline"></ion-icon>08:15</div>
+            <div class="tc-sep"></div>
+            <div class="tc-meta"><ion-icon name="layers-outline"></ion-icon>2 dives</div>
+          </div>
+          <div class="tc-row"><span class="tc-dest-boat"><ion-icon name="boat-outline"></ion-icon>Sea Hawk</span></div>
+          <div class="tc-weather">
+            <div class="tc-wx-icon">🌧</div>
+            <div class="tc-wx-info">
+              <span class="tc-wx-temp">25°C</span>
+              <span class="tc-wx-desc">Showers</span>
+              <span class="tc-wx-wave">∿ 0.8m</span>
+            </div>
+          </div>
+          <div class="tc-capacity">
+            <div class="cap-track"><div class="cap-fill green" style="width:75%"></div></div>
+            <div class="tc-cap-row">
+              <div class="tc-spots"><ion-icon name="people-outline"></ion-icon>3 spots left</div>
+              <button class="tc-cta">Book</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trip 4 — Advanced Open Water -->
+      <div class="tc">
+        <div class="tc-cover tc-open">
+          <div class="tc-badges">
+            <span class="tc-badge tc-badge-course">Course</span>
+            <span class="tc-badge tc-badge-almostfull">Almost full</span>
+          </div>
+          <div class="tc-cover-foot">
+            <div><div class="tc-name">Advanced Open Water</div><div class="tc-mood">Certification · Deep + Nav</div></div>
+          </div>
+        </div>
+        <div class="tc-body">
+          <div class="tc-row"><span class="tc-dest">Local Sites</span></div>
+          <div class="tc-row">
+            <div class="tc-meta"><ion-icon name="calendar-outline"></ion-icon>Sat 26 Apr</div>
+            <div class="tc-sep"></div>
+            <div class="tc-meta"><ion-icon name="time-outline"></ion-icon>09:00</div>
+            <div class="tc-sep"></div>
+            <div class="tc-meta"><ion-icon name="layers-outline"></ion-icon>3 dives</div>
+          </div>
+          <div class="tc-row"><span class="tc-dest-boat"><ion-icon name="boat-outline"></ion-icon>Deep Drifter</span></div>
+          <div class="tc-weather">
+            <div class="tc-wx-icon">🌧</div>
+            <div class="tc-wx-info">
+              <span class="tc-wx-temp">25°C</span>
+              <span class="tc-wx-desc">Showers</span>
+              <span class="tc-wx-wave">∿ 0.8m</span>
+            </div>
+          </div>
+          <div class="tc-capacity">
+            <div class="cap-track"><div class="cap-fill amber" style="width:83%"></div></div>
+            <div class="tc-cap-row">
+              <div class="tc-spots tight"><ion-icon name="people-outline"></ion-icon>1 spot left</div>
+              <button class="tc-cta">Book</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trip 5 — Sunday Fun Dive -->
+      <div class="tc">
+        <div class="tc-cover tc-cenote">
+          <div class="tc-badges">
+            <span class="tc-badge tc-badge-type">Fun dive</span>
+          </div>
+          <div class="tc-cover-foot">
+            <div><div class="tc-name">Cenote Garden</div><div class="tc-mood">Mystical · Crystal clear</div></div>
+          </div>
+        </div>
+        <div class="tc-body">
+          <div class="tc-row"><span class="tc-dest">Riviera Maya</span></div>
+          <div class="tc-row">
+            <div class="tc-meta"><ion-icon name="calendar-outline"></ion-icon>Sun 27 Apr</div>
+            <div class="tc-sep"></div>
+            <div class="tc-meta"><ion-icon name="time-outline"></ion-icon>07:00</div>
+            <div class="tc-sep"></div>
+            <div class="tc-meta"><ion-icon name="layers-outline"></ion-icon>2 dives</div>
+          </div>
+          <div class="tc-row"><span class="tc-dest-boat"><ion-icon name="boat-outline"></ion-icon>Sea Hawk</span></div>
+          <div class="tc-weather">
+            <div class="tc-wx-icon">☀️</div>
+            <div class="tc-wx-info">
+              <span class="tc-wx-temp">29°C</span>
+              <span class="tc-wx-desc">Sunny</span>
+              <span class="tc-wx-wave">∿ 0.2m</span>
+            </div>
+          </div>
+          <div class="tc-capacity">
+            <div class="cap-track"><div class="cap-fill green" style="width:50%"></div></div>
+            <div class="tc-cap-row">
+              <div class="tc-spots"><ion-icon name="people-outline"></ion-icon>6 / 12 spots</div>
+              <button class="tc-cta">Book</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trip 6 — Ghost Armada (Full) -->
+      <div class="tc">
+        <div class="tc-cover tc-wreck">
+          <div class="tc-badges">
+            <span class="tc-badge tc-badge-private">🔒 Private</span>
+            <span class="tc-badge tc-badge-full">Full</span>
+          </div>
+          <div class="tc-cover-foot">
+            <div><div class="tc-name">Ghost Armada</div><div class="tc-mood">Exploration · Eerie</div></div>
+          </div>
+        </div>
+        <div class="tc-body">
+          <div class="tc-row"><span class="tc-dest">Pinnacle Reef</span></div>
+          <div class="tc-row">
+            <div class="tc-meta"><ion-icon name="calendar-outline"></ion-icon>Mon 28 Apr</div>
+            <div class="tc-sep"></div>
+            <div class="tc-meta"><ion-icon name="time-outline"></ion-icon>08:30</div>
+            <div class="tc-sep"></div>
+            <div class="tc-meta"><ion-icon name="layers-outline"></ion-icon>1 dive</div>
+          </div>
+          <div class="tc-row"><span class="tc-dest-boat"><ion-icon name="boat-outline"></ion-icon>Deep Drifter</span></div>
+          <div class="tc-weather">
+            <div class="tc-wx-icon">⛅</div>
+            <div class="tc-wx-info">
+              <span class="tc-wx-temp">27°C</span>
+              <span class="tc-wx-desc">Partly cloudy</span>
+              <span class="tc-wx-wave">∿ 0.5m</span>
+            </div>
+          </div>
+          <div class="tc-capacity">
+            <div class="cap-track"><div class="cap-fill red" style="width:100%"></div></div>
+            <div class="tc-cap-row">
+              <div class="tc-spots full-state"><ion-icon name="people-outline"></ion-icon>Full · 8 / 8</div>
+              <button class="tc-cta" disabled>Full</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trip 7 — Night Dive -->
+      <div class="tc">
+        <div class="tc-cover tc-night">
+          <div class="tc-badges">
+            <span class="tc-badge tc-badge-night">🌙 Night dive</span>
+          </div>
+          <div class="tc-cover-foot">
+            <div><div class="tc-name">Neon Reefs</div><div class="tc-mood">UV fluorescence</div></div>
+          </div>
+        </div>
+        <div class="tc-body">
+          <div class="tc-row"><span class="tc-dest">Casa Mar Reef</span></div>
+          <div class="tc-row">
+            <div class="tc-meta"><ion-icon name="calendar-outline"></ion-icon>Wed 30 Apr</div>
+            <div class="tc-sep"></div>
+            <div class="tc-meta"><ion-icon name="time-outline"></ion-icon>20:15</div>
+            <div class="tc-sep"></div>
+            <div class="tc-meta"><ion-icon name="layers-outline"></ion-icon>1 dive</div>
+          </div>
+          <div class="tc-row"><span class="tc-dest-boat"><ion-icon name="boat-outline"></ion-icon>Night Owl</span></div>
+          <div class="tc-weather">
+            <div class="tc-wx-icon">🌑</div>
+            <div class="tc-wx-info">
+              <span class="tc-wx-temp">24°C</span>
+              <span class="tc-wx-desc">Clear night</span>
+              <span class="tc-wx-wave">∿ 0.3m</span>
+            </div>
+          </div>
+          <div class="tc-capacity">
+            <div class="cap-track"><div class="cap-fill amber" style="width:75%"></div></div>
+            <div class="tc-cap-row">
+              <div class="tc-spots tight"><ion-icon name="people-outline"></ion-icon>1 / 4 spots</div>
+              <button class="tc-cta">Book</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trip 8 — Giant Migration -->
+      <div class="tc">
+        <div class="tc-cover tc-open">
+          <div class="tc-badges">
+            <span class="tc-badge tc-badge-type">Open ocean</span>
+          </div>
+          <div class="tc-cover-foot">
+            <div><div class="tc-name">Giant Migration</div><div class="tc-mood">Encounter · Seasonal</div></div>
+          </div>
+        </div>
+        <div class="tc-body">
+          <div class="tc-row">
+            <span class="tc-dest">Outer Barrier</span>
+            <span class="tc-dest">Shark Alley</span>
+          </div>
+          <div class="tc-row">
+            <div class="tc-meta"><ion-icon name="calendar-outline"></ion-icon>Sat 3 May</div>
+            <div class="tc-sep"></div>
+            <div class="tc-meta"><ion-icon name="time-outline"></ion-icon>05:45</div>
+            <div class="tc-sep"></div>
+            <div class="tc-meta"><ion-icon name="layers-outline"></ion-icon>3 dives</div>
+          </div>
+          <div class="tc-row"><span class="tc-dest-boat"><ion-icon name="boat-outline"></ion-icon>Pelagic Star</span></div>
+          <div class="tc-weather">
+            <div class="tc-wx-icon">☀️</div>
+            <div class="tc-wx-info">
+              <span class="tc-wx-temp">30°C</span>
+              <span class="tc-wx-desc">Sunny</span>
+              <span class="tc-wx-wave">∿ 0.4m</span>
+            </div>
+          </div>
+          <div class="tc-capacity">
+            <div class="cap-track"><div class="cap-fill green" style="width:25%"></div></div>
+            <div class="tc-cap-row">
+              <div class="tc-spots"><ion-icon name="people-outline"></ion-icon>2 / 8 spots</div>
+              <button class="tc-cta">Book</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trip 9 — Blue Hole -->
+      <div class="tc">
+        <div class="tc-cover tc-cave">
+          <div class="tc-badges">
+            <span class="tc-badge tc-badge-type">Technical</span>
+          </div>
+          <div class="tc-cover-foot">
+            <div><div class="tc-name">Blue Hole Abyss</div><div class="tc-mood">Deep · 40m+</div></div>
+          </div>
+        </div>
+        <div class="tc-body">
+          <div class="tc-row"><span class="tc-dest">Great Blue Hole</span></div>
+          <div class="tc-row">
+            <div class="tc-meta"><ion-icon name="calendar-outline"></ion-icon>Fri 9 May</div>
+            <div class="tc-sep"></div>
+            <div class="tc-meta"><ion-icon name="time-outline"></ion-icon>06:30</div>
+            <div class="tc-sep"></div>
+            <div class="tc-meta"><ion-icon name="layers-outline"></ion-icon>1 dive</div>
+          </div>
+          <div class="tc-row"><span class="tc-dest-boat"><ion-icon name="boat-outline"></ion-icon>Deep Drifter</span></div>
+          <div class="tc-weather">
+            <div class="tc-wx-icon">🌤</div>
+            <div class="tc-wx-info">
+              <span class="tc-wx-temp">28°C</span>
+              <span class="tc-wx-desc">Partly cloudy</span>
+              <span class="tc-wx-wave">∿ 0.4m</span>
+            </div>
+          </div>
+          <div class="tc-capacity">
+            <div class="cap-track"><div class="cap-fill green" style="width:42%"></div></div>
+            <div class="tc-cap-row">
+              <div class="tc-spots"><ion-icon name="people-outline"></ion-icon>7 / 12 spots</div>
+              <button class="tc-cta">Book</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Tweaks -->
+<div class="tweaks-panel" id="tweakPanel">
+  <div class="tw-ttl">Tweaks</div>
+  <div class="tw-grp">
+    <div class="tw-lbl">Columns</div>
+    <div class="tw-opts">
+      <div class="tw-opt" onclick="setCols(2)">2</div>
+      <div class="tw-opt on" id="col3" onclick="setCols(3)">3</div>
+      <div class="tw-opt" onclick="setCols(4)">4</div>
+    </div>
+  </div>
+  <div class="tw-grp">
+    <div class="tw-lbl">Weather</div>
+    <div class="tw-opts">
+      <div class="tw-opt on" id="wx-on" onclick="setWeather(true)">Show</div>
+      <div class="tw-opt" id="wx-off" onclick="setWeather(false)">Hide</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "cols": 4,
+  "weather": true
+}/*EDITMODE-END*/;
+
+function toggleCompletion() {
+  const items = document.getElementById('compItems');
+  const chev  = document.getElementById('compChevron');
+  const open  = items.classList.toggle('open');
+  chev.classList.toggle('open', open);
+}
+
+function setCols(n) {
+  document.getElementById('tripsGrid').style.gridTemplateColumns = `repeat(${n},1fr)`;
+  document.querySelectorAll('.tw-opts .tw-opt').forEach(o => o.classList.remove('on'));
+  document.getElementById(`col${n}`)?.classList.add('on');
+  window.parent.postMessage({type:'__edit_mode_set_keys',edits:{cols:n}},'*');
+}
+
+function setWeather(on) {
+  document.querySelectorAll('.tc-weather').forEach(el => el.style.display = on ? '' : 'none');
+  document.getElementById('wx-on').classList.toggle('on', on);
+  document.getElementById('wx-off').classList.toggle('on', !on);
+  window.parent.postMessage({type:'__edit_mode_set_keys',edits:{weather:on}},'*');
+}
+
+// Init
+setCols(TWEAK_DEFAULTS.cols || 3);
+setWeather(TWEAK_DEFAULTS.weather !== false);
+
+window.addEventListener('message', e => {
+  if (e.data?.type === '__activate_edit_mode')   document.getElementById('tweakPanel').classList.add('on');
+  if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweakPanel').classList.remove('on');
+});
+setTimeout(() => window.parent.postMessage({type:'__edit_mode_available'},'*'), 150);
+</script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+:root {
+  --surface-0:    #f7f5f0;
+  --surface-1:    #ffffff;
+  --surface-2:    #f0ede6;
+  --surface-3:    #e8e4db;
+  --surface-mid:  #efeee9;
+  --surface-high: #e9e8e3;
+  --ocean-900:    #0a2540;
+  --ocean-700:    #1a3a5c;
+  --ocean-400:    #3b82c6;
+  --font-ui:   'Manrope', -apple-system, sans-serif;
+  --font-body: 'Inter',   -apple-system, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', ui-monospace, monospace;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin:0; padding:24px 28px; background:#f7f5f0; font-family:'Inter',-apple-system,sans-serif; -webkit-font-smoothing:antialiased; }
+
+.section-label {
+  font-family:'Manrope',-apple-system,sans-serif;
+  font-size:10px; font-weight:700; color:#3b82c6;
+  text-transform:uppercase; letter-spacing:0.08em;
+  margin-bottom:10px;
+}
+.section { margin-bottom:24px; }
+.divider { height:1px; background:#e8e4db; margin:4px 0 20px; }
+
+/* ── Swatch strip ── */
+.swatch-row { display:flex; gap:0; border:1px solid #e8e4db; border-radius:8px; overflow:hidden; }
+.swatch { flex:1; padding:10px 12px 8px; border-right:1px solid #e8e4db; min-width:0; }
+.swatch:last-child { border-right:none; }
+.swatch-name { font-family:'Manrope',-apple-system,sans-serif; font-size:11px; font-weight:600; color:#0a2540; }
+.swatch-role { font-size:10px; color:#1a3a5c; margin:2px 0 4px; }
+.swatch-hex  { font-family:'SF Mono','Fira Code',ui-monospace,monospace; font-size:9px; color:#3b82c6; }
+
+/* ── Nested depth demo ── */
+.depth-demo {
+  border-radius:10px;
+  border:1px solid #e8e4db;
+  background:#f7f5f0;
+  padding:12px;
+}
+.depth-tag {
+  font-family:'SF Mono','Fira Code',ui-monospace,monospace;
+  font-size:8px; color:#3b82c6; margin-bottom:4px;
+}
+.panel {
+  background:#ffffff;
+  border:1px solid #e8e4db;
+  border-radius:8px;
+  overflow:hidden;
+}
+.panel-header {
+  background:#f0ede6;
+  border-bottom:1px solid #e8e4db;
+  padding:7px 12px;
+  font-family:'Manrope',-apple-system,sans-serif;
+  font-size:13px; font-weight:600; color:#0a2540;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.panel-header-tag { font-family:'SF Mono','Fira Code',ui-monospace,monospace; font-size:8px; color:#3b82c6; font-weight:400; }
+.panel-body { padding:8px 10px; display:flex; flex-direction:column; gap:5px; }
+.row-item {
+  background:#efeee9;
+  border:1px solid #e8e4db;
+  border-radius:6px;
+  padding:6px 10px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.row-item-inner {
+  background:#e9e8e3;
+  border:1px solid #e8e4db;
+  border-radius:4px;
+  padding:3px 7px;
+  font-family:'SF Mono','Fira Code',ui-monospace,monospace;
+  font-size:8.5px; color:#1a3a5c; font-weight:700;
+  text-transform:uppercase; letter-spacing:0.06em;
+}
+.row-name { font-family:'Manrope',-apple-system,sans-serif; font-size:12px; font-weight:800; color:#0a2540; }
+.row-meta { font-size:10px; color:#3b82c6; }
+
+/* ── Rule callouts ── */
+.rules { display:flex; flex-direction:column; gap:6px; }
+.rule  { display:flex; gap:8px; align-items:flex-start; font-size:11px; color:#1a3a5c; background:#fff; border:1px solid #e8e4db; border-radius:6px; padding:7px 10px; }
+.rule-icon { font-size:13px; flex-shrink:0; }
+</style>
+</head><body>
+
+<!-- SWATCH STRIP -->
+<div class="section">
+  <div class="section-label">Foundation surfaces — depth through background shifts, not shadows</div>
+  <div class="swatch-row">
+    <div class="swatch" style="background:#f7f5f0">
+      <div class="swatch-name">surface-0</div>
+      <div class="swatch-role">Page background</div>
+      <div class="swatch-hex">#f7f5f0</div>
+    </div>
+    <div class="swatch" style="background:#ffffff">
+      <div class="swatch-name">surface-1</div>
+      <div class="swatch-role">Cards · panels</div>
+      <div class="swatch-hex">#ffffff</div>
+    </div>
+    <div class="swatch" style="background:#f0ede6">
+      <div class="swatch-name">surface-2</div>
+      <div class="swatch-role">Panel headers · hover</div>
+      <div class="swatch-hex">#f0ede6</div>
+    </div>
+    <div class="swatch" style="background:#efeee9">
+      <div class="swatch-name">surface-mid</div>
+      <div class="swatch-role">Nested row items</div>
+      <div class="swatch-hex">#efeee9</div>
+    </div>
+    <div class="swatch" style="background:#e9e8e3">
+      <div class="swatch-name">surface-high</div>
+      <div class="swatch-role">Deep nesting</div>
+      <div class="swatch-hex">#e9e8e3</div>
+    </div>
+    <div class="swatch" style="background:#e8e4db">
+      <div class="swatch-name">surface-3</div>
+      <div class="swatch-role">Borders · dividers</div>
+      <div class="swatch-hex">#e8e4db</div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- NESTED DEPTH DEMO -->
+<div class="section">
+  <div class="section-label">Depth in context — 5 levels of nesting</div>
+  <div class="depth-tag">surface-0 — page</div>
+  <div class="depth-demo">
+    <div class="depth-tag">surface-1 — panel card</div>
+    <div class="panel">
+      <div class="panel-header">
+        Passengers
+        <span class="panel-header-tag">surface-2 header strip</span>
+      </div>
+      <div class="panel-body">
+        <div class="depth-tag">surface-mid — row item</div>
+        <div class="row-item">
+          <div>
+            <div class="row-name">Marco Rossi</div>
+            <div class="row-meta">Divemaster · 84 dives</div>
+          </div>
+          <div style="display:flex;gap:4px">
+            <div class="depth-tag" style="margin:0;align-self:center">surface-high → chip</div>
+            <span class="row-item-inner">AOWD</span>
+            <span class="row-item-inner" style="background:#ccfbf1;color:#0d9488;border-color:#ccfbf1">NX32</span>
+          </div>
+        </div>
+        <div class="row-item">
+          <div>
+            <div class="row-name">Sofia Bianchi</div>
+            <div class="row-meta">Instructor · 312 dives</div>
+          </div>
+          <span class="row-item-inner" style="background:#dbeafe;color:#2563a8;border-color:#dbeafe">INSTR</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- RULES -->
+<div class="section">
+  <div class="section-label">Rules</div>
+  <div class="rules">
+    <div class="rule"><span class="rule-icon">✓</span><span><strong>Admin:</strong> Borders are required alongside tonal layering — they act as structural scan-path guides, like grid lines on a dive computer.</span></div>
+    <div class="rule"><span class="rule-icon">✓</span><span><strong>Diver-facing:</strong> No 1px line rule. Define sections via background shifts only. Border exception: ghost border <code style="font-size:10px">rgba(232,228,219,0.15)</code> when two same-bg containers must separate.</span></div>
+    <div class="rule"><span class="rule-icon">✗</span><span><strong>Never</strong> use pure black (#000000) anywhere. Use ocean-900 (#0a2540) for maximum emphasis.</span></div>
+    <div class="rule"><span class="rule-icon">✗</span><span><strong>Never</strong> mix depth strategies — borders AND shadows on the same element break the visual grammar.</span></div>
+  </div>
+</div>
+
+</body></html>

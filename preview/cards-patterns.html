@@ -1,0 +1,46 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { padding: 20px; background: var(--surface-0); font-family: var(--font-body); }
+.label { font-family: var(--font-ui); font-size: 10px; font-weight: 600; color: var(--ocean-700); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.06em; }
+.section { margin-bottom: 18px; }
+/* Admin card */
+.card { background:var(--surface-1); border:1px solid var(--surface-3); border-radius:8px; overflow:hidden; }
+.card-header { background:var(--surface-2); padding:8px 14px; border-bottom:1px solid var(--surface-3); font-family:var(--font-ui); font-size:15px; font-weight:600; color:var(--ocean-900); }
+.card-body { padding:12px 14px; }
+/* Pax row */
+.pax-row { display:grid; grid-template-columns:130px 1fr 72px 72px; gap:0; border-bottom:1px solid var(--surface-3); padding:5px 12px; align-items:center; }
+.pax-row:last-child { border-bottom:none; }
+.pax-name { font-family:var(--font-ui); font-size:13px; font-weight:800; color:var(--ocean-900); }
+.pax-cert { display:flex; gap:4px; align-items:center; }
+.chip { font-family:var(--font-ui); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; padding:2px 5px; border-radius:4px; }
+.pax-meta { font-family:var(--font-body); font-size:11px; color:var(--ocean-400); }
+.pax-gas { text-align:center; }
+/* Focus Bar */
+.focus-bar { background:rgba(10,37,64,0.95); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.10); border-radius:8px; padding:8px 14px; color:#fff; }
+.fb-name { font-size:15px; font-weight:700; font-family:var(--font-ui); }
+.fb-meta { font-size:12px; color:rgba(255,255,255,0.65); margin-top:2px; }
+</style></head><body>
+<div class="section">
+<div class="label">Admin Card — with header strip</div>
+<div class="card" style="max-width:460px">
+  <div class="card-header">Passengers</div>
+  <div style="display:grid;grid-template-columns:130px 1fr 72px 72px;padding:4px 12px 2px;border-bottom:1px solid var(--surface-3)">
+    <span style="font-family:var(--font-ui);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ocean-700)">Name</span>
+    <span style="font-family:var(--font-ui);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ocean-700)">Cert</span>
+    <span style="font-family:var(--font-ui);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ocean-700);text-align:center">Gear</span>
+    <span style="font-family:var(--font-ui);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ocean-700);text-align:center">Gas</span>
+  </div>
+  <div class="pax-row"><div class="pax-name">Marco Rossi</div><div class="pax-cert"><span class="chip" style="background:var(--surface-2);color:var(--ocean-700)">AOWD</span><span style="width:14px;height:14px;border-radius:50%;background:var(--safety-green);display:inline-flex;align-items:center;justify-content:center"><svg width="9" height="9" viewBox="0 0 20 20" fill="white"><path d="M16.7 5.3l-8.4 8.4-3.3-3.3-1.4 1.4 4.7 4.7 9.8-9.8z"/></svg></span></div><div style="text-align:center"><span class="chip" style="background:var(--surface-2);color:var(--ocean-700)">OWN</span></div><div class="pax-gas"><span class="chip" style="background:var(--surface-mid);color:var(--ocean-700)">AIR</span></div></div>
+  <div class="pax-row"><div class="pax-name">Sofia Chen</div><div class="pax-cert"><span class="chip" style="background:var(--surface-2);color:var(--ocean-700)">RESCUE</span></div><div style="text-align:center"><span class="chip" style="background:var(--safety-green-bg);color:var(--safety-green)">OWN</span></div><div class="pax-gas"><span class="chip" style="background:var(--accent-teal-bg);color:var(--accent-teal)">NX32</span></div></div>
+  <div class="pax-row"><div class="pax-name">James Park</div><div class="pax-cert"><span class="chip" style="background:var(--surface-2);color:var(--ocean-700)">OWD</span></div><div style="text-align:center"><span class="chip" style="background:var(--amber-alert-bg);color:var(--amber-alert)">RENT</span></div><div class="pax-gas"><span class="chip" style="background:var(--surface-mid);color:var(--ocean-700)">AIR</span></div></div>
+</div>
+</div>
+<div class="section">
+<div class="label">Focus Bar — dark glass (trip context)</div>
+<div class="focus-bar" style="max-width:460px">
+  <div class="fb-name">⚓ Morning Reef · Blue Horizon · Sat 19 Apr · 08:30 · 3 dives</div>
+  <div class="fb-meta">📍 Apo Island, Vista Point · Teaching trip</div>
+</div>
+</div>
+</body></html>

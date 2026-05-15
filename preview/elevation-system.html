@@ -1,0 +1,302 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+/* ─── Fallback tokens ─────────────────────────────────────── */
+:root {
+  --surface-0:     #f7f5f0;
+  --surface-1:     #ffffff;
+  --surface-2:     #f0ede6;
+  --surface-mid:   #efeee9;
+  --surface-high:  #e9e8e3;
+  --surface-3:     #e8e4db;
+  --ocean-900:     #0a2540;
+  --ocean-700:     #1a3a5c;
+  --ocean-500:     #2563a8;
+  --ocean-400:     #3b82c6;
+  --ocean-100:     #dbeafe;
+  --ocean-50:      #eff6ff;
+  --ocean-deep:    #003567;
+  --ocean-deep-light: #034c8e;
+  --font-ui:   'Manrope', -apple-system, sans-serif;
+  --font-body: 'Inter',   -apple-system, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', ui-monospace, monospace;
+  --shadow-2: 0 1px 2px rgba(10,37,64,0.06);
+  --shadow-3: 0 4px 12px rgba(10,37,64,0.10);
+  --shadow-4: 0 8px 32px -4px rgba(3,76,142,0.12);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 24px 28px;
+  background: var(--surface-0);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.section { margin-bottom: 28px; }
+.section-label {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ocean-400);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+.divider { height: 1px; background: var(--surface-3); margin: 4px 0 24px; }
+.mono { font-family: var(--font-mono); font-size: 9px; color: var(--ocean-400); }
+
+/* ─── Depth stack — swatches with hex ───────────────────── */
+.swatch-row { display: flex; gap: 0; border: 1px solid var(--surface-3); border-radius: 8px; overflow: hidden; }
+.swatch {
+  flex: 1;
+  padding: 10px 12px 8px;
+  border-right: 1px solid var(--surface-3);
+  min-width: 0;
+}
+.swatch:last-child { border-right: none; }
+.swatch-name { font-family: var(--font-ui); font-size: 11px; font-weight: 600; color: var(--ocean-900); }
+.swatch-role { font-family: var(--font-body); font-size: 10px; color: var(--ocean-700); margin: 1px 0 4px; }
+.swatch-hex  { font-family: var(--font-mono); font-size: 9px; color: var(--ocean-400); }
+
+/* ─── Nested card demo ───────────────────────────────────── */
+.page-bg {
+  background: var(--surface-0);
+  border: 1px solid var(--surface-3);
+  border-radius: 10px;
+  padding: 14px;
+}
+.panel {
+  background: var(--surface-1);
+  border: 1px solid var(--surface-3);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.panel-header {
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--surface-3);
+  padding: 8px 12px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ocean-900);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.panel-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+.row-item {
+  background: var(--surface-mid);
+  border: 1px solid var(--surface-3);
+  border-radius: 6px;
+  padding: 7px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.row-item-name { font-family: var(--font-ui); font-size: 12px; font-weight: 800; color: var(--ocean-900); }
+.row-item-meta { font-size: 10px; color: var(--ocean-400); }
+.chip {
+  font-family: var(--font-body);
+  font-size: 9px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 2px 5px; border-radius: 3px;
+  background: var(--surface-high);
+  color: var(--ocean-700);
+}
+.depth-label {
+  font-family: var(--font-mono); font-size: 8px; color: var(--ocean-400);
+  margin-bottom: 3px;
+}
+
+/* ─── Shadow scale ───────────────────────────────────────── */
+.shadow-row { display: flex; gap: 14px; flex-wrap: wrap; }
+.shadow-card {
+  background: var(--surface-1);
+  border: 1px solid var(--surface-3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  min-width: 130px;
+}
+.shadow-card-title { font-family: var(--font-ui); font-size: 12px; font-weight: 600; color: var(--ocean-900); margin-bottom: 3px; }
+.shadow-card-sub { font-family: var(--font-mono); font-size: 9px; color: var(--ocean-400); line-height: 1.5; }
+
+/* ─── Glass recipes ──────────────────────────────────────── */
+.glass-scene {
+  position: relative;
+  height: 80px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--ocean-100) 0px, var(--ocean-100) 8px,
+    var(--ocean-50)  8px, var(--ocean-50)  16px
+  );
+}
+.glass-scene-dark {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--ocean-900) 0px, var(--ocean-900) 8px,
+    #0f2e50 8px, #0f2e50 16px
+  );
+}
+.glass-panel {
+  position: absolute; inset: 12px;
+  border-radius: 7px;
+  display: flex; align-items: center; padding: 0 14px;
+  gap: 8px;
+}
+.glass-light {
+  background: rgba(247,245,240,0.82);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(232,228,219,0.40);
+}
+.glass-dark {
+  background: rgba(10,37,64,0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.10);
+}
+.glass-label-light { font-family: var(--font-ui); font-size: 11px; font-weight: 600; color: var(--ocean-900); }
+.glass-label-dark  { font-family: var(--font-ui); font-size: 11px; font-weight: 600; color: #fff; }
+.glass-sub { font-family: var(--font-mono); font-size: 9px; }
+.glass-sub-light { color: var(--ocean-400); }
+.glass-sub-dark  { color: rgba(255,255,255,0.45); }
+.glass-row { display: flex; gap: 12px; }
+.glass-col { flex: 1; min-width: 0; }
+.glass-col-label { font-family: var(--font-mono); font-size: 9px; color: var(--ocean-400); margin: 5px 0 4px; }
+</style>
+</head><body>
+
+<!-- 1. TONAL DEPTH — SWATCHES -->
+<div class="section">
+  <div class="section-label">Tonal depth stack — background shifts, no shadows on cards</div>
+  <div class="swatch-row">
+    <div class="swatch" style="background:var(--surface-0)">
+      <div class="swatch-name">surface-0</div>
+      <div class="swatch-role">Page background</div>
+      <div class="swatch-hex">#f7f5f0</div>
+    </div>
+    <div class="swatch" style="background:var(--surface-1)">
+      <div class="swatch-name">surface-1</div>
+      <div class="swatch-role">Cards · panels</div>
+      <div class="swatch-hex">#ffffff</div>
+    </div>
+    <div class="swatch" style="background:var(--surface-2)">
+      <div class="swatch-name">surface-2</div>
+      <div class="swatch-role">Panel headers · hover</div>
+      <div class="swatch-hex">#f0ede6</div>
+    </div>
+    <div class="swatch" style="background:var(--surface-mid)">
+      <div class="swatch-name">surface-mid</div>
+      <div class="swatch-role">Nested rows</div>
+      <div class="swatch-hex">#efeee9</div>
+    </div>
+    <div class="swatch" style="background:var(--surface-high)">
+      <div class="swatch-name">surface-high</div>
+      <div class="swatch-role">Deep nesting</div>
+      <div class="swatch-hex">#e9e8e3</div>
+    </div>
+    <div class="swatch" style="background:var(--surface-3)">
+      <div class="swatch-name">surface-3</div>
+      <div class="swatch-role">Borders · dividers</div>
+      <div class="swatch-hex">#e8e4db</div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- 2. NESTED CARD DEMO -->
+<div class="section">
+  <div class="section-label">Depth in context — real nesting structure</div>
+  <div class="depth-label">surface-0 — page</div>
+  <div class="page-bg">
+    <div class="depth-label">surface-1 — panel card</div>
+    <div class="panel">
+      <div class="panel-header">
+        <span>Passengers</span>
+        <span class="mono">surface-2 header strip</span>
+      </div>
+      <div class="panel-body">
+        <div class="depth-label">surface-mid — row item</div>
+        <div class="row-item">
+          <div>
+            <div class="row-item-name">Marco Rossi</div>
+            <div class="row-item-meta">Divemaster · 84 dives</div>
+          </div>
+          <div style="display:flex;gap:4px;align-items:center">
+            <span class="chip">AOWD</span>
+            <span class="chip" style="background:#ccfbf1;color:#0d9488">NX32</span>
+          </div>
+        </div>
+        <div class="row-item">
+          <div>
+            <div class="row-item-name">Sofia Bianchi</div>
+            <div class="row-item-meta">Instructor · 312 dives</div>
+          </div>
+          <div style="display:flex;gap:4px">
+            <span class="chip" style="background:var(--ocean-100);color:var(--ocean-500)">INSTR</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- 3. SHADOW SCALE -->
+<div class="section">
+  <div class="section-label">Shadow scale — supplementary only, not for cards</div>
+  <div class="shadow-row">
+    <div class="shadow-card" style="box-shadow:none">
+      <div class="shadow-card-title">Level 1 — none</div>
+      <div class="shadow-card-sub">Cards on surface-0<br>Tonal layering handles it</div>
+    </div>
+    <div class="shadow-card" style="box-shadow:var(--shadow-2)">
+      <div class="shadow-card-title">Level 2 — raised</div>
+      <div class="shadow-card-sub">0 1px 2px<br>rgba(10,37,64,0.06)</div>
+    </div>
+    <div class="shadow-card" style="box-shadow:var(--shadow-3)">
+      <div class="shadow-card-title">Level 3 — modal</div>
+      <div class="shadow-card-sub">0 4px 12px<br>rgba(10,37,64,0.10)</div>
+    </div>
+    <div class="shadow-card" style="box-shadow:var(--shadow-4)">
+      <div class="shadow-card-title">Level 4 — floating</div>
+      <div class="shadow-card-sub">0 8px 32px -4px<br>rgba(3,76,142,0.12)<br><span style="color:var(--ocean-500)">ocean-deep tint</span></div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- 4. GLASSMORPHISM -->
+<div class="section">
+  <div class="section-label">Glassmorphism — floating elements only</div>
+  <div class="glass-row">
+    <div class="glass-col">
+      <div class="glass-col-label">Light glass — modal / sticky nav / diver overlay</div>
+      <div class="glass-scene">
+        <div class="glass-panel glass-light">
+          <div>
+            <div class="glass-label-light">Morning Reef Dive</div>
+            <div class="glass-sub glass-sub-light">surface-0 @ 82% + blur(24px) + border surface-3 @ 40%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="glass-col">
+      <div class="glass-col-label">Dark glass — Focus Bar / course header / admin overlay</div>
+      <div class="glass-scene glass-scene-dark">
+        <div class="glass-panel glass-dark">
+          <div>
+            <div class="glass-label-dark">Morning Reef Dive · 08:30 · 14 pax</div>
+            <div class="glass-sub glass-sub-dark">ocean-900 @ 95% + blur(12px) + border white @ 10%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body></html>

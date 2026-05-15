@@ -1,0 +1,217 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+:root {
+  --surface-0:  #f7f5f0;
+  --surface-1:  #ffffff;
+  --surface-2:  #f0ede6;
+  --surface-3:  #e8e4db;
+  --ocean-900:  #0a2540;
+  --ocean-700:  #1a3a5c;
+  --ocean-500:  #2563a8;
+  --ocean-400:  #3b82c6;
+  --ocean-100:  #dbeafe;
+  --ocean-50:   #eff6ff;
+  --font-ui:    'Manrope', -apple-system, sans-serif;
+  --font-body:  'Inter',   -apple-system, sans-serif;
+  --font-mono:  'SF Mono', 'Fira Code', ui-monospace, monospace;
+  --shadow-2: 0 1px 2px rgba(10,37,64,0.06);
+  --shadow-3: 0 4px 12px rgba(10,37,64,0.10);
+  --shadow-4: 0 8px 32px -4px rgba(3,76,142,0.12);
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin:0; padding:24px 28px; background:#f7f5f0; font-family:'Inter',-apple-system,sans-serif; -webkit-font-smoothing:antialiased; }
+
+.section-label {
+  font-family: 'Manrope',-apple-system,sans-serif;
+  font-size: 10px; font-weight: 700;
+  color: #3b82c6;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+.section { margin-bottom: 24px; }
+.divider { height: 1px; background: #e8e4db; margin: 4px 0 20px; }
+.mono { font-family:'SF Mono','Fira Code',ui-monospace,monospace; font-size:9px; color:#3b82c6; }
+
+/* ── Spacing ── */
+.sp-row { display:flex; align-items:center; gap:12px; margin-bottom:5px; }
+.sp-bar { background:#2563a8; height:10px; border-radius:2px; }
+.sp-meta { font-family:'SF Mono','Fira Code',ui-monospace,monospace; font-size:10px; color:#1a3a5c; min-width:130px; }
+.sp-use  { font-size:10px; color:#3b82c6; }
+
+/* ── Radii ── */
+.radius-row { display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; }
+.radius-item { display:flex; flex-direction:column; align-items:center; gap:6px; }
+.radius-box  {
+  background:#dbeafe;
+  border: 1.5px solid #3b82c6;
+  display:flex; align-items:center; justify-content:center;
+}
+.radius-name { font-family:'SF Mono','Fira Code',ui-monospace,monospace; font-size:9px; font-weight:700; color:#1a3a5c; }
+.radius-px   { font-family:'SF Mono','Fira Code',ui-monospace,monospace; font-size:9px; color:#3b82c6; }
+.radius-use  { font-size:9px; color:#1a3a5c; text-align:center; max-width:80px; line-height:1.3; }
+
+/* ── Shadows ── */
+.shadow-grid { display:flex; gap:14px; flex-wrap:wrap; }
+.shadow-item { display:flex; flex-direction:column; gap:8px; }
+.shadow-box  {
+  background:#ffffff;
+  border-radius:8px;
+  width:100px; height:64px;
+  display:flex; align-items:center; justify-content:center;
+}
+.shadow-name { font-family:'Manrope',-apple-system,sans-serif; font-size:11px; font-weight:600; color:#0a2540; }
+.shadow-desc { font-family:'SF Mono','Fira Code',ui-monospace,monospace; font-size:8.5px; color:#3b82c6; line-height:1.5; }
+.shadow-use  { font-size:9px; color:#1a3a5c; line-height:1.3; }
+
+/* ── Button shadows ── */
+.btn-shadow-row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.btn-demo {
+  font-family:'Inter',-apple-system,sans-serif;
+  font-size:13px; font-weight:500;
+  border:none; cursor:default;
+  padding:7px 16px; border-radius:8px;
+  display:inline-flex; align-items:center;
+}
+</style>
+</head><body>
+
+<!-- SPACING -->
+<div class="section">
+  <div class="section-label">Spacing scale — 4px base</div>
+  <div class="sp-row"><div class="sp-meta">gap-1 · 4px</div><div class="sp-bar" style="width:4px"></div><div class="sp-use">Inline chip gap</div></div>
+  <div class="sp-row"><div class="sp-meta">gap-2 · 8px</div><div class="sp-bar" style="width:8px"></div><div class="sp-use">Row items, tight button gap</div></div>
+  <div class="sp-row"><div class="sp-meta">gap-3 · 12px</div><div class="sp-bar" style="width:12px"></div><div class="sp-use">Form field stack</div></div>
+  <div class="sp-row"><div class="sp-meta">gap-4 · 16px</div><div class="sp-bar" style="width:16px"></div><div class="sp-use">Card body padding, dashboard cards</div></div>
+  <div class="sp-row"><div class="sp-meta">gap-6 · 24px</div><div class="sp-bar" style="width:24px"></div><div class="sp-use">Section gap, diver-facing card spacing</div></div>
+  <div class="sp-row"><div class="sp-meta">gap-8 · 32px</div><div class="sp-bar" style="width:32px"></div><div class="sp-use">Page-level section separation</div></div>
+  <div class="sp-row"><div class="sp-meta">px-3 py-2 · panel</div><div class="sp-bar" style="width:20px;background:#3b82c6"></div><div class="sp-use">Workspace panel padding (admin)</div></div>
+  <div class="sp-row"><div class="sp-meta">p-4 · card</div><div class="sp-bar" style="width:16px;background:#3b82c6"></div><div class="sp-use">Standard card body padding</div></div>
+</div>
+<div class="divider"></div>
+
+<!-- BORDER RADII -->
+<div class="section">
+  <div class="section-label">Border radii</div>
+  <div class="radius-row">
+
+    <div class="radius-item">
+      <div class="radius-box" style="width:44px;height:28px;border-radius:4px">
+        <span style="font-family:'SF Mono',monospace;font-size:8px;color:#1a3a5c">AOWD</span>
+      </div>
+      <div class="radius-name">radius-sm</div>
+      <div class="radius-px">4px</div>
+      <div class="radius-use">Admin data chips — signals encoded data</div>
+    </div>
+
+    <div class="radius-item">
+      <div class="radius-box" style="width:56px;height:30px;border-radius:6px"></div>
+      <div class="radius-name">6px</div>
+      <div class="radius-px">btn-sm</div>
+      <div class="radius-use">Small buttons only</div>
+    </div>
+
+    <div class="radius-item">
+      <div class="radius-box" style="width:68px;height:36px;border-radius:8px">
+        <span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:500;color:#1a3a5c">Button</span>
+      </div>
+      <div class="radius-name">radius-lg</div>
+      <div class="radius-px">8px</div>
+      <div class="radius-use">Buttons md/lg, cards, panels, inputs</div>
+    </div>
+
+    <div class="radius-item">
+      <div class="radius-box" style="width:80px;height:48px;border-radius:12px"></div>
+      <div class="radius-name">radius-xl</div>
+      <div class="radius-px">12px</div>
+      <div class="radius-use">Modals, drawers, mobile cards</div>
+    </div>
+
+    <div class="radius-item">
+      <div class="radius-box" style="width:88px;height:36px;border-radius:9999px">
+        <span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:500;color:#1a3a5c">Book trip</span>
+      </div>
+      <div class="radius-name">radius-full</div>
+      <div class="radius-px">9999px · pill</div>
+      <div class="radius-use">Diver primary CTAs, diver badges only — never admin</div>
+    </div>
+
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- ELEVATION SHADOWS -->
+<div class="section">
+  <div class="section-label">Elevation shadows — supplementary to tonal layering</div>
+  <div class="shadow-grid">
+
+    <div class="shadow-item">
+      <div class="shadow-box" style="box-shadow:none;border:1px solid #e8e4db">
+        <span style="font-size:9px;color:#3b82c6">tonal</span>
+      </div>
+      <div>
+        <div class="shadow-name">Level 1 — none</div>
+        <div class="shadow-desc">no shadow</div>
+        <div class="shadow-use">Standard cards on surface-0<br>Border + tonal bg handles depth</div>
+      </div>
+    </div>
+
+    <div class="shadow-item">
+      <div class="shadow-box" style="box-shadow:0 1px 2px rgba(10,37,64,0.06)"></div>
+      <div>
+        <div class="shadow-name">Level 2 — raised</div>
+        <div class="shadow-desc">0 1px 2px<br>rgba(10,37,64,0.06)</div>
+        <div class="shadow-use">Stat cards, focused panels</div>
+      </div>
+    </div>
+
+    <div class="shadow-item">
+      <div class="shadow-box" style="box-shadow:0 4px 12px rgba(10,37,64,0.10)"></div>
+      <div>
+        <div class="shadow-name">Level 3 — modal</div>
+        <div class="shadow-desc">0 4px 12px<br>rgba(10,37,64,0.10)</div>
+        <div class="shadow-use">Modals, drawers</div>
+      </div>
+    </div>
+
+    <div class="shadow-item">
+      <div class="shadow-box" style="box-shadow:0 8px 32px -4px rgba(3,76,142,0.12)"></div>
+      <div>
+        <div class="shadow-name">Level 4 — floating</div>
+        <div class="shadow-desc">0 8px 32px -4px<br>rgba(3,76,142,0.12)</div>
+        <div class="shadow-use">Glassmorphic floats<br><span style="color:#2563a8">ocean-deep tint</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- BUTTON SHADOWS -->
+<div class="section">
+  <div class="section-label">Button depth shadows — tactile press system</div>
+  <div class="btn-shadow-row">
+    <div>
+      <div class="btn-demo" style="background:#2563a8;color:#fff;box-shadow:0 1px 0 0 rgba(26,58,92,0.25),0 1px 3px 0 rgba(10,37,64,0.08)">Primary · default</div>
+      <div class="mono" style="margin-top:4px">1px bottom edge · ambient</div>
+    </div>
+    <div>
+      <div class="btn-demo" style="background:#3b82c6;color:#fff;transform:translateY(-1px);box-shadow:0 2px 0 0 rgba(26,58,92,0.25),0 2px 6px 0 rgba(10,37,64,0.10)">Primary · hover</div>
+      <div class="mono" style="margin-top:4px">-1px lift · shadow extends</div>
+    </div>
+    <div>
+      <div class="btn-demo" style="background:#2563a8;color:#fff;box-shadow:0 0 0 0 transparent,0 1px 2px 0 rgba(10,37,64,0.06)">Primary · active</div>
+      <div class="mono" style="margin-top:4px">translateY(0) · shadow compresses</div>
+    </div>
+    <div>
+      <div class="btn-demo" style="background:#fff;color:#1a3a5c;border:1px solid #e8e4db;box-shadow:0 1px 0 0 rgba(232,228,219,0.8)">Secondary · default</div>
+      <div class="mono" style="margin-top:4px">surface-3 bottom edge</div>
+    </div>
+    <div>
+      <div class="btn-demo" style="background:#dc2626;color:#fff;box-shadow:0 1px 0 0 rgba(153,27,27,0.35),0 1px 3px 0 rgba(153,27,27,0.12)">Danger · default</div>
+      <div class="mono" style="margin-top:4px">red-tinted depth</div>
+    </div>
+  </div>
+</div>
+
+</body></html>

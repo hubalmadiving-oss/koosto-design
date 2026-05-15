@@ -1,0 +1,169 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+/* ─── Fallback tokens ─────────────────────────────────────── */
+:root {
+  --surface-0:        #f7f5f0;
+  --surface-1:        #ffffff;
+  --surface-3:        #e8e4db;
+  --ocean-900:        #0a2540;
+  --ocean-700:        #1a3a5c;
+  --ocean-500:        #2563a8;
+  --ocean-400:        #3b82c6;
+  --ocean-100:        #dbeafe;
+  --ocean-50:         #eff6ff;
+  --ocean-deep:       #003567;
+  --ocean-deep-light: #034c8e;
+  --font-ui:   'Manrope', -apple-system, sans-serif;
+  --font-body: 'Inter',   -apple-system, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', ui-monospace, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 24px 28px;
+  background: var(--surface-0);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.section-label {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  color: #3b82c6;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+.section { margin-bottom: 24px; }
+.divider { height: 1px; background: #e8e4db; margin: 4px 0 20px; }
+
+.swatch-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.swatch { display: flex; flex-direction: column; width: 96px; }
+.chip {
+  height: 60px;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.06);
+  display: flex; align-items: center; justify-content: center;
+}
+.chip-label {
+  font-family: 'SF Mono', 'Fira Code', ui-monospace, monospace;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 2px 5px; border-radius: 3px;
+}
+.swatch-name { font-family: 'SF Mono', 'Fira Code', ui-monospace, monospace; font-size: 9px; font-weight: 700; color: #1a3a5c; margin-top: 5px; }
+.swatch-hex  { font-family: 'SF Mono', 'Fira Code', ui-monospace, monospace; font-size: 9px; color: #3b82c6; }
+.swatch-use  { font-family: 'Inter', -apple-system, sans-serif; font-size: 9px; color: #3b82c6; margin-top: 2px; line-height: 1.3; }
+
+/* Usage row */
+.usage-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.usage-chip {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 11px; color: #1a3a5c;
+  background: #ffffff;
+  border: 1px solid #e8e4db;
+  border-radius: 6px;
+  padding: 6px 10px;
+  display: flex; align-items: center; gap: 6px;
+}
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+</style>
+</head><body>
+
+<!-- OCEAN PRIMARY -->
+<div class="section">
+  <div class="section-label">Ocean — primary palette</div>
+  <div class="swatch-row">
+    <div class="swatch">
+      <div class="chip" style="background:#eff6ff"></div>
+      <div class="swatch-name">ocean-50</div>
+      <div class="swatch-hex">#eff6ff</div>
+      <div class="swatch-use">Active row bg, subtle highlights</div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background:#dbeafe"></div>
+      <div class="swatch-name">ocean-100</div>
+      <div class="swatch-hex">#dbeafe</div>
+      <div class="swatch-use">Selected bg, info badges</div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background:#3b82c6">
+        <span class="chip-label" style="color:#fff;background:rgba(0,0,0,0.15)">HOVER</span>
+      </div>
+      <div class="swatch-name">ocean-400</div>
+      <div class="swatch-hex">#3b82c6</div>
+      <div class="swatch-use">Hover states</div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background:#2563a8">
+        <span class="chip-label" style="color:#fff;background:rgba(0,0,0,0.18)">PRIMARY</span>
+      </div>
+      <div class="swatch-name">ocean-500</div>
+      <div class="swatch-hex">#2563a8</div>
+      <div class="swatch-use">Actions, links, active states</div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background:#1a3a5c"></div>
+      <div class="swatch-name">ocean-700</div>
+      <div class="swatch-hex">#1a3a5c</div>
+      <div class="swatch-use">Secondary text, labels</div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background:#0a2540">
+        <span class="chip-label" style="color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.08)">HEADING</span>
+      </div>
+      <div class="swatch-name">ocean-900</div>
+      <div class="swatch-hex">#0a2540</div>
+      <div class="swatch-use">Headings, high-emphasis — never pure black</div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- OCEAN DEEP -->
+<div class="section">
+  <div class="section-label">Ocean Deep — premium CTAs &amp; authority surfaces</div>
+  <div class="swatch-row">
+    <div class="swatch">
+      <div class="chip" style="background:#003567">
+        <span class="chip-label" style="color:#fff;background:rgba(255,255,255,0.10)">GRAD ↗</span>
+      </div>
+      <div class="swatch-name">ocean-deep</div>
+      <div class="swatch-hex">#003567</div>
+      <div class="swatch-use">Gradient start, Focus Bar</div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background:#034c8e"></div>
+      <div class="swatch-name">ocean-deep-lt</div>
+      <div class="swatch-hex">#034c8e</div>
+      <div class="swatch-use">Gradient end</div>
+    </div>
+    <div class="swatch" style="width:120px">
+      <div class="chip" style="background:linear-gradient(135deg,#003567,#034c8e);width:100%">
+        <span class="chip-label" style="color:#fff;background:rgba(0,0,0,0.18)">DIVER CTA</span>
+      </div>
+      <div class="swatch-name">gradient CTA</div>
+      <div class="swatch-hex">135° · pill only</div>
+      <div class="swatch-use">Diver-facing pill buttons only</div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- USAGE GUIDE -->
+<div class="section">
+  <div class="section-label">Usage reference</div>
+  <div class="usage-row">
+    <div class="usage-chip"><div class="dot" style="background:#2563a8"></div>ocean-500 — admin buttons, links, active tabs</div>
+    <div class="usage-chip"><div class="dot" style="background:#3b82c6"></div>ocean-400 — hover states only</div>
+    <div class="usage-chip"><div class="dot" style="background:#0a2540"></div>ocean-900 — all headings &amp; high-emphasis text</div>
+    <div class="usage-chip"><div class="dot" style="background:#1a3a5c"></div>ocean-700 — body text, labels, metadata</div>
+    <div class="usage-chip"><div class="dot" style="background:#dbeafe"></div>ocean-100 — selected row bg, info chip bg</div>
+    <div class="usage-chip"><div class="dot" style="background:linear-gradient(135deg,#003567,#034c8e);width:8px;height:8px;border-radius:50%"></div>ocean-deep gradient — diver CTAs, no admin use</div>
+  </div>
+</div>
+
+</body></html>

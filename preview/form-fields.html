@@ -1,0 +1,46 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { padding: 20px; background: var(--surface-0); }
+.label { font-family: var(--font-ui); font-size: 10px; font-weight: 600; color: var(--ocean-700); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+.section { margin-bottom: 20px; }
+.field { margin-bottom: 12px; }
+.field-label { display:block; font-family:var(--font-body); font-size:14px; font-weight:500; color:var(--ocean-900); margin-bottom:4px; }
+.input { display:block; width:220px; padding:8px 12px; font-family:var(--font-body); font-size:14px; color:var(--ocean-900); border:1px solid var(--surface-3); border-radius:8px; background:var(--surface-0); outline:none; box-sizing:border-box; }
+.input::placeholder { color:var(--ocean-400); }
+.input-focus { border-color:var(--ocean-500); box-shadow:0 0 0 2px rgba(37,99,168,0.15); }
+.input-error { border-color:var(--red-critical); }
+.input-disabled { background:var(--surface-2); cursor:not-allowed; opacity:0.7; }
+.error-msg { font-family:var(--font-body); font-size:12px; color:var(--red-critical); margin-top:3px; }
+.helper-msg { font-family:var(--font-body); font-size:12px; color:var(--ocean-700); margin-top:3px; }
+.row { display:flex; gap:16px; flex-wrap:wrap; }
+</style></head><body>
+<div class="label">Form Fields — Admin</div>
+<div class="row">
+  <div class="field">
+    <label class="field-label">Departure time</label>
+    <input class="input" type="time" value="08:30">
+    <div class="helper-msg">Center timezone (UTC+8)</div>
+  </div>
+  <div class="field">
+    <label class="field-label">Dive site</label>
+    <input class="input input-focus" type="text" placeholder="Search sites…" style="border-color:var(--ocean-500);box-shadow:0 0 0 2px rgba(37,99,168,0.15)">
+  </div>
+  <div class="field">
+    <label class="field-label">Max capacity</label>
+    <input class="input input-error" type="number" placeholder="12" style="border-color:var(--red-critical)">
+    <div class="error-msg">Required for booking to open</div>
+  </div>
+  <div class="field">
+    <label class="field-label">Vessel (disabled)</label>
+    <input class="input input-disabled" type="text" value="Blue Horizon" disabled>
+  </div>
+</div>
+<div class="label" style="margin-top:4px">Gas blend (vessel exception — ocean-100 bg)</div>
+<div class="row">
+  <div class="field">
+    <label class="field-label">Gas blend</label>
+    <select class="input" style="background:var(--ocean-100)"><option>Air</option><option>Nitrox 32%</option><option>Nitrox 36%</option></select>
+  </div>
+</div>
+</body></html>

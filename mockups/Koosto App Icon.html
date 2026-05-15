@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Koosto — Mobile App Icon</title>
+
+<style>
+/* ========== FONTS ========== */
+@font-face { font-family: 'Manrope'; src: url('../fonts/manrope-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Manrope'; src: url('../fonts/manrope-500.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Manrope'; src: url('../fonts/manrope-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Manrope'; src: url('../fonts/manrope-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Manrope'; src: url('../fonts/Manrope-ExtraBold.ttf') format('truetype'); font-weight: 800; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('../fonts/inter-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('../fonts/inter-500.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('../fonts/inter-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('../fonts/inter-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+
+/* ========== TOKENS ========== */
+:root {
+  --ocean-900: #0a2540;
+  --ocean-700: #1a3a5c;
+  --ocean-500: #2563a8;
+  --ocean-100: #dbeafe;
+  --surface-0: #f7f5f0;
+  --surface-1: #ffffff;
+  --surface-2: #f0ede6;
+  --surface-3: #e8e4db;
+  --font-ui:   'Manrope', -apple-system, system-ui, sans-serif;
+  --font-body: 'Inter',   -apple-system, system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--surface-2);
+  color: var(--ocean-700);
+  font-family: var(--font-body);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-wrap: pretty;
+}
+
+/* ========== PAGE FRAME ========== */
+.page { max-width: 1280px; margin: 0 auto; padding: 40px 32px 80px; }
+.brand-strip {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-ui);
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--ocean-700); opacity: 0.65;
+  margin-bottom: 8px;
+}
+.brand-strip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ocean-500); }
+.brand-strip span { opacity: 0.5; }
+
+h1.title {
+  font-family: var(--font-ui); font-weight: 800;
+  font-size: 38px; line-height: 1.1; letter-spacing: -0.025em;
+  color: var(--ocean-900); margin: 0 0 8px;
+}
+p.sub {
+  font-family: var(--font-body); font-size: 15px;
+  color: var(--ocean-700); opacity: 0.78;
+  max-width: 660px; margin: 0;
+}
+
+h2.section {
+  font-family: var(--font-ui); font-weight: 700;
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--ocean-700); opacity: 0.7;
+  margin: 0 0 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+h2.section::after {
+  content: ""; flex: 1; height: 1px;
+  background: var(--surface-3);
+}
+
+.card {
+  background: var(--surface-1);
+  border: 1px solid var(--surface-3);
+  border-radius: 16px;
+  padding: 28px;
+}
+
+/* ========== APP ICON — Variant A (locked) ========== */
+.icon {
+  position: relative;
+  background: var(--ocean-900);
+  overflow: hidden;
+  box-shadow:
+    0 1px 0 0 rgba(255,255,255,0.04) inset,
+    0 8px 24px -6px rgba(10,37,64,0.30),
+    0 2px 6px -2px rgba(10,37,64,0.18);
+  flex-shrink: 0;
+}
+.icon img {
+  position: absolute; display: block;
+  height: 100%; width: auto;
+  top: 0; left: 0;
+  user-select: none; -webkit-user-drag: none;
+}
+
+/* Platform masks */
+.icon.ios     { border-radius: 22.37%; } /* iOS continuous-corner squircle */
+.icon.android { border-radius: 50%;    } /* Android Pixel default — circle mask */
+
+/* ========== HERO ========== */
+.hero {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 48px;
+  align-items: center;
+  margin-bottom: 56px;
+}
+.hero .icon-wrap {
+  display: grid; place-items: center;
+  padding: 20px;
+}
+.hero .icon { width: 320px; height: 320px; }
+.hero .meta { padding-top: 8px; }
+.hero .meta h3 {
+  font-family: var(--font-ui); font-weight: 700;
+  font-size: 20px; color: var(--ocean-900);
+  margin: 0 0 4px; letter-spacing: -0.01em;
+}
+.hero .meta .locked {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-ui); font-weight: 700;
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+  background: var(--ocean-100); color: var(--ocean-500);
+  padding: 3px 8px; border-radius: 5px;
+  margin-bottom: 14px;
+}
+.hero .meta p {
+  font-size: 14px; line-height: 1.55;
+  color: var(--ocean-700); opacity: 0.85;
+  margin: 0 0 20px; max-width: 480px;
+}
+.spec-list {
+  display: grid; grid-template-columns: 120px 1fr;
+  gap: 4px 16px; margin: 0; padding: 0;
+}
+.spec-list dt {
+  font-family: var(--font-ui); font-weight: 700;
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ocean-700); opacity: 0.6;
+  align-self: center;
+}
+.spec-list dd {
+  margin: 0;
+  font-size: 13px; color: var(--ocean-900);
+  font-family: var(--font-body); font-weight: 500;
+  align-self: center;
+  font-variant-numeric: tabular-nums;
+}
+.spec-list dd code {
+  font-family: var(--font-body);
+  font-variant-numeric: tabular-nums;
+  background: var(--surface-2); padding: 1px 6px; border-radius: 4px;
+  font-size: 12px;
+}
+.swatch {
+  display: inline-block;
+  width: 12px; height: 12px;
+  border-radius: 3px;
+  background: var(--ocean-900);
+  margin-right: 8px; vertical-align: -2px;
+  border: 1px solid rgba(10,37,64,0.18);
+}
+
+/* ========== SCALE ========== */
+.scale-row {
+  display: flex; align-items: flex-end;
+  gap: 36px;
+  padding: 28px 36px;
+  flex-wrap: wrap;
+}
+.scale-pair {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.scale-pair .icons { display: flex; align-items: flex-end; gap: 10px; }
+.scale-pair .px {
+  font-family: var(--font-ui); font-weight: 700;
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ocean-700); opacity: 0.65;
+  font-variant-numeric: tabular-nums;
+}
+.scale-pair .use {
+  font-size: 10px; color: var(--ocean-700); opacity: 0.45;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ========== IN CONTEXT — PHONES ========== */
+.context {
+  background: var(--surface-1);
+  border: 1px solid var(--surface-3);
+  border-radius: 16px;
+  padding: 40px 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+.phone-col {
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+}
+.phone-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-ui); font-weight: 700;
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--ocean-700); opacity: 0.7;
+}
+.phone-tag .platform {
+  background: var(--ocean-900); color: white;
+  padding: 3px 8px; border-radius: 4px;
+}
+.phone-tag .shape { opacity: 0.6; }
+
+/* ----- iPhone ----- */
+.phone {
+  width: 290px;
+  aspect-ratio: 9 / 19.5;
+  border-radius: 44px;
+  padding: 8px;
+  background: #0d1216;
+  box-shadow:
+    0 14px 36px -10px rgba(10,37,64,0.32),
+    0 6px 14px -4px rgba(10,37,64,0.20),
+    inset 0 0 0 1.5px rgba(255,255,255,0.04);
+  position: relative;
+}
+.phone .screen {
+  width: 100%; height: 100%;
+  border-radius: 36px;
+  overflow: hidden;
+  position: relative;
+  padding: 14px 18px 18px;
+  display: flex; flex-direction: column;
+}
+.phone.ios .screen {
+  background:
+    radial-gradient(120% 80% at 50% 0%, #1a5085 0%, #0a2540 38%, #061831 80%, #03101f 100%);
+}
+.phone.ios .notch {
+  position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
+  width: 86px; height: 26px; border-radius: 14px; background: #000;
+}
+.phone .statusbar {
+  display: flex; justify-content: space-between; align-items: center;
+  color: white;
+  font-family: var(--font-ui); font-size: 12px; font-weight: 600;
+  padding: 4px 14px 0;
+  font-variant-numeric: tabular-nums;
+  height: 22px;
+}
+.phone .statusbar .right { display: flex; align-items: center; gap: 5px; opacity: 0.95; }
+.phone .statusbar svg { display: block; }
+
+.home-grid {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px 8px;
+  justify-items: center;
+  flex: 1;
+  align-content: start;
+}
+.app {
+  width: 100%; max-width: 56px;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.app .icon { width: 54px; height: 54px; }
+.app .name {
+  font-family: var(--font-ui); font-size: 10px; font-weight: 500;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  max-width: 60px;
+  text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.app .icon.gen {
+  display: grid; place-items: center;
+  color: white;
+  font-family: var(--font-ui); font-weight: 800; font-size: 20px;
+  letter-spacing: -0.02em;
+}
+.app .icon.gen.g1 { background: linear-gradient(160deg, #34d399, #059669); }
+.app .icon.gen.g2 { background: linear-gradient(160deg, #f97316, #c2410c); }
+.app .icon.gen.g3 { background: linear-gradient(160deg, #fbbf24, #d97706); }
+.app .icon.gen.g4 { background: linear-gradient(160deg, #38bdf8, #0369a1); }
+.app .icon.gen.g5 { background: linear-gradient(160deg, #a78bfa, #6d28d9); }
+.app .icon.gen.g6 { background: linear-gradient(160deg, #f472b6, #be185d); }
+.app .icon.gen.g7 { background: linear-gradient(160deg, #4b5563, #1f2937); }
+.app .icon.gen.g8 { background: linear-gradient(160deg, #94a3b8, #475569); }
+.app .icon.gen.g9 { background: linear-gradient(160deg, #84cc16, #4d7c0f); }
+
+.phone .dock {
+  margin: 0 -4px 0;
+  padding: 10px 8px;
+  border-radius: 22px;
+  background: rgba(255,255,255,0.10);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 6px; justify-items: center;
+}
+.phone .dock .app .icon { width: 48px; height: 48px; }
+.phone.ios .home-bar {
+  margin: 8px auto 0;
+  width: 110px; height: 4px; border-radius: 2px;
+  background: rgba(255,255,255,0.6);
+}
+
+/* ----- Android (Pixel) ----- */
+.phone.android {
+  border-radius: 36px;
+  padding: 6px;
+  background: #1a1d20;
+}
+.phone.android .screen {
+  border-radius: 30px;
+  background:
+    radial-gradient(110% 70% at 30% 0%, #4d3a78 0%, #1f1a3a 32%, #0d1729 65%, #050b18 100%);
+  padding: 12px 14px 14px;
+}
+.phone.android .punch {
+  position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+  width: 10px; height: 10px; border-radius: 50%; background: #000;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.05);
+  z-index: 2;
+}
+.phone.android .statusbar {
+  padding: 4px 10px 0;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0;
+}
+.phone.android .statusbar .left {
+  display: flex; align-items: center; gap: 4px;
+}
+
+/* Material-You style search pill (Pixel signature) */
+.phone.android .search-pill {
+  margin: 26px 4px 0;
+  height: 38px;
+  border-radius: 19px;
+  background: rgba(255,255,255,0.12);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  display: flex; align-items: center;
+  padding: 0 14px; gap: 10px;
+  color: rgba(255,255,255,0.85);
+  font-family: var(--font-ui); font-size: 12px; font-weight: 500;
+}
+.phone.android .search-pill .g {
+  width: 16px; height: 16px; border-radius: 50%;
+  background:
+    conic-gradient(from 0deg, #ea4335 0% 25%, #fbbc05 25% 50%, #34a853 50% 75%, #4285f4 75% 100%);
+  box-shadow: 0 0 0 4px rgba(255,255,255,0.95) inset;
+  flex-shrink: 0;
+}
+.phone.android .search-pill .mic {
+  margin-left: auto;
+  width: 16px; height: 16px;
+  display: grid; place-items: center;
+  color: rgba(255,255,255,0.75);
+}
+
+.phone.android .home-grid {
+  margin-top: 18px;
+  gap: 14px 8px;
+}
+
+.phone.android .nav-bar {
+  margin: 10px auto 0;
+  width: 100px; height: 4px; border-radius: 2px;
+  background: rgba(255,255,255,0.55);
+}
+
+/* Footnote */
+.ctx-note {
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-top: 18px;
+  font-size: 12px; line-height: 1.55;
+  color: var(--ocean-700); opacity: 0.7;
+  max-width: 260px;
+  text-align: left;
+}
+.ctx-note .pip {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--ocean-500);
+  margin-top: 6px; flex-shrink: 0;
+}
+
+/* ========== FOOT NOTE ========== */
+.foot {
+  margin-top: 40px;
+  font-family: var(--font-ui); font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--ocean-700); opacity: 0.45;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header style="margin-bottom: 40px;">
+    <div class="brand-strip">
+      <span class="dot"></span>
+      Koosto Design System
+      <span>·</span>
+      <span>Brand</span>
+      <span>·</span>
+      <span>App Icon</span>
+    </div>
+    <h1 class="title">Mobile app icon</h1>
+    <p class="sub">Ocean-900 ground, white K from the wordmark. The K's stem becomes the left edge of the icon — no internal safe-zone padding. One canonical placement; platform masks (iOS continuous-corner squircle, Android circle) are applied on top of the same source asset.</p>
+  </header>
+
+
+  <!-- ========== HERO ========== -->
+  <section class="card hero" style="margin-bottom: 32px;">
+    <div class="icon-wrap">
+      <div class="icon ios" style="width: 320px; height: 320px;">
+        <img src="assets/koosto-k-white.png" alt="Koosto K"/>
+      </div>
+    </div>
+    <div class="meta">
+      <span class="locked">✓ Locked</span>
+      <h3>Flush left</h3>
+      <p>The K's stem becomes the left edge of the icon. Full character height — top of the stem reaches the top edge, foot reaches the bottom. The diagonal arms sweep into the right two-thirds, with the ocean ground carrying the rest as deliberate negative space.</p>
+
+      <dl class="spec-list">
+        <dt>Ground</dt>
+        <dd><span class="swatch"></span> Ocean-900 · <code>#0A2540</code></dd>
+        <dt>Glyph</dt>
+        <dd>White K, sourced from the wordmark (no re-drawing)</dd>
+        <dt>Position</dt>
+        <dd>Stem flush to left edge; height = 100% of icon</dd>
+        <dt>iOS mask</dt>
+        <dd>Continuous-corner squircle · <code>22.37%</code> radius</dd>
+        <dt>Android mask</dt>
+        <dd>Circle (Pixel default); host launcher overrides allowed</dd>
+        <dt>Padding</dt>
+        <dd>Zero internal padding — K bleeds to top, bottom, and left</dd>
+      </dl>
+    </div>
+  </section>
+
+
+  <!-- ========== SCALE ========== -->
+  <h2 class="section">Scale</h2>
+
+  <div class="card scale-row" style="margin-bottom: 56px;">
+    <div class="scale-pair">
+      <div class="icons">
+        <div class="icon ios" style="width: 180px; height: 180px;"><img src="assets/koosto-k-white.png" alt=""/></div>
+        <div class="icon android" style="width: 180px; height: 180px;"><img src="assets/koosto-k-white.png" alt=""/></div>
+      </div>
+      <div class="px">1024 px</div>
+      <div class="use">Store listings</div>
+    </div>
+    <div class="scale-pair">
+      <div class="icons">
+        <div class="icon ios" style="width: 120px; height: 120px;"><img src="assets/koosto-k-white.png" alt=""/></div>
+        <div class="icon android" style="width: 120px; height: 120px;"><img src="assets/koosto-k-white.png" alt=""/></div>
+      </div>
+      <div class="px">180 px</div>
+      <div class="use">iPhone @3x · xxxhdpi</div>
+    </div>
+    <div class="scale-pair">
+      <div class="icons">
+        <div class="icon ios" style="width: 87px; height: 87px;"><img src="assets/koosto-k-white.png" alt=""/></div>
+        <div class="icon android" style="width: 87px; height: 87px;"><img src="assets/koosto-k-white.png" alt=""/></div>
+      </div>
+      <div class="px">120 px</div>
+      <div class="use">iPhone @2x · xhdpi</div>
+    </div>
+    <div class="scale-pair">
+      <div class="icons">
+        <div class="icon ios" style="width: 60px; height: 60px;"><img src="assets/koosto-k-white.png" alt=""/></div>
+        <div class="icon android" style="width: 60px; height: 60px;"><img src="assets/koosto-k-white.png" alt=""/></div>
+      </div>
+      <div class="px">87 px</div>
+      <div class="use">Settings · mdpi</div>
+    </div>
+    <div class="scale-pair">
+      <div class="icons">
+        <div class="icon ios" style="width: 40px; height: 40px;"><img src="assets/koosto-k-white.png" alt=""/></div>
+        <div class="icon android" style="width: 40px; height: 40px;"><img src="assets/koosto-k-white.png" alt=""/></div>
+      </div>
+      <div class="px">60 px</div>
+      <div class="use">Spotlight · notifications</div>
+    </div>
+    <div class="scale-pair">
+      <div class="icons">
+        <div class="icon ios" style="width: 29px; height: 29px;"><img src="assets/koosto-k-white.png" alt=""/></div>
+        <div class="icon android" style="width: 29px; height: 29px;"><img src="assets/koosto-k-white.png" alt=""/></div>
+      </div>
+      <div class="px">40 px</div>
+      <div class="use">Status bar</div>
+    </div>
+  </div>
+
+
+  <!-- ========== HOMESCREEN ========== -->
+  <h2 class="section">In context</h2>
+
+  <div class="context">
+
+    <!-- ===== iPhone ===== -->
+    <div class="phone-col">
+      <div class="phone-tag">
+        <span class="platform">iOS</span>
+        <span class="shape">Continuous-corner squircle</span>
+      </div>
+
+      <div class="phone ios">
+        <div class="screen">
+          <div class="notch"></div>
+          <div class="statusbar">
+            <span>9:41</span>
+            <span class="right">
+              <svg width="16" height="10" viewBox="0 0 16 10" fill="white"><rect x="0" y="6" width="3" height="4" rx="0.5"/><rect x="4" y="4" width="3" height="6" rx="0.5"/><rect x="8" y="2" width="3" height="8" rx="0.5"/><rect x="12" y="0" width="3" height="10" rx="0.5"/></svg>
+              <svg width="14" height="10" viewBox="0 0 14 10" fill="white"><path d="M7 1.5C4.4 1.5 2 2.5.3 4.2L7 11l6.7-6.8C12 2.5 9.6 1.5 7 1.5z" opacity="0.95"/></svg>
+              <svg width="22" height="11" viewBox="0 0 22 11" fill="none"><rect x="0.5" y="0.5" width="19" height="10" rx="2" stroke="white" opacity="0.55"/><rect x="2" y="2" width="16" height="7" rx="1" fill="white"/><rect x="20.5" y="3.5" width="1.5" height="4" rx="0.6" fill="white" opacity="0.55"/></svg>
+            </span>
+          </div>
+
+          <div class="home-grid">
+            <div class="app"><div class="icon ios gen g4">M</div><div class="name">Maps</div></div>
+            <div class="app"><div class="icon ios gen g3">A</div><div class="name">Notes</div></div>
+            <div class="app"><div class="icon ios gen g6">P</div><div class="name">Photos</div></div>
+            <div class="app"><div class="icon ios gen g5">B</div><div class="name">Books</div></div>
+
+            <div class="app"><div class="icon ios gen g7">⏱</div><div class="name">Clock</div></div>
+            <div class="app"><div class="icon ios gen g9">F</div><div class="name">Fitness</div></div>
+            <div class="app"><div class="icon ios gen g2">W</div><div class="name">Weather</div></div>
+            <div class="app"><div class="icon ios gen g1">G</div><div class="name">Garden</div></div>
+
+            <div class="app">
+              <div class="icon ios" style="width:54px;height:54px;"><img src="assets/koosto-k-white.png" alt=""/></div>
+              <div class="name" style="font-weight:600;">Koosto</div>
+            </div>
+            <div class="app"><div class="icon ios gen g8">S</div><div class="name">Settings</div></div>
+            <div class="app"><div class="icon ios gen g5">P</div><div class="name">Podcasts</div></div>
+            <div class="app"><div class="icon ios gen g3">R</div><div class="name">Reminders</div></div>
+          </div>
+
+          <div class="dock">
+            <div class="app"><div class="icon ios gen g4">P</div></div>
+            <div class="app"><div class="icon ios gen g1">S</div></div>
+            <div class="app"><div class="icon ios gen g7">M</div></div>
+            <div class="app"><div class="icon ios gen g6">C</div></div>
+          </div>
+
+          <div class="home-bar"></div>
+        </div>
+      </div>
+
+      <div class="ctx-note">
+        <span class="pip"></span>
+        <span>iOS keeps the K's stem at the icon edge — the squircle's gentle corner barely touches it. The K reads cleanly even at the 29px status-bar size.</span>
+      </div>
+    </div>
+
+
+    <!-- ===== Android (Pixel) ===== -->
+    <div class="phone-col">
+      <div class="phone-tag">
+        <span class="platform">Android</span>
+        <span class="shape">Pixel · circle mask</span>
+      </div>
+
+      <div class="phone android">
+        <div class="screen">
+          <div class="punch"></div>
+          <div class="statusbar">
+            <span class="left">
+              9:41
+            </span>
+            <span class="right">
+              <svg width="13" height="10" viewBox="0 0 13 10" fill="white"><path d="M11 0v10H8V2.5L11 0z" opacity="0.95"/><path d="M7 3v7H4V5.5L7 3z" opacity="0.85"/><path d="M3 6v4H0V8L3 6z" opacity="0.7"/></svg>
+              <svg width="14" height="10" viewBox="0 0 14 10" fill="white"><path d="M7 2C4.5 2 2.2 2.8.5 4.2c-.3.3-.3.8 0 1.1l.7.7c.3.3.8.3 1.1 0C3.6 4.9 5.3 4.3 7 4.3s3.4.6 4.7 1.7c.3.3.8.3 1.1 0l.7-.7c.3-.3.3-.8 0-1.1C11.8 2.8 9.5 2 7 2z"/></svg>
+              <svg width="20" height="10" viewBox="0 0 20 10" fill="none"><rect x="0.5" y="0.5" width="17" height="9" rx="2" stroke="white" opacity="0.85"/><rect x="2" y="2" width="14" height="6" rx="1" fill="white"/><rect x="18" y="3" width="1.5" height="4" rx="0.5" fill="white" opacity="0.85"/></svg>
+            </span>
+          </div>
+
+          <div class="search-pill">
+            <div class="g"></div>
+            <span>Search</span>
+            <div class="mic">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3"/></svg>
+            </div>
+          </div>
+
+          <div class="home-grid">
+            <div class="app"><div class="icon android gen g4">M</div><div class="name">Maps</div></div>
+            <div class="app"><div class="icon android gen g6">P</div><div class="name">Photos</div></div>
+            <div class="app"><div class="icon android gen g3">G</div><div class="name">Gmail</div></div>
+            <div class="app"><div class="icon android gen g2">D</div><div class="name">Drive</div></div>
+
+            <div class="app"><div class="icon android gen g5">Y</div><div class="name">YouTube</div></div>
+            <div class="app"><div class="icon android gen g1">F</div><div class="name">Fit</div></div>
+            <div class="app"><div class="icon android gen g7">C</div><div class="name">Clock</div></div>
+            <div class="app"><div class="icon android gen g9">W</div><div class="name">Weather</div></div>
+
+            <div class="app">
+              <div class="icon android" style="width:54px;height:54px;"><img src="assets/koosto-k-white.png" alt=""/></div>
+              <div class="name" style="font-weight:600;">Koosto</div>
+            </div>
+            <div class="app"><div class="icon android gen g8">S</div><div class="name">Settings</div></div>
+            <div class="app"><div class="icon android gen g3">K</div><div class="name">Keep</div></div>
+            <div class="app"><div class="icon android gen g2">M</div><div class="name">Meet</div></div>
+          </div>
+
+          <div class="dock" style="background: rgba(255,255,255,0.08); border-radius: 26px;">
+            <div class="app"><div class="icon android gen g4">P</div></div>
+            <div class="app"><div class="icon android gen g1">S</div></div>
+            <div class="app"><div class="icon android gen g7">M</div></div>
+            <div class="app"><div class="icon android gen g6">C</div></div>
+          </div>
+
+          <div class="nav-bar"></div>
+        </div>
+      </div>
+
+      <div class="ctx-note">
+        <span class="pip"></span>
+        <span>Android's circle mask clips the stem's top-left and bottom-left corners — the K reads as a softer mark. Launchers that use a squircle (Samsung, One UI, most third-party) render closer to the iOS version.</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="foot">Koosto · 2026 · App icon — variant A · locked</div>
+
+</div>
+
+</body>
+</html>
