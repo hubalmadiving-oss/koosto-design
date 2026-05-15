@@ -1,0 +1,404 @@
+/**
+ * AlmaDiving / Koosto Design System
+ * colors_and_type.css
+ *
+ * Self-contained CSS variables for color and typography.
+ * Source of truth: apps/web/src/index.css + .interface-design/system.md
+ *
+ * FONT NOTE: All fonts are self-hosted from fonts/, matching apps/web/public/fonts/.
+ * Manrope (400–700 woff2), Inter (400–700 woff2), Switzer (100–900 + italics woff),
+ * Space Grotesk (variable 300–700 ttf). No external CDN dependencies.
+ */
+
+/* ─── Self-hosted RealistNarrow (display / section titles) ───── */
+@font-face {
+  font-family: 'RealistNarrow';
+  src: url('fonts/RealistNarrow.otf') format('opentype');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── Self-hosted Manrope (brand font) ───────────────────────── */
+@font-face {
+  font-family: 'Manrope';
+  src: url('fonts/manrope-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Manrope';
+  src: url('fonts/manrope-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Manrope';
+  src: url('fonts/manrope-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Manrope';
+  src: url('fonts/manrope-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── Self-hosted Inter ───────────────────────────────────────── */
+@font-face {
+  font-family: 'Inter';
+  src: url('fonts/inter-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('fonts/inter-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('fonts/inter-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('fonts/inter-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── Self-hosted Switzer (reader / long-form) ────────────────── */
+@font-face {
+  font-family: 'Switzer';
+  src: url('fonts/Switzer-Thin.woff') format('woff');
+  font-weight: 100; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('fonts/Switzer-ThinItalic.woff') format('woff');
+  font-weight: 100; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('fonts/Switzer-Extralight.woff') format('woff');
+  font-weight: 200; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('fonts/Switzer-ExtralightItalic.woff') format('woff');
+  font-weight: 200; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('fonts/Switzer-Light.woff') format('woff');
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('fonts/Switzer-LightItalic.woff') format('woff');
+  font-weight: 300; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('fonts/Switzer-Regular.woff') format('woff');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('fonts/Switzer-Italic.woff') format('woff');
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('fonts/Switzer-Medium.woff') format('woff');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('fonts/Switzer-MediumItalic.woff') format('woff');
+  font-weight: 500; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('fonts/Switzer-Semibold.woff') format('woff');
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('fonts/Switzer-SemiboldItalic.woff') format('woff');
+  font-weight: 600; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('fonts/Switzer-Bold.woff') format('woff');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('fonts/Switzer-BoldItalic.woff') format('woff');
+  font-weight: 700; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('fonts/Switzer-Extrabold.woff') format('woff');
+  font-weight: 800; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('fonts/Switzer-ExtraboldItalic.woff') format('woff');
+  font-weight: 800; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('fonts/Switzer-Black.woff') format('woff');
+  font-weight: 900; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('fonts/Switzer-BlackItalic.woff') format('woff');
+  font-weight: 900; font-style: italic; font-display: swap;
+}
+
+/* ─── Self-hosted Space Grotesk variable (display/diver font) ── */
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('fonts/SpaceGrotesk-VariableFont_wght.ttf') format('truetype');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── Root tokens ─────────────────────────────────────────────── */
+:root {
+  /* ── Foundation Surfaces ── */
+  --surface-0:      #f7f5f0;   /* page background — warm sand */
+  --surface-1:      #ffffff;   /* cards, panels, primary containers */
+  --surface-2:      #f0ede6;   /* panel headers, hover states, secondary surface */
+  --surface-3:      #e8e4db;   /* borders, dividers, input backgrounds */
+  --surface-mid:    #efeee9;   /* nested card headers — between 2 and 3 */
+  --surface-high:   #e9e8e3;   /* deepest nested surface before border territory */
+
+  /* ── Ocean (Primary) ── */
+  --ocean-50:       #eff6ff;   /* surface light — subtle highlights, active rows */
+  --ocean-100:      #dbeafe;   /* shallows — selected backgrounds, info badges */
+  --ocean-400:      #3b82c6;   /* surface shimmer — hover states */
+  --ocean-500:      #2563a8;   /* mid-depth — primary actions, links, active states */
+  --ocean-700:      #1a3a5c;   /* deep water — secondary text, labels */
+  --ocean-900:      #0a2540;   /* abyss — headings, high-emphasis text */
+
+  /* ── Ocean Deep (Premium CTAs / authority) ── */
+  --ocean-deep:           #003567;  /* diver-facing gradient start / authority primary */
+  --ocean-deep-light:     #034c8e;  /* gradient end / container */
+
+  /* ── Status Colors ── */
+  --safety-green:     #16a34a;
+  --safety-green-bg:  #dcfce7;
+  --amber-alert:      #d97706;
+  --amber-alert-bg:   #fef3c7;
+  --red-critical:     #dc2626;
+  --red-critical-bg:  #fee2e2;
+
+  /* ── Accent ── */
+  --accent-teal:     #0d9488;   /* Nitrox/specialty certs, secondary actions */
+  --accent-teal-bg:  #ccfbf1;
+
+  /* ── Button shadows ── */
+  --btn-shadow-primary:        0 1px 0 0 rgba(26,58,92,0.25), 0 1px 3px 0 rgba(10,37,64,0.08);
+  --btn-shadow-primary-hover:  0 2px 0 0 rgba(26,58,92,0.25), 0 2px 6px 0 rgba(10,37,64,0.10);
+  --btn-shadow-primary-active: 0 0 0 0 transparent, 0 1px 2px 0 rgba(10,37,64,0.06);
+  --btn-shadow-secondary:      0 1px 0 0 rgba(232,228,219,0.8);
+  --btn-shadow-secondary-hover:0 2px 0 0 rgba(232,228,219,0.8), 0 1px 3px 0 rgba(10,37,64,0.06);
+  --btn-shadow-danger:         0 1px 0 0 rgba(153,27,27,0.35), 0 1px 3px 0 rgba(153,27,27,0.12);
+
+  /* ── Elevation shadows ── */
+  --shadow-1: none;                                                          /* cards — tonal only */
+  --shadow-2: 0 1px 2px rgba(10,37,64,0.06);                               /* raised elements */
+  --shadow-3: 0 4px 12px rgba(10,37,64,0.10);                              /* modals */
+  --shadow-4: 0 8px 32px -4px rgba(3,76,142,0.12);                        /* floating (ocean-tint) */
+
+  /* ── Glass recipe (floating elements) ── */
+  --glass-bg:      rgba(247,245,240,0.82);
+  --glass-border:  rgba(232,228,219,0.40);
+  --glass-blur:    blur(24px);
+
+  /* ── Dark glass recipe (Focus Bar / course headers) ── */
+  --dark-glass-bg:     rgba(10,37,64,0.95);
+  --dark-glass-border: rgba(255,255,255,0.10);
+  --dark-glass-blur:   blur(12px);
+
+  /* ── Border radii ── */
+  --radius-sm:   0.25rem;  /* 4px  — chips (admin) */
+  --radius-md:   0.5rem;   /* 8px  — buttons sm, inputs */
+  --radius-lg:   0.5rem;   /* 8px  — buttons md/lg, cards, panels */
+  --radius-xl:   0.75rem;  /* 12px — modals, drawers */
+  --radius-full: 9999px;   /* pill — diver-facing primary CTAs, badges */
+
+  /* ── Typography ── */
+  /* ── Typography roles (locked) ── */
+  --font-display: 'RealistNarrow', 'Space Grotesk', 'Manrope', -apple-system, sans-serif;
+  /*   Section titles, hero, page-level anchors ONLY.
+       Realist Narrow (self-hosted) → Space Grotesk fallback → Manrope. */
+
+  --font-ui:      'Manrope',  -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  /*   UI chrome: brand wordmark, nav labels, panel/card headers, admin L1 headings. */
+
+  --font-body:    'Inter',    -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  /*   All content: trip names, booking names, body text, form fields, badges, metadata.
+       Default for everything that is not chrome or a page-level heading. */
+
+  --font-reader:  'Switzer',  -apple-system, BlinkMacSystemFont, sans-serif;
+  /*   Course content, long-form reading, lesson text. */
+
+  --font-mono:    'Inter',    -apple-system, BlinkMacSystemFont, sans-serif;
+  /*   Data readouts (times, counts, depths, IDs) — Inter + font-variant-numeric:tabular-nums.
+       Warmer and cohesive with body text. SF Mono only for actual code blocks. */
+
+  --font-mono-code: 'SF Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
+  /*   Code, dev identifiers, terminal output. Not used in product UI. */
+}
+
+/* ─── Semantic typography scale ──────────────────────────────── */
+
+/* display-lg — hero numbers, large stats */
+.text-display-lg {
+  font-family: var(--font-display);
+  font-size: 3.5rem;      /* 56px */
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--ocean-900);
+}
+
+/* display-sm — page heroes, section anchors */
+.text-display-sm {
+  font-family: var(--font-display);
+  font-size: 2.25rem;     /* 36px */
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ocean-900);
+}
+
+/* headline — section headers */
+.text-headline {
+  font-family: var(--font-display);
+  font-size: 1.5rem;      /* 24px */
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ocean-900);
+}
+
+/* Admin version of headline (Manrope) */
+.text-headline-admin {
+  font-family: var(--font-ui);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ocean-900);
+}
+
+/* title-lg — card titles, panel headers */
+.text-title-lg {
+  font-family: var(--font-ui);
+  font-size: 1.125rem;    /* 18px */
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ocean-900);
+}
+
+/* title-sm — sub-section titles, modal headers */
+.text-title-sm {
+  font-family: var(--font-body);
+  font-size: 1rem;        /* 16px */
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ocean-900);
+}
+
+/* body — default body text, row content */
+.text-body {
+  font-family: var(--font-body);
+  font-size: 0.875rem;    /* 14px */
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ocean-700);
+}
+
+/* label — badges, form labels, metadata */
+.text-label {
+  font-family: var(--font-body);
+  font-size: 0.75rem;     /* 12px */
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--ocean-700);
+}
+
+/* caption — data chips (always uppercase + tracking) */
+.text-caption {
+  font-family: var(--font-body);
+  font-size: 0.625rem;    /* 10px */
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ocean-700);
+}
+
+/* mono-data — times, IDs, counts, depths */
+.text-mono-data {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;    /* 14px */
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--ocean-900);
+}
+
+/* row-name — workspace rows, primary identifier (Manrope 800) */
+.text-row-name {
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;   /* 13px */
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--ocean-900);
+}
+
+/* row-meta — secondary row text (role, count) */
+.text-row-meta {
+  font-family: var(--font-body);
+  font-size: 0.6875rem;   /* 11px */
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--ocean-400);
+}
+
+/* ─── Base reset ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background-color: var(--surface-0);
+  color: var(--ocean-700);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-wrap: pretty;
+}
+
+::selection {
+  background-color: var(--ocean-100);
+  color: var(--ocean-900);
+}
+
+/* Tabular numbers utility */
+.tabular-nums { font-variant-numeric: tabular-nums; }
