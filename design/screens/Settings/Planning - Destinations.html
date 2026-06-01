@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Koosto · Settings · Planning · Destinations</title>
+<link rel="stylesheet" href="../../styles/tokens.css"/>
+<link rel="stylesheet" href="../../styles/components.css"/>
+<link rel="stylesheet" href="../../styles/planning.css"/>
+<link rel="stylesheet" href="../../styles/activity-colors.css"/>
+<style>
+  html, body { background: var(--surface-2); margin: 0; }
+  .plate-shell { max-width: 1480px; margin: 0 auto; padding: 16px 16px 64px; }
+  .plate-bar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; margin-bottom: 12px;
+    background: var(--surface-1); border: 1px solid var(--surface-3); border-radius: 12px;
+    font-family: var(--font-ui); font-size: 11.5px; font-weight: 600; color: var(--ocean-700);
+  }
+  .plate-bar .pip { width: 7px; height: 7px; border-radius: 50%; background: var(--ocean-500); }
+  .plate-bar .label { color: var(--ocean-900); font-weight: 700; }
+  .plate-bar .crumb { opacity: 0.45; font-weight: 400; }
+  .plate-bar .right { margin-left: auto; display: flex; gap: 14px; }
+  .plate-bar a { color: var(--ocean-500); text-decoration: none; font-size: 12px; font-weight: 600; }
+  .plate-bar a:hover { color: var(--ocean-900); }
+
+  /* Mount mirrors Koosto Console.html — <main> + <div class="content"> exactly. */
+  .plate-mount {
+    background: var(--surface-1);
+    border: 1px solid var(--surface-3);
+    border-radius: 16px;
+    overflow: hidden;
+    min-height: calc(100vh - 96px);
+    display: flex;
+    flex-direction: column;
+  }
+  .plate-mount #root {
+    background: var(--surface-0);
+    padding: 24px;
+    flex: 1;
+    overflow-y: auto;
+  }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="plate-shell">
+  <div class="plate-bar">
+    <span class="pip"></span>
+    <span class="crumb">Koosto Console ·</span>
+    <span class="label">Settings · Planning · Destinations</span>
+    <span class="right">
+      <a href="../../Koosto Console.html">Open in full console →</a>
+      <a href="../../Components Review.html">Components Review</a>
+    </span>
+  </div>
+  <div class="plate-mount"><div id="root"></div></div>
+</div>
+<script type="text/babel" src="../../src/icons.jsx"></script>
+<script type="text/babel" src="../../src/pages/settings/_shared.jsx"></script>
+<script type="text/babel" src="../../src/pages/settings/app-general.jsx"></script>
+<script type="text/babel" src="../../src/pages/settings/app-center.jsx"></script>
+<script type="text/babel" src="../../src/pages/settings/app-staff-rights.jsx"></script>
+<script type="text/babel" src="../../src/pages/settings/notifications.jsx"></script>
+<script type="text/babel" src="../../src/pages/settings/planning-destinations.jsx"></script>
+<script type="text/babel" src="../../src/pages/settings/planning-boats.jsx"></script>
+<script type="text/babel" src="../../src/pages/settings/planning-settings.jsx"></script>
+<script type="text/babel" src="../../src/pages/settings/equipment-definitions.jsx"></script>
+<script type="text/babel" src="../../src/pages/settings/equipment-matching.jsx"></script>
+<script type="text/babel" src="../../src/pages/settings/equipment-settings.jsx"></script>
+<script type="text/babel" src="../../src/pages/settings/booking-settings.jsx"></script>
+<script type="text/babel" src="../../src/pages/settings/finance-settings.jsx"></script>
+<script type="text/babel" src="../../src/pages/settings/index.jsx"></script>
+<script type="text/babel">
+ReactDOM.createRoot(document.getElementById('root')).render(<SettingsPage section="destinations"/>);
+</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Koosto — Dive Center Console</title>
+
+<!-- ============================================================ -->
+<!-- CSS                                                          -->
+<!-- ============================================================ -->
+<link rel="stylesheet" href="styles/tokens.css"/>
+<link rel="stylesheet" href="styles/shell.css"/>
+<link rel="stylesheet" href="styles/components.css"/>
+<link rel="stylesheet" href="styles/planning.css"/>
+<link rel="stylesheet" href="styles/activity-colors.css"/>
+
+<!-- ============================================================ -->
+<!-- React / Babel                                                -->
+<!-- ============================================================ -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- ============================================================ -->
+<!-- Source — load order matters. See src/shell.jsx for the spec. -->
+<!-- ============================================================ -->
+
+<!-- 1 · Foundations -->
+<script type="text/babel" src="src/icons.jsx"></script>
+<script type="text/babel" src="src/nav.jsx"></script>
+<script type="text/babel" src="src/tweaks/tweaks-panel.jsx"></script>
+
+<!-- 1b · Locked components — load AFTER icons so they can destructure Icon. -->
+<script type="text/babel" src="src/components/Button.jsx"></script>
+<script type="text/babel" src="src/components/Chip.jsx"></script>
+
+<!-- 2 · Settings — _shared first, sub-pages next, router last -->
+<script type="text/babel" src="src/pages/settings/_shared.jsx"></script>
+<script type="text/babel" src="src/pages/settings/app-general.jsx"></script>
+<script type="text/babel" src="src/pages/settings/app-center.jsx"></script>
+<script type="text/babel" src="src/pages/settings/app-staff-rights.jsx"></script>
+<script type="text/babel" src="src/pages/settings/notifications.jsx"></script>
+<script type="text/babel" src="src/pages/settings/planning-destinations.jsx"></script>
+<script type="text/babel" src="src/pages/settings/planning-boats.jsx"></script>
+<script type="text/babel" src="src/pages/settings/planning-settings.jsx"></script>
+<script type="text/babel" src="src/pages/settings/equipment-definitions.jsx?v=2"></script>
+<script type="text/babel" src="src/pages/settings/equipment-matching.jsx"></script>
+<script type="text/babel" src="src/pages/settings/equipment-settings.jsx"></script>
+<script type="text/babel" src="src/pages/settings/booking-settings.jsx"></script>
+<script type="text/babel" src="src/pages/settings/finance-settings.jsx"></script>
+<script type="text/babel" src="src/pages/settings/index.jsx"></script>
+
+<!-- 3 · Top-level pages -->
+<script type="text/babel" src="src/pages/dashboard.jsx"></script>
+<script type="text/babel" src="src/pages/users.jsx"></script>
+
+<!-- 3a · Planning — sub-pages then router (mirrors Settings / Equipment) -->
+<script type="text/babel" src="src/pages/planning/dashboard.jsx"></script>
+<script type="text/babel" src="src/pages/planning/calendar.jsx"></script>
+<script type="text/babel" src="src/pages/planning/organize.jsx"></script>
+<script type="text/babel" src="src/pages/planning/destinations.jsx"></script>
+<script type="text/babel" src="src/pages/planning/boats.jsx"></script>
+<script type="text/babel" src="src/pages/planning/validation.jsx"></script>
+<script type="text/babel" src="src/pages/planning/logs.jsx"></script>
+<script type="text/babel" src="src/pages/planning/index.jsx"></script>
+
+<!-- 3b · Equipment — sub-pages then router (mirrors Settings) -->
+<script type="text/babel" src="src/pages/equipment/inventory-modals.jsx"></script>
+<script type="text/babel" src="src/pages/equipment/inventory.jsx"></script>
+<script type="text/babel" src="src/pages/equipment/stock.jsx?v=20260601b"></script>
+<script type="text/babel" src="src/pages/equipment/log.jsx"></script>
+<script type="text/babel" src="src/pages/equipment/analytics.jsx?v=20260601c"></script>
+<script type="text/babel" src="src/pages/equipment/index.jsx"></script>
+
+<!-- 4 · Shell — mounts the active page, must load last -->
+<script type="text/babel" src="src/shell.jsx"></script>
+
+</body>
+</html>

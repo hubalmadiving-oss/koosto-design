@@ -1,0 +1,3158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Koosto Console — Components Review</title>
+
+<style>
+/* ========== FONTS ========== */
+@font-face { font-family: 'Manrope'; src: url('fonts/manrope-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Manrope'; src: url('fonts/manrope-500.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Manrope'; src: url('fonts/manrope-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Manrope'; src: url('fonts/manrope-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Manrope'; src: url('fonts/manrope-800.ttf') format('truetype'); font-weight: 800; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('fonts/inter-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('fonts/inter-500.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('fonts/inter-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('fonts/inter-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+
+/* ========== TOKENS (kept in lockstep with Koosto Console.html) ========== */
+:root {
+  --surface-0: #f7f5f0;
+  --surface-1: #ffffff;
+  --surface-2: #f0ede6;
+  --surface-3: #e8e4db;
+
+  --ocean-50:  #eff6ff;
+  --ocean-100: #dbeafe;
+  --ocean-400: #3b82c6;
+  --ocean-500: #2563a8;
+  --ocean-700: #1a3a5c;
+  --ocean-900: #0a2540;
+  --ocean-deep: #003567;
+  --ocean-deep-light: #034c8e;
+
+  --safety-green: #16a34a;
+  --safety-green-bg: #dcfce7;
+  --amber-alert: #d97706;
+  --amber-alert-bg: #fef3c7;
+  --red-critical: #dc2626;
+  --red-critical-bg: #fee2e2;
+
+  --accent-teal: #0d9488;
+  --accent-teal-bg: #ccfbf1;
+
+  --font-ui:   'Manrope', -apple-system, system-ui, sans-serif;
+  --font-body: 'Inter',   -apple-system, system-ui, sans-serif;
+
+  /* divider between text and component borders inside dark mode */
+  --hairline: var(--surface-3);
+}
+
+/* Dark theme — same values as Koosto Console.html → [data-theme="dark"] */
+[data-theme="dark"] {
+  --surface-0: #0d1622;
+  --surface-1: #131e2c;
+  --surface-2: #1a2737;
+  --surface-3: #243245;
+
+  --ocean-50:  rgba(59, 130, 198, 0.08);
+  --ocean-100: rgba(59, 130, 198, 0.18);
+  --ocean-400: #5b9ad8;
+  --ocean-500: #3b82c6;
+  --ocean-700: #c5d4e6;
+  --ocean-900: #f1f5fa;
+  --ocean-deep: #1a4d8e;
+  --ocean-deep-light: #2e6bb0;
+
+  --safety-green-bg: rgba(22, 163, 74, 0.15);
+  --amber-alert-bg: rgba(217, 119, 6, 0.18);
+  --red-critical-bg: rgba(220, 38, 38, 0.18);
+  --accent-teal-bg: rgba(13, 148, 136, 0.18);
+
+  --hairline: var(--surface-3);
+}
+
+* , *::before , *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--surface-2);
+  color: var(--ocean-700);
+  font-family: var(--font-body);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  text-wrap: pretty;
+  min-height: 100vh;
+}
+.tabular { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+/* ========== PAGE LAYOUT ========== */
+.shell {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+  gap: 32px;
+}
+
+/* ========== TOC ========== */
+.toc {
+  position: sticky;
+  top: 24px;
+  align-self: start;
+  background: var(--surface-1);
+  border: 1px solid var(--surface-3);
+  border-radius: 14px;
+  padding: 18px 14px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+.toc-brand {
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 6px 14px;
+  border-bottom: 1px solid var(--surface-3);
+  margin-bottom: 12px;
+}
+.toc-mark {
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  background: var(--ocean-900);
+  display: grid; place-items: center;
+  color: white;
+  font-family: var(--font-ui);
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+}
+.toc-titles { line-height: 1.15; }
+.toc-title {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--ocean-900);
+}
+.toc-sub {
+  font-size: 11px;
+  color: var(--ocean-700);
+  opacity: 0.7;
+  margin-top: 2px;
+}
+.toc-group {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ocean-700);
+  opacity: 0.55;
+  padding: 12px 8px 6px;
+}
+.toc a {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 8px;
+  border-radius: 7px;
+  font-size: 12.5px;
+  color: var(--ocean-700);
+  text-decoration: none;
+  font-weight: 500;
+}
+.toc a:hover { background: var(--surface-2); color: var(--ocean-900); }
+.toc a .pill {
+  margin-left: auto;
+  font-family: var(--font-ui);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 2px 5px;
+  border-radius: 3px;
+  background: var(--surface-2);
+  color: var(--ocean-700);
+}
+.toc a .pill.new { background: var(--ocean-100); color: var(--ocean-500); }
+.toc a .pill.exist { background: var(--safety-green-bg); color: var(--safety-green); }
+
+/* ========== MAIN ========== */
+.main { min-width: 0; display: flex; flex-direction: column; gap: 22px; }
+
+/* Page header */
+.page-head {
+  background: var(--surface-1);
+  border: 1px solid var(--surface-3);
+  border-radius: 14px;
+  padding: 22px 24px;
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+}
+.page-head h1 {
+  margin: 0 0 6px;
+  font-family: var(--font-ui);
+  font-weight: 800;
+  font-size: 28px;
+  color: var(--ocean-900);
+  letter-spacing: -0.02em;
+}
+.page-head .lead {
+  font-size: 13.5px;
+  color: var(--ocean-700);
+  max-width: 640px;
+  line-height: 1.5;
+}
+.legend { display: flex; gap: 6px; flex-shrink: 0; }
+.legend .key {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 9px;
+  background: var(--surface-2);
+  border-radius: 999px;
+  font-size: 11px;
+  color: var(--ocean-700);
+  font-weight: 500;
+}
+.legend .key .sw { width: 8px; height: 8px; border-radius: 2px; }
+
+/* Section card */
+.section {
+  background: var(--surface-1);
+  border: 1px solid var(--surface-3);
+  border-radius: 14px;
+  overflow: hidden;
+  scroll-margin-top: 18px;
+}
+.section-head {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--surface-3);
+  background: var(--surface-1);
+  display: flex; align-items: flex-start; gap: 12px; justify-content: space-between;
+}
+.section-head h2 {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--ocean-900);
+  letter-spacing: -0.01em;
+}
+.section-head .desc {
+  font-size: 12.5px;
+  color: var(--ocean-700);
+  margin-top: 4px;
+  max-width: 760px;
+  line-height: 1.5;
+}
+.status-chip {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.status-chip.exist { background: var(--safety-green-bg); color: var(--safety-green); }
+.status-chip.new   { background: var(--ocean-100); color: var(--ocean-500); }
+.status-chip.rev   { background: var(--amber-alert-bg); color: var(--amber-alert); }
+.status-chip.locked { background: var(--safety-green); color: white; }
+
+.section-body { padding: 20px; }
+
+/* Variant grid */
+.row {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 200px 1fr;
+  align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px dashed var(--surface-3);
+}
+.row:first-child { padding-top: 4px; }
+.row:last-child { border-bottom: none; padding-bottom: 4px; }
+.row-label {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ocean-700);
+  opacity: 0.75;
+  padding-top: 4px;
+}
+.row-label .hint {
+  display: block;
+  margin-top: 5px;
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ocean-700);
+  opacity: 0.65;
+  line-height: 1.4;
+}
+.row-content {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+}
+.row-content.col { flex-direction: column; align-items: flex-start; gap: 10px; }
+.row-content.stage {
+  min-height: 84px;
+  border-radius: 12px;
+  background: var(--surface-0);
+  padding: 18px;
+  position: relative;
+  border: 1px solid var(--surface-3);
+}
+.row-content.stage.dark {
+  background: var(--ocean-900);
+  border-color: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.85);
+}
+
+/* Token notes inside section */
+.note {
+  margin-top: 14px;
+  padding: 11px 14px;
+  background: var(--surface-2);
+  border-radius: 10px;
+  font-size: 12px;
+  color: var(--ocean-700);
+  line-height: 1.5;
+  display: flex; gap: 9px; align-items: flex-start;
+}
+.note .ico { color: var(--ocean-500); flex-shrink: 0; margin-top: 1px; }
+.note.warn { background: var(--amber-alert-bg); color: #6e3e02; }
+.note.warn .ico { color: var(--amber-alert); }
+.note b { font-weight: 700; color: var(--ocean-900); }
+.note.warn b { color: #6e3e02; }
+.note ul { margin: 6px 0 0; padding-left: 18px; }
+.note li { margin-bottom: 3px; }
+
+/* ====================================================================== */
+/*  COMPONENT STYLES (mirrored from console)                              */
+/* ====================================================================== */
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 150ms ease-out;
+}
+.btn-primary {
+  background: var(--ocean-500);
+  color: white;
+  box-shadow: 0 1px 0 0 rgba(26,58,92,0.25), 0 1px 3px 0 rgba(10,37,64,0.08);
+}
+.btn-primary:hover { background: var(--ocean-400); transform: translateY(-1px); }
+.btn-secondary {
+  background: var(--surface-1);
+  color: var(--ocean-700);
+  border: 1px solid var(--surface-3);
+}
+.btn-secondary:hover { color: var(--ocean-900); border-color: var(--ocean-400); }
+.btn-ghost { color: var(--ocean-700); }
+.btn-ghost:hover { background: var(--surface-2); color: var(--ocean-900); }
+.btn-danger {
+  background: white;
+  border: 1px solid var(--red-critical);
+  color: var(--red-critical);
+}
+.btn-danger:hover { background: var(--red-critical-bg); }
+.btn-danger-solid {
+  background: var(--red-critical);
+  color: white;
+}
+.btn-sm { height: 30px; padding: 0 10px; font-size: 12px; border-radius: 8px; }
+.btn-icon { width: 36px; padding: 0; justify-content: center; }
+.btn-icon.btn-sm { width: 30px; }
+.btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+
+/* Chips */
+.chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--surface-2);
+  color: var(--ocean-700);
+  white-space: nowrap;
+}
+.chip-ocean { background: var(--ocean-100); color: var(--ocean-500); }
+.chip-teal  { background: var(--accent-teal-bg); color: var(--accent-teal); }
+.chip-green { background: var(--safety-green-bg); color: var(--safety-green); }
+.chip-amber { background: var(--amber-alert-bg); color: var(--amber-alert); }
+.chip-red   { background: var(--red-critical-bg); color: var(--red-critical); }
+
+/* Counter pill — new proposal */
+.cnt {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  background: var(--surface-2);
+  color: var(--ocean-700);
+  line-height: 1;
+}
+.cnt-ocean { background: var(--ocean-500); color: white; }
+.cnt-amber { background: var(--amber-alert); color: white; }
+.cnt-red   { background: var(--red-critical); color: white; }
+.cnt-soft  { background: var(--ocean-100); color: var(--ocean-500); }
+.cnt-soft-red { background: var(--red-critical-bg); color: var(--red-critical); }
+.cnt-soft-amber { background: var(--amber-alert-bg); color: var(--amber-alert); }
+.cnt-lg { min-width: 22px; height: 22px; font-size: 12px; border-radius: 11px; padding: 0 7px; }
+.cnt-dot {
+  min-width: 8px; width: 8px; height: 8px;
+  padding: 0; border-radius: 50%;
+}
+
+/* Tooltip — display: always-on for review */
+.tip {
+  position: relative;
+  display: inline-flex;
+}
+.tip-body {
+  position: absolute;
+  z-index: 2;
+  background: var(--ocean-900);
+  color: white;
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 6px 9px;
+  border-radius: 6px;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(10,37,64,0.18);
+  pointer-events: none;
+}
+.tip-body.rich {
+  white-space: normal;
+  width: 220px;
+  padding: 9px 11px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+.tip-body.rich .title {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12px;
+  display: block;
+  margin-bottom: 2px;
+  color: white;
+}
+.tip-body.rich .kbd {
+  display: inline-block;
+  margin-left: 6px;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.14);
+}
+.tip-body::after {
+  content: "";
+  position: absolute;
+  width: 0; height: 0;
+  border: 4px solid transparent;
+}
+.tip-top    { bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); }
+.tip-top::after    { top: 100%; left: 50%; transform: translateX(-50%); border-top-color: var(--ocean-900); }
+.tip-bottom { top: calc(100% + 8px); left: 50%; transform: translateX(-50%); }
+.tip-bottom::after { bottom: 100%; left: 50%; transform: translateX(-50%); border-bottom-color: var(--ocean-900); }
+.tip-right  { left: calc(100% + 8px); top: 50%; transform: translateY(-50%); }
+.tip-right::after  { right: 100%; top: 50%; transform: translateY(-50%); border-right-color: var(--ocean-900); }
+.tip-left   { right: calc(100% + 8px); top: 50%; transform: translateY(-50%); }
+.tip-left::after   { left: 100%; top: 50%; transform: translateY(-50%); border-left-color: var(--ocean-900); }
+
+/* Light tooltip variant — for use on dark backgrounds only */
+.tip-body.light {
+  background: white;
+  color: var(--ocean-900);
+  border: 1px solid var(--surface-3);
+  box-shadow: 0 4px 14px rgba(10,37,64,0.10);
+}
+.tip-body.light.tip-top::after { border-top-color: white; }
+
+/* Info icon */
+.info-i {
+  display: inline-flex;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--ocean-700);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 9px;
+  align-items: center; justify-content: center;
+  cursor: help;
+  vertical-align: middle;
+}
+.info-i.solid { background: var(--ocean-500); color: white; }
+.info-i.amber { background: var(--amber-alert); color: white; }
+.info-i.lg { width: 16px; height: 16px; font-size: 10px; }
+
+/* Inline alert (banner) */
+.alert {
+  display: flex; align-items: flex-start; gap: 11px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-size: 13px;
+  color: var(--ocean-900);
+  line-height: 1.45;
+  background: var(--ocean-50);
+  border-color: rgba(37,99,168,0.18);
+  max-width: 560px;
+}
+.alert .ic {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  display: grid; place-items: center;
+  background: var(--ocean-500); color: white;
+  margin-top: 1px;
+}
+.alert .title {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+.alert .body { color: var(--ocean-700); font-size: 12.5px; }
+.alert .actions { display: flex; gap: 8px; margin-top: 9px; }
+.alert .x {
+  margin-left: auto;
+  color: var(--ocean-700);
+  opacity: 0.55;
+  cursor: pointer;
+  background: none; border: none;
+  padding: 4px;
+}
+.alert .x:hover { opacity: 1; }
+.alert-success { background: var(--safety-green-bg); border-color: rgba(22,163,74,0.22); }
+.alert-success .ic { background: var(--safety-green); }
+.alert-warn    { background: var(--amber-alert-bg); border-color: rgba(217,119,6,0.25); }
+.alert-warn    .ic { background: var(--amber-alert); }
+.alert-error   { background: var(--red-critical-bg); border-color: rgba(220,38,38,0.25); }
+.alert-error   .ic { background: var(--red-critical); }
+
+/* Slim variant — single-line, no title */
+.alert.slim { padding: 8px 12px; }
+.alert.slim .ic { width: 18px; height: 18px; border-radius: 5px; }
+.alert.slim .title { display: none; }
+
+/* Toast */
+/* Toast — full-bleed soft tone background + tone-colored title.
+   Combines the typographic discipline (tone-color title + round icon tile)
+   with the warmer pastel background that gives each tone its own surface. */
+.toast {
+  display: flex; align-items: flex-start; gap: 11px;
+  background: var(--ocean-50);
+  border: 1px solid rgba(37,99,168,0.20);
+  border-radius: 12px;
+  padding: 12px 14px;
+  width: 360px;
+  box-shadow: 0 6px 18px -8px rgba(37,99,168,0.18);
+  font-size: 12.5px;
+  color: var(--ocean-900);
+}
+.toast .ic {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--ocean-500); color: white;
+  margin-top: 1px;
+}
+.toast .title {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12.5px;
+  color: var(--ocean-500);
+  line-height: 1.3;
+}
+.toast .sub {
+  font-size: 11.5px;
+  color: var(--ocean-700);
+  margin-top: 2px;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+.toast .undo {
+  background: var(--ocean-100);
+  border: none;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--ocean-500);
+  cursor: pointer;
+  padding: 5px 11px;
+  border-radius: 7px;
+  margin-left: 10px;
+  margin-right: 8px;
+  align-self: center;
+  transition: background 120ms, color 120ms;
+}
+.toast .undo:hover {
+  background: var(--ocean-500);
+  color: white;
+}
+.toast .x {
+  background: none; border: none; padding: 2px;
+  color: var(--ocean-700); opacity: 0.55;
+  cursor: pointer; align-self: flex-start;
+}
+.toast-success {
+  background: var(--safety-green-bg);
+  border-color: rgba(22,163,74,0.25);
+  box-shadow: 0 6px 18px -8px rgba(22,163,74,0.22);
+}
+.toast-success .ic    { background: var(--safety-green); }
+.toast-success .title { color: var(--safety-green); }
+.toast-warn {
+  background: var(--amber-alert-bg);
+  border-color: rgba(217,119,6,0.28);
+  box-shadow: 0 6px 18px -8px rgba(217,119,6,0.22);
+}
+.toast-warn .ic    { background: var(--amber-alert); }
+.toast-warn .title { color: var(--amber-alert); }
+.toast-error {
+  background: var(--red-critical-bg);
+  border-color: rgba(220,38,38,0.28);
+  box-shadow: 0 6px 18px -8px rgba(220,38,38,0.22);
+}
+.toast-error .ic    { background: var(--red-critical); }
+.toast-error .title { color: var(--red-critical); }
+
+/* Toast stack demo */
+.toast-stack {
+  position: relative;
+  display: flex; flex-direction: column; gap: 10px;
+  align-items: flex-end;
+}
+
+/* Dialog (modal) — flat preview style */
+.dlg {
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(10,37,64,0.20), 0 0 0 1px var(--surface-3);
+  overflow: hidden;
+  font-size: 13px;
+  color: var(--ocean-900);
+}
+.dlg-sm { width: 360px; }
+.dlg-md { width: 480px; }
+.dlg-lg { width: 600px; }
+.dlg-head {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--surface-3);
+  display: flex; align-items: center; gap: 11px;
+}
+.dlg-head .ic {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: grid; place-items: center;
+  background: var(--ocean-100); color: var(--ocean-500);
+  flex-shrink: 0;
+}
+.dlg-head .ic.amber { background: var(--amber-alert-bg); color: var(--amber-alert); }
+.dlg-head .ic.red   { background: var(--red-critical-bg); color: var(--red-critical); }
+.dlg-head .ic.green { background: var(--safety-green-bg); color: var(--safety-green); }
+.dlg-title {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 14.5px;
+  color: var(--ocean-900);
+  line-height: 1.25;
+}
+.dlg-sub {
+  font-size: 12px;
+  color: var(--ocean-700);
+  opacity: 0.85;
+  margin-top: 1px;
+}
+.dlg-head .x {
+  margin-left: auto;
+  background: none; border: none; padding: 4px;
+  color: var(--ocean-700); opacity: 0.55;
+  cursor: pointer;
+}
+.dlg-body {
+  padding: 16px 18px;
+  font-size: 13px;
+  color: var(--ocean-900);
+  line-height: 1.55;
+}
+.dlg-body .field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
+.dlg-body label {
+  font-size: 11.5px;
+  color: var(--ocean-700);
+  font-weight: 500;
+}
+.dlg-body .input {
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 9px;
+  background: white;
+  border: 1px solid var(--surface-3);
+  font-size: 13px;
+  color: var(--ocean-900);
+  font-family: var(--font-body);
+}
+.dlg-foot {
+  padding: 12px 18px;
+  border-top: 1px solid var(--surface-3);
+  display: flex; justify-content: flex-end; gap: 8px;
+  background: var(--surface-0);
+}
+
+/* Confirm — compact dialog */
+.confirm {
+  width: 340px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(10,37,64,0.22), 0 0 0 1px var(--surface-3);
+  padding: 16px 18px 14px;
+  font-size: 13px;
+  color: var(--ocean-900);
+}
+.confirm .row-top { display: flex; align-items: flex-start; gap: 11px; margin-bottom: 6px; }
+.confirm .ic {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: var(--red-critical-bg);
+  color: var(--red-critical);
+  display: grid; place-items: center;
+  flex-shrink: 0;
+}
+.confirm.info .ic  { background: var(--ocean-100);     color: var(--ocean-500); }
+.confirm.warn .ic  { background: var(--amber-alert-bg); color: var(--amber-alert); }
+.confirm .title {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--ocean-900);
+  line-height: 1.3;
+}
+.confirm .desc {
+  font-size: 12.5px;
+  color: var(--ocean-700);
+  margin: 6px 0 12px;
+  line-height: 1.5;
+}
+.confirm .foot { display: flex; gap: 8px; justify-content: flex-end; }
+
+/* Backdrop demo */
+.backdrop {
+  background: linear-gradient(135deg, rgba(10,37,64,0.40), rgba(3,76,142,0.40));
+  backdrop-filter: blur(4px);
+  border-radius: 14px;
+  padding: 36px;
+  display: grid; place-items: center;
+  border: 1px solid var(--surface-3);
+}
+
+/* Avatar */
+.av {
+  border-radius: 8px;
+  display: grid; place-items: center;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  background: var(--surface-2);
+  color: var(--ocean-700);
+  flex-shrink: 0;
+  user-select: none;
+}
+.av-sm { width: 28px; height: 28px; font-size: 11px; border-radius: 6px; }
+.av-md { width: 36px; height: 36px; font-size: 13px; }
+.av-lg { width: 44px; height: 44px; font-size: 15px; }
+.av-ocean { background: var(--ocean-100); color: var(--ocean-500); }
+.av-teal  { background: var(--accent-teal-bg); color: var(--accent-teal); }
+.av-amber { background: var(--amber-alert-bg); color: var(--amber-alert); }
+.av-green { background: var(--safety-green-bg); color: var(--safety-green); }
+
+/* Input demo */
+.input-demo {
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid var(--surface-3);
+  background: white;
+  padding: 0 12px;
+  font-size: 13px;
+  color: var(--ocean-900);
+  width: 240px;
+  font-family: var(--font-body);
+}
+.input-demo:focus { outline: none; border-color: var(--ocean-500); box-shadow: 0 0 0 3px rgba(37,99,168,0.12); }
+
+/* Toggle */
+.toggle {
+  width: 36px; height: 20px;
+  background: var(--surface-3);
+  border-radius: 10px;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
+.toggle::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.2); transition: transform 150ms; }
+.toggle.on { background: var(--ocean-500); }
+.toggle.on::after { transform: translateX(16px); }
+
+/* ============================================================ */
+/*  DIVER GEAR STATUS — Planning convention                     */
+/* ============================================================ */
+.gs {
+  display: inline-grid; place-items: center;
+  width: 22px; height: 22px;
+  border-radius: 5px;
+  color: #fff;
+  border: 0;
+  cursor: pointer;
+  transition: transform 120ms, filter 120ms;
+  flex-shrink: 0;
+}
+.gs:hover { filter: brightness(1.05); transform: translateY(-1px); }
+.gs-green  { background: var(--safety-green, #15803d); }
+.gs-amber  { background: var(--amber-alert, #d97706); }
+.gs-orange {
+  background: #ea580c;
+  animation: gs-pulse 1.6s ease-in-out infinite;
+}
+@keyframes gs-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(234,88,12,0.55); }
+  50%      { box-shadow: 0 0 0 6px rgba(234,88,12,0); }
+}
+.gs-static { animation: none !important; }
+.gs-lg { width: 36px; height: 36px; border-radius: 8px; }
+.gs-lg svg { width: 18px !important; height: 18px !important; }
+/* Row demo */
+.gs-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px;
+  background: var(--surface-1);
+  border: 1px solid var(--surface-3);
+  border-radius: 10px;
+  font-size: 12.5px;
+  color: var(--ocean-900);
+}
+.gs-row .nm { font-family: var(--font-ui); font-weight: 700; font-size: 13px; }
+.gs-row .meta { font-size: 11px; color: var(--ocean-700); opacity: 0.75; margin-top: 1px; }
+
+/* ============================================================ */
+/*  VALIDATION SQUARES — Planning · Today · Validation mode */
+/* ============================================================ */
+.vs-strip { display: inline-flex; align-items: center; gap: 5px; }
+.vs-strip.vs-strip-muted .vs:not(.vs-selected) { opacity: 0.5; }
+.vs {
+  width: 24px; height: 24px; border-radius: 5px;
+  border: 1.5px solid var(--surface-3); background: var(--surface-1);
+  display: grid; place-items: center;
+  font-family: var(--font-ui); font-weight: 800; font-size: 10.5px;
+  color: var(--ocean-700);
+  cursor: pointer; transition: all 120ms;
+  flex-shrink: 0;
+}
+.vs:hover { border-color: var(--ocean-500); color: var(--ocean-500); }
+
+/* × anchor — always tinted red so the affordance is obvious */
+.vs.vs-x {
+  background: var(--red-critical-bg);
+  border-color: rgba(220, 38, 38, 0.35);
+  color: var(--red-critical);
+}
+.vs.vs-x:hover { border-color: var(--red-critical); }
+
+/* ✓ anchor — always tinted green */
+.vs.vs-check {
+  background: var(--safety-green-bg);
+  border-color: rgba(22, 163, 74, 0.35);
+  color: var(--safety-green);
+}
+.vs.vs-check:hover { border-color: var(--safety-green); }
+
+/* Selected states — solid fill, white glyph/number. No outer ring. */
+.vs.vs-selected { color: white; }
+.vs.vs-x.vs-selected     { background: var(--red-critical);  border-color: var(--red-critical);  color: var(--red-critical); }
+.vs.vs-x.vs-selected svg { color: white; }
+.vs.vs-pick {
+  background: var(--amber-alert);
+  border-color: var(--amber-alert);
+  color: var(--amber-alert);
+}
+.vs.vs-pick > span { color: white; }
+.vs.vs-check.vs-selected     { background: var(--safety-green); border-color: var(--safety-green); color: var(--safety-green); }
+.vs.vs-check.vs-selected svg { color: white; }
+
+/* Resolved pill (when whole trip card is validated) */
+.vs-resolved {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 9px; border-radius: 6px;
+  font-family: var(--font-ui); font-weight: 700; font-size: 11.5px;
+  font-variant-numeric: tabular-nums; font-feature-settings: "tnum";
+}
+.vs-resolved.vs-r-full    { background: var(--safety-green-bg); color: var(--safety-green); }
+.vs-resolved.vs-r-partial { background: var(--amber-alert-bg);  color: var(--amber-alert); }
+.vs-resolved.vs-r-cancel  { background: var(--red-critical-bg); color: var(--red-critical); }
+
+/* Color tokens grid */
+.color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+.color {
+  border: 1px solid var(--surface-3);
+  border-radius: 9px;
+  overflow: hidden;
+  background: white;
+}
+.color .sw { height: 44px; }
+.color .meta { padding: 7px 9px 8px; font-size: 11px; }
+.color .name { font-family: var(--font-ui); font-weight: 700; color: var(--ocean-900); font-size: 11.5px; }
+.color .val { font-family: ui-monospace, monospace; color: var(--ocean-700); opacity: 0.75; font-size: 10.5px; margin-top: 1px; }
+
+/* Type sample */
+.type-sample {
+  display: grid; grid-template-columns: 110px 1fr 80px; align-items: baseline; gap: 14px;
+  padding: 8px 0; border-bottom: 1px dashed var(--surface-3);
+}
+.type-sample:last-child { border: none; }
+.type-sample .tlbl {
+  font-family: var(--font-ui); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--ocean-700); opacity: 0.7;
+}
+.type-sample .tval { font-family: ui-monospace, monospace; font-size: 11px; color: var(--ocean-700); opacity: 0.7; text-align: right; }
+.type-sample .tex { color: var(--ocean-900); }
+
+/* Radii sample */
+.radii-row { display: flex; gap: 16px; flex-wrap: wrap; }
+.radii-row .rdx {
+  width: 60px; height: 60px;
+  background: var(--surface-2);
+  border: 1px solid var(--surface-3);
+  display: grid; place-items: end center;
+  padding-bottom: 6px;
+  font-family: ui-monospace, monospace;
+  font-size: 10.5px;
+  color: var(--ocean-700);
+}
+
+/* Icons inventory */
+.icons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 6px; }
+.icons-grid .ico-cell {
+  padding: 10px 6px 8px;
+  border-radius: 8px;
+  background: var(--surface-0);
+  border: 1px solid var(--surface-3);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+  color: var(--ocean-700);
+  text-align: center;
+}
+.icons-grid svg { color: var(--ocean-900); }
+.icons-grid .ico-cell.new {
+  background: var(--ocean-100);
+  border-color: rgba(37,99,168,0.25);
+}
+.icons-grid .ico-cell.new svg { color: var(--ocean-500); }
+
+/* Card preview chrome */
+.card-demo {
+  width: 280px;
+  background: var(--surface-1);
+  border: 1px solid var(--surface-3);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.card-demo .h {
+  padding: 11px 14px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--surface-3);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 12.5px;
+  color: var(--ocean-900);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.card-demo .b { padding: 14px; font-size: 12.5px; color: var(--ocean-700); line-height: 1.5; }
+
+/* Issues list */
+.issues {
+  display: grid; gap: 8px;
+}
+.issue {
+  display: flex; gap: 10px;
+  padding: 10px 12px;
+  background: var(--surface-2);
+  border-radius: 10px;
+  font-size: 12.5px;
+  color: var(--ocean-700);
+  line-height: 1.45;
+}
+.issue .num {
+  font-family: var(--font-ui);
+  font-weight: 800;
+  font-size: 11px;
+  color: var(--ocean-500);
+  background: white;
+  border: 1px solid var(--surface-3);
+  border-radius: 4px;
+  height: 18px; min-width: 18px;
+  display: grid; place-items: center;
+  padding: 0 5px;
+  flex-shrink: 0;
+}
+.issue b { color: var(--ocean-900); font-weight: 700; }
+
+/* ========== PROD MAPPING ========== */
+.prod {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  padding: 9px 12px;
+  background: var(--surface-0);
+  border: 1px solid var(--surface-3);
+  border-radius: 9px;
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--ocean-700);
+  line-height: 1.45;
+}
+.prod-key {
+  font-family: var(--font-ui);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ocean-500);
+  background: var(--ocean-100);
+  padding: 2px 6px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.prod code {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  background: var(--surface-1);
+  border: 1px solid var(--surface-3);
+  color: var(--ocean-900);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.prod .k {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ocean-700);
+  opacity: 0.7;
+}
+.prod .tag {
+  font-family: var(--font-ui);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: var(--amber-alert-bg);
+  color: var(--amber-alert);
+}
+
+/* ========== THEME TOGGLE ========== */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 5px 5px 10px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--surface-3);
+  font-family: var(--font-ui);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ocean-700);
+  cursor: pointer;
+}
+.theme-toggle:hover { color: var(--ocean-900); }
+.theme-toggle .knob {
+  display: inline-grid; place-items: center;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--surface-1);
+  border: 1px solid var(--surface-3);
+  color: var(--ocean-900);
+}
+[data-theme="dark"] .theme-toggle .knob { background: var(--ocean-deep); color: white; border-color: rgba(255,255,255,0.1); }
+
+/* ========== DARK MODE — small targeted fixes ========== */
+[data-theme="dark"] body { color: var(--ocean-700); }
+[data-theme="dark"] .note.warn b,
+[data-theme="dark"] .alert.slim b[style*="color"] { color: var(--ocean-900) !important; }
+[data-theme="dark"] .toc a:hover { background: var(--surface-2); }
+[data-theme="dark"] .toc-mark { background: var(--ocean-500); }
+[data-theme="dark"] .dlg,
+[data-theme="dark"] .confirm,
+[data-theme="dark"] .toast {
+  background: var(--surface-1);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.4), 0 0 0 1px var(--surface-3);
+}
+[data-theme="dark"] .toast { box-shadow: 0 8px 24px -6px rgba(0,0,0,0.5), 0 1px 2px rgba(0,0,0,0.3); }
+[data-theme="dark"] .dlg-foot { background: var(--surface-0); }
+[data-theme="dark"] .dlg-body .input,
+[data-theme="dark"] .input-demo {
+  background: var(--surface-2);
+  color: var(--ocean-900);
+  border-color: var(--surface-3);
+}
+[data-theme="dark"] .row-content.stage { background: var(--surface-0); border-color: var(--surface-3); }
+[data-theme="dark"] .tip-body.light {
+  background: var(--surface-1);
+  color: var(--ocean-900);
+  border-color: var(--surface-3);
+}
+[data-theme="dark"] .tip-body.light.tip-top::after { border-top-color: var(--surface-1); }
+/* Default (dark) tooltip variant in dark mode: keep it dark so text stays readable.
+   In dark mode --ocean-900 inverts to near-white, which would make the
+   default ocean-900 bg + white text unreadable. Pin the tip to a fixed
+   dark slate. */
+[data-theme="dark"] .tip-body:not(.light)             { background: var(--ocean-deep); color: white; }
+[data-theme="dark"] .tip-body:not(.light) .title      { color: white; }
+[data-theme="dark"] .tip-top:not(.light)::after       { border-top-color: var(--ocean-deep); }
+[data-theme="dark"] .tip-bottom:not(.light)::after    { border-bottom-color: var(--ocean-deep); }
+[data-theme="dark"] .tip-right:not(.light)::after     { border-right-color: var(--ocean-deep); }
+[data-theme="dark"] .tip-left:not(.light)::after      { border-left-color: var(--ocean-deep); }
+[data-theme="dark"] .btn-primary { box-shadow: 0 1px 0 0 rgba(0,0,0,0.4), 0 1px 3px 0 rgba(0,0,0,0.3); }
+[data-theme="dark"] .btn-danger { background: var(--surface-2); }
+/* status chips keep brand-tone fills via tokens; alerts adapt by tokens */
+[data-theme="dark"] .alert { color: var(--ocean-900); }
+[data-theme="dark"] .alert .body { color: var(--ocean-700); }
+[data-theme="dark"] .icons-grid .ico-cell { background: var(--surface-0); }
+[data-theme="dark"] .icons-grid svg { color: var(--ocean-900); }
+[data-theme="dark"] .color-grid .color { background: var(--surface-0); }
+
+/* Color swatch: dual hex */
+.color .meta .alt {
+  font-family: ui-monospace, monospace;
+  color: var(--ocean-700);
+  opacity: 0.5;
+  font-size: 10px;
+  margin-top: 1px;
+}
+.color .meta .alt-key {
+  font-family: var(--font-ui);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ocean-700);
+  opacity: 0.55;
+  margin-right: 4px;
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ============================================================ TOC -->
+  <aside class="toc">
+    <div class="toc-brand">
+      <div class="toc-mark">K</div>
+      <div class="toc-titles">
+        <div class="toc-title">Components Review</div>
+        <div class="toc-sub">Koosto Console</div>
+      </div>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle" type="button" style="margin:0 6px 14px;width:calc(100% - 12px);padding:6px 10px 6px 12px;justify-content:flex-start;gap:10px;border-bottom:1px solid var(--surface-3);border-radius:0;background:transparent;">
+      <span id="themeLabel">Light</span>
+      <span class="knob" id="themeKnob" style="margin-left:auto">
+        <svg id="themeIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </span>
+    </button>
+
+    <div class="toc-group">Foundations</div>
+    <a href="#colors"><span>Colors</span><span class="pill exist">OK</span></a>
+    <a href="#activity-colors"><span>Activity colors</span><span class="pill exist" style="background:var(--safety-green);color:white">locked</span></a>
+    <a href="#type"><span>Typography</span><span class="pill exist">OK</span></a>
+    <a href="#radii"><span>Radii &amp; shadows</span><span class="pill exist">OK</span></a>
+    <a href="#icons"><span>Icons</span><span class="pill exist">55</span></a>
+
+    <div class="toc-group">Existing primitives</div>
+    <a href="#buttons"><span>Buttons</span><span class="pill exist" style="background:var(--safety-green);color:white">locked</span></a>
+    <a href="#chips"><span>Chips &amp; tags</span><span class="pill exist" style="background:var(--safety-green);color:white">locked</span></a>
+    <a href="#avatars"><span>Avatars</span><span class="pill exist">OK</span></a>
+    <a href="#gear-status"><span>Diver gear status</span><span class="pill exist" style="background:var(--safety-green);color:white">locked</span></a>
+    <a href="#val-squares"><span>Validation squares</span><span class="pill exist" style="background:var(--safety-green);color:white">locked</span></a>
+    <a href="#cards"><span>Cards</span><span class="pill exist">OK</span></a>
+    <a href="#card-variants"><span>Card variants</span><span class="pill new">NEW</span></a>
+    <a href="#inputs"><span>Inputs &amp; forms</span><span class="pill exist">OK</span></a>
+
+    <div class="toc-group">Proposed recurring</div>
+    <a href="#counters"><span>Counter pills</span><span class="pill new">NEW</span></a>
+    <a href="#info"><span>Contextual info</span><span class="pill new">NEW</span></a>
+    <a href="#tooltips"><span>Tooltips</span><span class="pill new">NEW</span></a>
+    <a href="#alerts"><span>Inline alerts</span><span class="pill new">NEW</span></a>
+    <a href="#toasts"><span>Toasts</span><span class="pill new">NEW</span></a>
+    <a href="#dialogs"><span>Dialogs</span><span class="pill new">NEW</span></a>
+    <a href="#confirms"><span>Confirm pop-ins</span><span class="pill new">NEW</span></a>
+
+    <div class="toc-group">Audit</div>
+    <a href="#consistency"><span>Consistency issues</span></a>
+  </aside>
+
+  <!-- ============================================================ MAIN -->
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1>Components Review</h1>
+        <div class="lead">
+          One canonical page for every recurring UI element in the Koosto Console.
+          Existing primitives are recapped so they can be approved or revised; proposed
+          patterns (counter pills, tooltips, info hints, alerts, toasts, dialogs,
+          confirm pop-ins) are designed here for review before they get used across
+          screens.
+        </div>
+      </div>
+      <div>
+        <div class="legend">
+          <div class="key"><span class="sw" style="background:var(--safety-green)"></span>Existing</div>
+          <div class="key"><span class="sw" style="background:var(--ocean-500)"></span>Proposed</div>
+          <div class="key"><span class="sw" style="background:var(--amber-alert)"></span>Revised</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ PROD MAPPING POLICY -->
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Production mapping</h2>
+          <div class="desc">
+            Each component card below carries a <span class="prod-key" style="display:inline-block;vertical-align:middle">PROD</span> note pointing to its production file and Tailwind class string. Notes flagged
+            <span class="tag" style="display:inline-block;background:var(--amber-alert-bg);color:var(--amber-alert);font-family:var(--font-ui);font-size:9.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;vertical-align:middle">proposed</span>
+            haven't been verified against the live repo yet — confirm and pin them when the pattern lands in code.
+          </div>
+        </div>
+        <span class="status-chip rev">Convention</span>
+      </div>
+      <div class="section-body">
+        <div class="prod">
+          <span class="prod-key">PROD</span>
+          <span class="k">Repo</span><code>github.com/hubalmadiving-oss/divewh</code>
+          <span class="k">Stack</span><code>React 19 · Vite · Tailwind v4</code>
+          <span class="k">UI root</span><code>apps/web/src/components/ui/</code>
+        </div>
+        <div class="note">
+          <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v.01M12 12v4"/></svg>
+          <div>
+            <b>How to read a prod block.</b> The file path tells you <i>where the component lives (or should live)</i>. The class string is the Tailwind v4 equivalent of the demo's vanilla CSS — useful when handing a pattern to a frontend agent. Tokens like <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">ocean-500</code>, <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">surface-1</code>, etc. must already be declared in <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">@theme</code> inside <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">apps/web/src/styles/tokens.css</code> — they mirror the CSS variables on this page.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ COLORS -->
+    <section id="colors" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Color tokens</h2>
+          <div class="desc">Surface stack (depth), Ocean palette (authority), Status (operational meaning). No new accents — palette is closed.</div>
+        </div>
+        <span class="status-chip exist">Existing · OK</span>
+      </div>
+      <div class="section-body">
+
+        <div class="row">
+          <div class="row-label">Surface stack
+            <span class="hint">Warm sand background, depth through tonal layering not shadows. Each swatch shows the light hex on top and the dark-mode value below.</span>
+          </div>
+          <div class="row-content">
+            <div class="color-grid" style="width:100%">
+              <div class="color"><div class="sw" style="background:var(--surface-0)"></div><div class="meta"><div class="name">surface-0</div><div class="val">#f7f5f0</div><div class="alt"><span class="alt-key">dark</span>#0d1622</div></div></div>
+              <div class="color"><div class="sw" style="background:var(--surface-1);border-right:1px solid var(--surface-3);border-left:1px solid var(--surface-3)"></div><div class="meta"><div class="name">surface-1</div><div class="val">#ffffff</div><div class="alt"><span class="alt-key">dark</span>#131e2c</div></div></div>
+              <div class="color"><div class="sw" style="background:var(--surface-2)"></div><div class="meta"><div class="name">surface-2</div><div class="val">#f0ede6</div><div class="alt"><span class="alt-key">dark</span>#1a2737</div></div></div>
+              <div class="color"><div class="sw" style="background:var(--surface-3)"></div><div class="meta"><div class="name">surface-3</div><div class="val">#e8e4db</div><div class="alt"><span class="alt-key">dark</span>#243245</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Ocean palette
+            <span class="hint">Primary authority. Pure black is never used — <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">ocean-900</code> instead. In dark mode, ocean-700/900 invert to near-whites so text stays legible.</span>
+          </div>
+          <div class="row-content">
+            <div class="color-grid" style="width:100%">
+              <div class="color"><div class="sw" style="background:var(--ocean-50)"></div><div class="meta"><div class="name">ocean-50</div><div class="val">#eff6ff</div><div class="alt"><span class="alt-key">dark</span>blue / 8%</div></div></div>
+              <div class="color"><div class="sw" style="background:var(--ocean-100)"></div><div class="meta"><div class="name">ocean-100</div><div class="val">#dbeafe</div><div class="alt"><span class="alt-key">dark</span>blue / 18%</div></div></div>
+              <div class="color"><div class="sw" style="background:var(--ocean-400)"></div><div class="meta"><div class="name">ocean-400</div><div class="val">#3b82c6</div><div class="alt"><span class="alt-key">dark</span>#5b9ad8</div></div></div>
+              <div class="color"><div class="sw" style="background:var(--ocean-500)"></div><div class="meta"><div class="name">ocean-500</div><div class="val">#2563a8</div><div class="alt"><span class="alt-key">dark</span>#3b82c6</div></div></div>
+              <div class="color"><div class="sw" style="background:var(--ocean-700)"></div><div class="meta"><div class="name">ocean-700</div><div class="val">#1a3a5c</div><div class="alt"><span class="alt-key">dark</span>#c5d4e6</div></div></div>
+              <div class="color"><div class="sw" style="background:var(--ocean-900)"></div><div class="meta"><div class="name">ocean-900</div><div class="val">#0a2540</div><div class="alt"><span class="alt-key">dark</span>#f1f5fa</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Status &amp; accent
+            <span class="hint">Operational meaning only — never decorative. Teal is reserved for nitrox / specialty. Status colors keep the same hue across themes; only the soft-bg variants get a translucent dark form.</span>
+          </div>
+          <div class="row-content">
+            <div class="color-grid" style="width:100%">
+              <div class="color"><div class="sw" style="background:var(--safety-green)"></div><div class="meta"><div class="name">safety-green</div><div class="val">#16a34a</div><div class="alt"><span class="alt-key">dark</span>same · bg→15%</div></div></div>
+              <div class="color"><div class="sw" style="background:var(--amber-alert)"></div><div class="meta"><div class="name">amber-alert</div><div class="val">#d97706</div><div class="alt"><span class="alt-key">dark</span>same · bg→18%</div></div></div>
+              <div class="color"><div class="sw" style="background:var(--red-critical)"></div><div class="meta"><div class="name">red-critical</div><div class="val">#dc2626</div><div class="alt"><span class="alt-key">dark</span>same · bg→18%</div></div></div>
+              <div class="color"><div class="sw" style="background:var(--accent-teal)"></div><div class="meta"><div class="name">accent-teal</div><div class="val">#0d9488</div><div class="alt"><span class="alt-key">dark</span>same · bg→18%</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="prod">
+          <span class="prod-key">PROD</span>
+          <span class="k">Source</span><code>design/colors_and_type.css</code>
+          <span class="k">In repo</span><code>apps/web/src/styles/tokens.css</code>
+          <span class="k">Tailwind v4</span><code>@theme { --color-ocean-500: #2563a8; … }</code>
+        </div>
+
+        <div class="note">
+          <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v.01M12 12v4"/></svg>
+          <div>The system uses a strict 4-color status ladder: <b>red = safety</b> · <b>orange / amber = blocker or attention</b> · <b>green = clear</b>. The Planning Overview convention (orange pulses, amber doesn't) should be respected by every new component on this page.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ ACTIVITY COLORS -->
+    <section id="activity-colors" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Activity colors</h2>
+          <div class="desc">
+            Diving / Freediving / Snorkeling are first-class app concepts — the fitting engine, equipment catalog, trip cards and many chips key off them. They get their own three-color palette, outside the design system so the uniqueness reads. Use these tokens any time the UI references an activity category.
+          </div>
+        </div>
+        <span class="status-chip locked">✓ Locked</span>
+      </div>
+      <div class="section-body">
+
+        <div class="row">
+          <div class="row-label">Palette
+            <span class="hint">One color per activity, each with full / fg / bg / border slots. Tokens live in <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">styles/activity-colors.css</code>.</span>
+          </div>
+          <div class="row-content">
+            <div class="color-grid" style="width:100%">
+              <div class="color"><div class="sw" style="background:#1e6091"></div><div class="meta"><div class="name">activity-diving</div><div class="val">#1e6091</div><div class="alt"><span class="alt-key">dark</span>#4a9ed4</div></div></div>
+              <div class="color"><div class="sw" style="background:#0e7c8a"></div><div class="meta"><div class="name">activity-freediving</div><div class="val">#0e7c8a</div><div class="alt"><span class="alt-key">dark</span>#36b7c5</div></div></div>
+              <div class="color"><div class="sw" style="background:#d97742"></div><div class="meta"><div class="name">activity-snorkeling</div><div class="val">#d97742</div><div class="alt"><span class="alt-key">dark</span>#e89765</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Soft backgrounds
+            <span class="hint">Same hue, lightened. Use for read-only tags and tinted surfaces.</span>
+          </div>
+          <div class="row-content">
+            <div class="color-grid" style="width:100%">
+              <div class="color"><div class="sw" style="background:#dbeaf5"></div><div class="meta"><div class="name">diving-bg</div><div class="val">#dbeaf5</div></div></div>
+              <div class="color"><div class="sw" style="background:#d4eef2"></div><div class="meta"><div class="name">freediving-bg</div><div class="val">#d4eef2</div></div></div>
+              <div class="color"><div class="sw" style="background:#fbeadb"></div><div class="meta"><div class="name">snorkeling-bg</div><div class="val">#fbeadb</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Reasoning
+            <span class="hint">Why these three hues.</span>
+          </div>
+          <div class="row-content col" style="width:100%">
+            <div style="font-size:12.5px;color:var(--ocean-700);line-height:1.55;max-width:720px">
+              <p style="margin:0 0 8px"><strong style="color:var(--ocean-900)">Diving</strong> uses an <em>ocean-deep</em> blue. Authority, professionalism, depth — matches the app's primary brand register.</p>
+              <p style="margin:0 0 8px"><strong style="color:var(--ocean-900)">Freediving</strong> uses a <em>slate cyan</em>. Sits between blue and teal — visually adjacent to diving (they share the water world) but distinct enough to read at a glance. Evokes calm and breath-hold.</p>
+              <p style="margin:0"><strong style="color:var(--ocean-900)">Snorkeling</strong> uses a <em>warm coral</em>. Surface, sun, leisure — pulled toward orange to read as the "lightest" activity and to stand far apart from the two underwater categories.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Chip — toggleable
+            <span class="hint">Off = outline, muted. On = solid fill, white glyph. Used in Settings · Equipment · Definitions on models that can be tagged.</span>
+          </div>
+          <div class="row-content">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:inline-flex;gap:5px;align-items:center">
+                <span style="font-size:11px;color:var(--ocean-700);width:60px">Off</span>
+                <span class="act-chip act-diving">Diving</span>
+                <span class="act-chip act-freediving">Freediving</span>
+                <span class="act-chip act-snorkeling">Snorkeling</span>
+              </div>
+              <div style="display:inline-flex;gap:5px;align-items:center">
+                <span style="font-size:11px;color:var(--ocean-700);width:60px">On</span>
+                <span class="act-chip act-diving act-on">Diving</span>
+                <span class="act-chip act-freediving act-on">Freediving</span>
+                <span class="act-chip act-snorkeling act-on">Snorkeling</span>
+              </div>
+              <div style="display:inline-flex;gap:5px;align-items:center">
+                <span style="font-size:11px;color:var(--ocean-700);width:60px">Mixed</span>
+                <span class="act-chip act-diving act-on">Diving</span>
+                <span class="act-chip act-freediving">Freediving</span>
+                <span class="act-chip act-snorkeling act-on">Snorkeling</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Tag — read-only
+            <span class="hint">Soft-fill variant for non-interactive contexts: trip cards, member profiles, briefing exports.</span>
+          </div>
+          <div class="row-content">
+            <span class="act-tag act-diving">Diving</span>
+            <span class="act-tag act-freediving">Freediving</span>
+            <span class="act-tag act-snorkeling">Snorkeling</span>
+          </div>
+        </div>
+
+        <div class="note">
+          <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v.01M12 12v4"/></svg>
+          <div>
+            <b>Hard rule.</b> Don't hardcode hex anywhere in the codebase for an activity. Always go through <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">--activity-{diving|freediving|snorkeling}</code> (or its variants <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">-fg / -bg / -border</code>). New surfaces that need to communicate activity context should use the canonical <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">.act-chip</code> or <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">.act-tag</code> classes.
+          </div>
+        </div>
+
+        <div class="prod">
+          <span class="prod-key">PROD</span>
+          <span class="k">Tokens</span><code>design/styles/activity-colors.css</code>
+          <span class="k">In repo</span><code>apps/web/src/styles/activity-colors.css</code>
+          <span class="k">Tailwind v4</span><code>@theme { --color-activity-diving: #1e6091; … }</code>
+        </div>
+        <div class="prod">
+          <span class="prod-key">PROD</span>
+          <span class="k">Component</span><code>apps/web/src/components/ui/ActivityChip.tsx</code>
+          <span class="k">Props</span><code>activity: 'diving'|'freediving'|'snorkeling' · active?: boolean · onClick? · readOnly?: boolean</code>
+          <span class="tag">proposed</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ TYPE -->
+    <section id="type" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Typography</h2>
+          <div class="desc">Manrope (display / UI) + Inter (body / data). Tabular numbers for any number that reads as data.</div>
+        </div>
+        <span class="status-chip exist">Existing · OK</span>
+      </div>
+      <div class="section-body">
+
+        <div class="type-sample">
+          <div class="tlbl">Page title</div>
+          <div class="tex" style="font-family:var(--font-ui);font-weight:800;font-size:26px;letter-spacing:-0.02em">Planning organization</div>
+          <div class="tval">Manrope 800 · 26 / -2%</div>
+        </div>
+        <div class="type-sample">
+          <div class="tlbl">Section title</div>
+          <div class="tex" style="font-family:var(--font-ui);font-weight:700;font-size:14px;letter-spacing:-0.005em">Emergency contact</div>
+          <div class="tval">Manrope 700 · 14</div>
+        </div>
+        <div class="type-sample">
+          <div class="tlbl">Body</div>
+          <div class="tex" style="font-family:var(--font-body);font-weight:400;font-size:13.5px">Accessed only in incident response. Operators see this on the trip manifest.</div>
+          <div class="tval">Inter 400 · 13.5</div>
+        </div>
+        <div class="type-sample">
+          <div class="tlbl">Label</div>
+          <div class="tex" style="font-family:var(--font-body);font-weight:500;font-size:11.5px;color:var(--ocean-700)">Date of birth</div>
+          <div class="tval">Inter 500 · 11.5</div>
+        </div>
+        <div class="type-sample">
+          <div class="tlbl">Eyebrow</div>
+          <div class="tex" style="font-family:var(--font-ui);font-weight:700;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ocean-700)">Primary certification</div>
+          <div class="tval">Manrope 700 · 10 · +8%</div>
+        </div>
+        <div class="type-sample">
+          <div class="tlbl">Data</div>
+          <div class="tex tabular" style="font-family:var(--font-ui);font-weight:700;font-size:17px">DV-A37188B517 · 28 Apr 2024</div>
+          <div class="tval">Manrope 700 · 17 · tnum</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ RADII -->
+    <section id="radii" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Radii &amp; shadows</h2>
+          <div class="desc">Admin uses <b>rounded-lg (8)</b> for buttons, <b>10</b> for inputs, <b>14</b> for cards, <b>4</b> for data chips (rectangular = encoded data).</div>
+        </div>
+        <span class="status-chip exist">Existing · OK</span>
+      </div>
+      <div class="section-body">
+        <div class="row">
+          <div class="row-label">Radii</div>
+          <div class="row-content">
+            <div class="radii-row">
+              <div class="rdx" style="border-radius:4px">4</div>
+              <div class="rdx" style="border-radius:8px">8</div>
+              <div class="rdx" style="border-radius:10px">10</div>
+              <div class="rdx" style="border-radius:12px">12</div>
+              <div class="rdx" style="border-radius:14px">14</div>
+              <div class="rdx" style="border-radius:16px">16</div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="row-label">Shadows</div>
+          <div class="row-content">
+            <div style="display:flex;gap:18px;flex-wrap:wrap">
+              <div style="width:120px;height:64px;background:white;border-radius:10px;box-shadow:0 1px 2px rgba(10,37,64,0.06);display:grid;place-items:center;font-family:ui-monospace,monospace;font-size:11px;color:var(--ocean-700)">elev-2</div>
+              <div style="width:120px;height:64px;background:white;border-radius:10px;box-shadow:0 4px 12px rgba(10,37,64,0.10);display:grid;place-items:center;font-family:ui-monospace,monospace;font-size:11px;color:var(--ocean-700)">elev-3 · modals</div>
+              <div style="width:120px;height:64px;background:white;border-radius:10px;box-shadow:0 8px 32px -4px rgba(3,76,142,0.12);display:grid;place-items:center;font-family:ui-monospace,monospace;font-size:11px;color:var(--ocean-700)">elev-4 · float</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ ICONS -->
+    <section id="icons" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Icon inventory</h2>
+          <div class="desc">57 outline icons shipped in <code style="background:var(--surface-2);padding:1px 5px;border-radius:3px;font-size:11.5px">design/icons.jsx</code>. The set just gained <b>alert_triangle</b> and <b>alert_circle</b> so warn / error stop reading identical to info in alerts, toasts, and inline status.</div>
+        </div>
+        <span class="status-chip exist">Existing · 57</span>
+      </div>
+      <div class="section-body">
+        <div class="prod">
+          <span class="prod-key">PROD</span>
+          <span class="k">Mirror</span><code>apps/web/src/components/ui/Icon.tsx</code>
+          <span class="k">Usage</span><code>&lt;Icon name="alert_triangle" size={14} /&gt;</code>
+          <span class="tag">proposed</span>
+        </div>
+        <div class="icons-grid" id="iconGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============================================================ BUTTONS -->
+    <section id="buttons" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Buttons</h2>
+          <div class="desc">Five variants × two sizes. Primary uses flat ocean-500 (no gradient in admin). Danger is two-stage: outlined to <i>open</i> a destructive action, solid to <i>confirm</i> it.</div>
+        </div>
+        <span class="status-chip locked">✓ Locked</span>
+      </div>
+      <div class="section-body">
+
+        <div class="row">
+          <div class="row-label">Primary
+            <span class="hint">One per view. The page's main action.</span>
+          </div>
+          <div class="row-content">
+            <button class="btn btn-primary">Save changes</button>
+            <button class="btn btn-primary"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>New trip</button>
+            <button class="btn btn-primary btn-sm">Confirm</button>
+            <button class="btn btn-primary" disabled>Disabled</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Secondary
+            <span class="hint">Default neutral action — Cancel, Edit, Export, etc.</span>
+          </div>
+          <div class="row-content">
+            <button class="btn btn-secondary">Cancel</button>
+            <button class="btn btn-secondary"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Export</button>
+            <button class="btn btn-secondary btn-sm">Edit</button>
+            <button class="btn btn-secondary btn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Ghost
+            <span class="hint">Lowest emphasis — tertiary actions, inline.</span>
+          </div>
+          <div class="row-content">
+            <button class="btn btn-ghost">View details</button>
+            <button class="btn btn-ghost btn-sm">Skip</button>
+            <button class="btn btn-ghost btn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Destructive
+            <span class="hint">Always two-stage. Outlined to start, solid to confirm.</span>
+          </div>
+          <div class="row-content">
+            <button class="btn btn-danger"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Request suspension…</button>
+            <button class="btn btn-danger-solid">Submit request</button>
+          </div>
+        </div>
+
+        <div class="note warn">
+          <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v.01M12 12v4"/></svg>
+          <div><b>Consistency note.</b> The current console uses two different "primary CTA" implementations side by side — the <code style="background:rgba(255,255,255,0.5);padding:1px 4px;border-radius:3px;font-size:11px">.btn.btn-primary</code> class above, and several ad-hoc inline-style buttons inside dialogs (Suspend modal, Notes composer). Recommendation: every primary action uses the class, period.</div>
+        </div>
+
+        <div class="prod">
+          <span class="prod-key">PROD</span>
+          <span class="k">File</span><code>apps/web/src/components/ui/Button.tsx</code>
+          <span class="k">Design</span><code>design/src/components/Button.jsx</code>
+          <span class="k">Props</span><code>variant: 'primary'|'secondary'|'ghost'|'danger'|'danger-solid' · size: 'sm'|'md' · icon? · iconOnly? · loading? · disabled?</code>
+        </div>
+        <div class="prod">
+          <span class="prod-key">TW</span>
+          <code>inline-flex items-center gap-1.5 h-9 px-3.5 rounded-lg bg-ocean-500 text-white font-medium text-[13px] hover:bg-ocean-400 hover:-translate-y-px transition shadow-[0_1px_0_0_rgba(26,58,92,.25),0_1px_3px_rgba(10,37,64,.08)]</code>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ CHIPS -->
+    <section id="chips" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Chips &amp; tags</h2>
+          <div class="desc">UPPERCASE, tracked, 4px radius — they signal <i>encoded data</i> (certs, status, role codes). Never used for plain labels.</div>
+        </div>
+        <span class="status-chip locked">✓ Locked</span>
+      </div>
+      <div class="section-body">
+        <div class="row">
+          <div class="row-label">Tones</div>
+          <div class="row-content">
+            <span class="chip">AOWD</span>
+            <span class="chip chip-ocean">PRIMARY</span>
+            <span class="chip chip-teal">NX32</span>
+            <span class="chip chip-green">ACTIVE</span>
+            <span class="chip chip-amber">PENDING</span>
+            <span class="chip chip-red">SUSPENDED</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="row-label">With glyph</div>
+          <div class="row-content">
+            <span class="chip chip-green"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>VERIFIED</span>
+            <span class="chip chip-red"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>LOCKED</span>
+            <span class="chip chip-amber">NOT COVERED</span>
+            <span class="chip chip-ocean">THIS CENTER</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="row-label">Day-tag pills
+            <span class="hint">Planning convention — chunky uppercase, 5px radius.</span>
+          </div>
+          <div class="row-content">
+            <span style="font-family:var(--font-ui);font-weight:800;font-size:13px;letter-spacing:0.12em;padding:5px 11px;border-radius:5px;background:var(--amber-alert);color:white">TODAY</span>
+            <span style="font-family:var(--font-ui);font-weight:800;font-size:13px;letter-spacing:0.12em;padding:5px 11px;border-radius:5px;background:var(--ocean-deep);color:white">TOMORROW</span>
+            <span style="font-family:var(--font-ui);font-weight:800;font-size:13px;letter-spacing:0.12em;padding:5px 11px;border-radius:5px;background:var(--surface-2);color:var(--ocean-700)">PAST</span>
+          </div>
+        </div>
+
+        <div class="prod">
+          <span class="prod-key">PROD</span>
+          <span class="k">File</span><code>apps/web/src/components/ui/Chip.tsx</code>
+          <span class="k">Design</span><code>design/src/components/Chip.jsx</code>
+          <span class="k">Props</span><code>tone: 'neutral'|'ocean'|'teal'|'green'|'amber'|'red' · icon?</code>
+        </div>
+        <div class="prod">
+          <span class="prod-key">TW</span>
+          <code>inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-[0.06em] bg-ocean-100 text-ocean-500</code>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ AVATARS -->
+    <section id="avatars" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Avatars</h2>
+          <div class="desc">Square 8px-radius tiles — admin convention. Color slots inherit from chip palette so a member's avatar reads the same tone as their status.</div>
+        </div>
+        <span class="status-chip exist">Existing</span>
+      </div>
+      <div class="section-body">
+        <div class="row">
+          <div class="row-label">Sizes</div>
+          <div class="row-content">
+            <div class="av av-sm av-ocean">HL</div>
+            <div class="av av-md av-ocean">HL</div>
+            <div class="av av-lg av-ocean">HL</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="row-label">Color slots</div>
+          <div class="row-content">
+            <div class="av av-md av-ocean">HL</div>
+            <div class="av av-md av-teal">CM</div>
+            <div class="av av-md av-amber">JP</div>
+            <div class="av av-md av-green">AS</div>
+            <div class="av av-md" style="background:#fde7e1;color:#c2410c">RD</div>
+            <div class="av av-md" style="background:#ede9fe;color:#6d28d9">NK</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ DIVER GEAR STATUS -->
+    <section id="gear-status" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Diver gear status</h2>
+          <div class="desc">22×22 rounded square at the start of every diver row in Planning. Three states only — <b>green-check</b>, <b>amber-stripes</b>, <b>orange-?</b> — and the orange one pulses (1.6s box-shadow ring) because it's the only true blocker. The triad encodes the status ladder: <b>green = clear · amber = review · orange = blocker</b>.</div>
+        </div>
+        <span class="status-chip locked">✓ Locked</span>
+      </div>
+      <div class="section-body">
+
+        <div class="row">
+          <div class="row-label">States
+            <span class="hint">Same 22×22 tile, three meanings. The glyph carries the difference; color reinforces it.</span>
+          </div>
+          <div class="row-content stage" style="padding:28px;gap:32px">
+            <span class="gs gs-green gs-static" title="All gear set">
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </span>
+            <span class="gs gs-amber gs-static" title="Gear partially set">
+              <svg viewBox="0 0 24 24" width="11" height="11" aria-hidden="true">
+                <line x1="4" y1="8" x2="20" y2="8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <line x1="4" y1="13" x2="20" y2="13" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <line x1="4" y1="18" x2="20" y2="18" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span class="gs gs-orange" title="Gear not set / sizing missing">
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 9a3 3 0 1 1 4.5 2.6c-.9.5-1.5 1.2-1.5 2.4M12 18v.01"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Meaning
+            <span class="hint">What each state communicates and what the operator should do.</span>
+          </div>
+          <div class="row-content col" style="width:100%">
+            <div class="gs-row">
+              <span class="gs gs-green gs-static">
+                <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </span>
+              <div style="flex:1">
+                <div class="nm">Green · check</div>
+                <div class="meta">All gear set, or diver brings own. No action needed.</div>
+              </div>
+              <span class="chip chip-green">CLEAR</span>
+            </div>
+            <div class="gs-row">
+              <span class="gs gs-amber gs-static">
+                <svg viewBox="0 0 24 24" width="11" height="11" aria-hidden="true">
+                  <line x1="4" y1="8" x2="20" y2="8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                  <line x1="4" y1="13" x2="20" y2="13" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                  <line x1="4" y1="18" x2="20" y2="18" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <div style="flex:1">
+                <div class="nm">Amber · stripes</div>
+                <div class="meta">Gear is partially set — drafts exist but at least one slot is missing. Review before departure.</div>
+              </div>
+              <span class="chip chip-amber">REVIEW</span>
+            </div>
+            <div class="gs-row">
+              <span class="gs gs-orange">
+                <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 9a3 3 0 1 1 4.5 2.6c-.9.5-1.5 1.2-1.5 2.4M12 18v.01"/></svg>
+              </span>
+              <div style="flex:1">
+                <div class="nm">Orange · question mark <span style="font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#ea580c;background:rgba(234,88,12,0.12);padding:2px 6px;border-radius:3px;margin-left:6px">pulsing</span></div>
+                <div class="meta">No gear assigned and/or sizing data is missing. You literally cannot run the trip until this is fixed — that's why it pulses.</div>
+              </div>
+              <span class="chip chip-red">BLOCKER</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">In a diver row
+            <span class="hint">Real Planning-page context: tile + name + meta. Click the tile opens the pax-assignment panel.</span>
+          </div>
+          <div class="row-content col" style="width:100%">
+            <div class="gs-row">
+              <span class="gs gs-green gs-static">
+                <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </span>
+              <div class="av av-sm av-ocean">ML</div>
+              <div style="flex:1;min-width:0">
+                <div class="nm">Marie Lefevre</div>
+                <div class="meta">AOWD · 85 dives</div>
+              </div>
+              <span class="chip chip-ocean">BCD L</span>
+              <span class="chip chip-ocean">SUIT 3 S</span>
+              <span class="chip chip-ocean">FINS S</span>
+            </div>
+            <div class="gs-row">
+              <span class="gs gs-amber gs-static">
+                <svg viewBox="0 0 24 24" width="11" height="11" aria-hidden="true">
+                  <line x1="4" y1="8" x2="20" y2="8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                  <line x1="4" y1="13" x2="20" y2="13" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                  <line x1="4" y1="18" x2="20" y2="18" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <div class="av av-sm av-teal">OD</div>
+              <div style="flex:1;min-width:0">
+                <div class="nm">Oliver Davies</div>
+                <div class="meta">OWD · 42 dives</div>
+              </div>
+              <span class="chip chip-ocean">BCD M</span>
+              <span class="chip" style="background:transparent;border:1px dashed var(--ocean-100);color:var(--ocean-500)">SUIT —</span>
+              <span class="chip chip-ocean">FINS M</span>
+            </div>
+            <div class="gs-row">
+              <span class="gs gs-orange">
+                <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 9a3 3 0 1 1 4.5 2.6c-.9.5-1.5 1.2-1.5 2.4M12 18v.01"/></svg>
+              </span>
+              <div class="av av-sm av-amber">HU</div>
+              <div style="flex:1;min-width:0">
+                <div class="nm">Hugo <span style="color:var(--amber-alert);font-style:italic;font-weight:500;font-size:11px;margin-left:6px">no sizing on file</span></div>
+                <div class="meta">No certification declared</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note">
+          <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v.01M12 12v4"/></svg>
+          <div><b>Why is orange not amber?</b> The system already uses amber for "review before depart" (gear partially set). Reusing it for "blocker" would dilute the signal. Orange (<code style="background:var(--surface-1);padding:1px 4px;border-radius:3px;font-size:11px">#ea580c</code>) is reserved for blocker-only, and only blocker pulses. Don't introduce orange anywhere else.</div>
+        </div>
+
+        <div class="prod">
+          <span class="prod-key">PROD</span>
+          <span class="k">Class</span><code>.diver-status.diver-status-{green|amber|orange}</code>
+          <span class="k">Glyphs</span><code>check · stripes · question</code>
+          <span class="k">Animation</span><code>@keyframes diver-status-pulse (1.6s ease-in-out infinite)</code>
+        </div>
+        <div class="prod">
+          <span class="prod-key">PROD</span>
+          <span class="k">File</span><code>apps/web/src/components/planning/DiverStatusIndicator.tsx</code>
+          <span class="k">Props</span><code>state: 'clear'|'review'|'blocker' · onClick</code>
+          <span class="tag">proposed</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================ VALIDATION SQUARES -->
+    <section id="val-squares" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Validation squares</h2>
+          <div class="desc">
+            The unique square buttons that appear on every diver row in <b>Planning · Today · Validation mode</b>. Single-select: the operator picks one square per diver to record the outcome — <b>red ×</b> (cancelled / no-show), a <b>numbered middle square</b> for partial completion (N out of total accomplished), or <b>green ✓</b> (all planned dives accomplished). Order of dives doesn't matter — only the final count. Strip persists as buttons until the operator validates the whole trip card; then every row collapses to a resolved pill.
+          </div>
+        </div>
+        <span class="status-chip locked">✓ Locked</span>
+      </div>
+      <div class="section-body">
+
+        <div class="row">
+          <div class="row-label">Layout by dive count
+            <span class="hint">Red × anchors the strip on the left, green ✓ on the right. The middle slots show <b>N − 1</b> numbered squares for N planned dives — the final dive is implicitly represented by the green ✓ button itself.</span>
+          </div>
+          <div class="row-content col">
+            <div style="display:flex;align-items:center;gap:20px;font-size:12px;color:var(--ocean-700)">
+              <div style="width:90px;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">1 dive</div>
+              <div class="vs-strip">
+                <button class="vs vs-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+                <button class="vs vs-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></button>
+              </div>
+              <div style="opacity:0.7">no middle squares</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:20px;font-size:12px;color:var(--ocean-700)">
+              <div style="width:90px;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">2 dives</div>
+              <div class="vs-strip">
+                <button class="vs vs-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+                <button class="vs">1</button>
+                <button class="vs vs-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></button>
+              </div>
+              <div style="opacity:0.7">1 middle square → click for 1/2</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:20px;font-size:12px;color:var(--ocean-700)">
+              <div style="width:90px;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">3 dives</div>
+              <div class="vs-strip">
+                <button class="vs vs-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+                <button class="vs">1</button>
+                <button class="vs">2</button>
+                <button class="vs vs-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></button>
+              </div>
+              <div style="opacity:0.7">2 middle squares → click for 1/3 or 2/3</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:20px;font-size:12px;color:var(--ocean-700)">
+              <div style="width:90px;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">4 dives</div>
+              <div class="vs-strip">
+                <button class="vs vs-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+                <button class="vs">1</button>
+                <button class="vs">2</button>
+                <button class="vs">3</button>
+                <button class="vs vs-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></button>
+              </div>
+              <div style="opacity:0.7">3 middle squares → click for 1/4, 2/4 or 3/4</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Picked states
+            <span class="hint">All examples for a 3-dive trip. Single-select — clicking another square moves the choice. Unpicked squares fade so the chosen outcome reads at a glance even from far across the table. <b>Order doesn't matter</b>: clicking <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">2</code> means "2 of 3 done" — it doesn't mark dive 1 or dive 3 specifically.</span>
+          </div>
+          <div class="row-content col">
+            <div style="display:flex;align-items:center;gap:20px;font-size:12px;color:var(--ocean-700)">
+              <div style="width:140px;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">Untouched</div>
+              <div class="vs-strip">
+                <button class="vs vs-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+                <button class="vs">1</button>
+                <button class="vs">2</button>
+                <button class="vs vs-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></button>
+              </div>
+              <div style="opacity:0.7">awaiting operator decision</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:20px;font-size:12px;color:var(--ocean-700)">
+              <div style="width:140px;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">× picked</div>
+              <div class="vs-strip vs-strip-muted">
+                <button class="vs vs-x vs-selected"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+                <button class="vs">1</button>
+                <button class="vs">2</button>
+                <button class="vs vs-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></button>
+              </div>
+              <div style="opacity:0.7">diver cancelled / no-show</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:20px;font-size:12px;color:var(--ocean-700)">
+              <div style="width:140px;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">1 picked</div>
+              <div class="vs-strip vs-strip-muted">
+                <button class="vs vs-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+                <button class="vs vs-pick vs-selected"><span>1</span></button>
+                <button class="vs">2</button>
+                <button class="vs vs-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></button>
+              </div>
+              <div style="opacity:0.7">1 of 3 dives accomplished</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:20px;font-size:12px;color:var(--ocean-700)">
+              <div style="width:140px;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">2 picked</div>
+              <div class="vs-strip vs-strip-muted">
+                <button class="vs vs-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+                <button class="vs">1</button>
+                <button class="vs vs-pick vs-selected"><span>2</span></button>
+                <button class="vs vs-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></button>
+              </div>
+              <div style="opacity:0.7">2 of 3 dives accomplished</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:20px;font-size:12px;color:var(--ocean-700)">
+              <div style="width:140px;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">✓ picked</div>
+              <div class="vs-strip vs-strip-muted">
+                <button class="vs vs-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+                <button class="vs">1</button>
+                <button class="vs">2</button>
+                <button class="vs vs-check vs-selected"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></button>
+              </div>
+              <div style="opacity:0.7">3 of 3 — all dives accomplished</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">In a diver row
+            <span class="hint">Live example during validation mode — multiple divers, each with their own pick state. The trip card has not been validated yet, so the strips are still interactive.</span>
+          </div>
+          <div class="row-content stage" style="padding:14px 16px">
+            <div style="display:flex;align-items:center;gap:14px;width:100%;background:var(--surface-1);border:1px solid var(--surface-3);border-radius:10px;padding:10px 14px">
+              <span class="av av-sm av-ocean">HL</span>
+              <div style="min-width:0;flex:1">
+                <div style="font-family:var(--font-ui);font-weight:700;font-size:13px;color:var(--ocean-900)">Hugo Leclercq</div>
+                <div style="font-size:11px;color:var(--ocean-700);opacity:0.75;margin-top:1px">AOWD · 120 dives · 3 dives planned</div>
+              </div>
+              <div class="vs-strip vs-strip-muted">
+                <button class="vs vs-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+                <button class="vs">1</button>
+                <button class="vs">2</button>
+                <button class="vs vs-check vs-selected"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></button>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:14px;width:100%;background:var(--surface-1);border:1px solid var(--surface-3);border-radius:10px;padding:10px 14px">
+              <span class="av av-sm av-teal">CM</span>
+              <div style="min-width:0;flex:1">
+                <div style="font-family:var(--font-ui);font-weight:700;font-size:13px;color:var(--ocean-900)">Claire Martin</div>
+                <div style="font-size:11px;color:var(--ocean-700);opacity:0.75;margin-top:1px">DM · 412 dives · 3 dives planned</div>
+              </div>
+              <div class="vs-strip vs-strip-muted">
+                <button class="vs vs-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+                <button class="vs">1</button>
+                <button class="vs vs-pick vs-selected"><span>2</span></button>
+                <button class="vs vs-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></button>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:14px;width:100%;background:var(--surface-1);border:1px solid var(--surface-3);border-radius:10px;padding:10px 14px">
+              <span class="av av-sm av-amber">JF</span>
+              <div style="min-width:0;flex:1">
+                <div style="font-family:var(--font-ui);font-weight:700;font-size:13px;color:var(--ocean-900)">Jules Faure</div>
+                <div style="font-size:11px;color:var(--ocean-700);opacity:0.75;margin-top:1px">OWD · 42 dives · 3 dives planned</div>
+              </div>
+              <div class="vs-strip vs-strip-muted">
+                <button class="vs vs-x vs-selected"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+                <button class="vs">1</button>
+                <button class="vs">2</button>
+                <button class="vs vs-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Resolved states
+            <span class="hint">After the operator validates the whole trip card, every row's strip collapses into a single pill. <b>Three flavours</b>: full (green) · partial (amber) · cancelled (red). Reads like a data chip — the row is now a finalized record.</span>
+          </div>
+          <div class="row-content col">
+            <div style="display:flex;align-items:center;gap:14px;width:100%;max-width:520px;background:var(--surface-1);border:1px solid var(--surface-3);border-radius:10px;padding:10px 14px">
+              <span class="av av-sm av-ocean">HL</span>
+              <div style="min-width:0;flex:1">
+                <div style="font-family:var(--font-ui);font-weight:700;font-size:13px;color:var(--ocean-900)">Hugo Leclercq</div>
+                <div style="font-size:11px;color:var(--ocean-700);opacity:0.75;margin-top:1px">AOWD · 120 dives</div>
+              </div>
+              <span class="vs-resolved vs-r-full">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                3/3
+              </span>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:14px;width:100%;max-width:520px;background:var(--surface-1);border:1px solid var(--surface-3);border-radius:10px;padding:10px 14px">
+              <span class="av av-sm av-teal">CM</span>
+              <div style="min-width:0;flex:1">
+                <div style="font-family:var(--font-ui);font-weight:700;font-size:13px;color:var(--ocean-900)">Claire Martin</div>
+                <div style="font-size:11px;color:var(--ocean-700);opacity:0.75;margin-top:1px">DM · 412 dives</div>
+              </div>
+              <span class="vs-resolved vs-r-partial">2/3</span>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:14px;width:100%;max-width:520px;background:var(--surface-1);border:1px solid var(--surface-3);border-radius:10px;padding:10px 14px">
+              <span class="av av-sm av-amber">JF</span>
+              <div style="min-width:0;flex:1">
+                <div style="font-family:var(--font-ui);font-weight:700;font-size:13px;color:var(--ocean-900)">Jules Faure</div>
+                <div style="font-size:11px;color:var(--ocean-700);opacity:0.75;margin-top:1px">OWD · 42 dives</div>
+              </div>
+              <span class="vs-resolved vs-r-cancel">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                Cancelled
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Spec
+            <span class="hint">Square geometry matches <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">styles-planning.css → .val-square</code>. The amber middle pick and the resolved pills are new and need to be added.</span>
+          </div>
+          <div class="row-content col">
+            <table style="font-size:12px;color:var(--ocean-700);border-collapse:collapse;width:100%;max-width:620px">
+              <tbody>
+                <tr><td style="padding:5px 12px 5px 0;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900);width:170px">Size</td><td>24 × 24 px · 5 px radius · 1.5 px border</td></tr>
+                <tr><td style="padding:5px 12px 5px 0;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">× anchor</td><td>tinted bg <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">red-critical-bg</code>, border <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">red-critical / 35%</code>, glyph <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">red-critical</code></td></tr>
+                <tr><td style="padding:5px 12px 5px 0;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">Middle squares</td><td>outline <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">surface-3</code>, number Manrope 800 / 10.5 px / <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">ocean-700</code></td></tr>
+                <tr><td style="padding:5px 12px 5px 0;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">✓ anchor</td><td>tinted bg <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">safety-green-bg</code>, border <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">safety-green / 35%</code>, glyph <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">safety-green</code></td></tr>
+                <tr><td style="padding:5px 12px 5px 0;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">Picked (selected)</td><td>solid fill in the square's tone (<code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">red-critical</code> / <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">amber-alert</code> / <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">safety-green</code>) + 2 px ring</td></tr>
+                <tr><td style="padding:5px 12px 5px 0;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">Unpicked (after pick)</td><td>50% opacity — keeps the contextual choices visible but secondary</td></tr>
+                <tr><td style="padding:5px 12px 5px 0;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">Gap in strip</td><td>5 px</td></tr>
+                <tr><td style="padding:5px 12px 5px 0;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">Resolved pill</td><td>6 px radius · Manrope 700 / 11.5 px · tabular-nums · soft-bg of state color</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="note">
+          <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v.01M12 12v4"/></svg>
+          <div>
+            <b>Why these are unique.</b> Every other status surface in the system uses chips (encoded data, ALL CAPS), buttons (an action), or the gear-status indicator (a single state). The validation strip is the only place where the operator picks <i>one outcome out of N options</i> per row, with the choices laid out in-place as a row of mini-buttons. They're closer to a radio group than to a counter or a button — keep them visually distinct from both so validation mode reads as a specific tool, not a generic pattern.
+          </div>
+        </div>
+
+        <div class="note">
+          <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>
+          <div>
+            <b>Rebuild applied (2026-05-22).</b> <code style="background:var(--surface-1);padding:1px 5px;border-radius:3px;font-size:11px">planning/dashboard.jsx → ValStrip()</code> now renders as a radio-group: × anchor + <code style="background:var(--surface-1);padding:1px 5px;border-radius:3px;font-size:11px">N − 1</code> middles + ✓ anchor, single-select. Unpicked siblings fade to 45% so the picked outcome reads at a glance; resolved trips collapse to the coloured pill. Selected states use a solid tone fill only — the earlier outer ring is gone.
+          </div>
+        </div>
+
+        <div class="prod">
+          <span class="prod-key">PROD</span>
+          <span class="k">Demo</span><code>design/src/pages/planning/dashboard.jsx → ValStrip()</code>
+          <span class="k">CSS</span><code>design/styles/planning.css → .vs / .vs-pick / .vs-resolved</code>
+          <span class="k">In repo</span><code>apps/web/src/components/planning/ValidationStrip.tsx</code>
+          <span class="k">Props</span><code>planned: number · pick: 'cancel' | number | 'full' | null · resolved?: boolean · onPick(value)</code>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ CARDS -->
+    <section id="cards" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Cards</h2>
+          <div class="desc">Surface-1 body + surface-2 header strip, 14px radius, no shadow. Tonal layering carries the elevation.</div>
+        </div>
+        <span class="status-chip exist">Existing</span>
+      </div>
+      <div class="section-body">
+        <div class="row">
+          <div class="row-label">Standard</div>
+          <div class="row-content">
+            <div class="card-demo">
+              <div class="h">Today's plan<span class="chip chip-amber">3 OPEN</span></div>
+              <div class="b">Two trips depart before 09:00. Coral Wall checked in. <a href="#" style="color:var(--ocean-500);font-weight:600;text-decoration:none">View →</a></div>
+            </div>
+            <div class="card-demo">
+              <div class="h">Roster<span style="font-family:ui-monospace,monospace;font-size:11px;color:var(--ocean-700)">142</span></div>
+              <div class="b">Members currently affiliated with AlmaDiving Puerto Galera.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note">
+          <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v.01M12 12v4"/></svg>
+          <div><b>Card anatomy conventions.</b> Every card family below shares one layout grammar so the operator's eye always lands in the same place. The four variants (KPI/numeric · progress · graph · dependency-gated) are documented in the next section.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ CARD VARIANTS -->
+    <section id="card-variants" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Card variants</h2>
+          <div class="desc">A consistent grammar for the recurring card types — KPI/numeric, progress, graph, and dependency-gated. Same anchor points everywhere: <b>label top-left</b>, <b>status/context top-right</b>, <b>hero value bottom-left</b>, <b>trend/delta footer</b>. Used heavily on Dashboard and Equipment · Analytics.</div>
+        </div>
+        <span class="status-chip new">Proposed</span>
+      </div>
+      <div class="section-body">
+
+        <div class="row">
+          <div class="row-label">Anatomy
+            <span class="hint">The shared anchor map. Every variant keeps these named slots in the same place.</span>
+          </div>
+          <div class="row-content">
+            <div style="width:260px;background:var(--surface-1);border:1px solid var(--surface-3);border-radius:14px;padding:16px 18px;position:relative">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <span style="font-size:12px;color:var(--ocean-700);font-weight:500;outline:1px dashed var(--ocean-400);outline-offset:3px;border-radius:2px">label</span>
+                <span style="font-size:10px;color:var(--ocean-500);font-weight:700;outline:1px dashed var(--ocean-400);outline-offset:3px;border-radius:2px">context ▸</span>
+              </div>
+              <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:14px">
+                <span class="tabular" style="font-family:var(--font-ui);font-weight:800;font-size:28px;color:var(--ocean-900);letter-spacing:-0.02em;line-height:1;outline:1px dashed var(--ocean-400);outline-offset:3px;border-radius:2px">42%</span>
+                <span style="outline:1px dashed var(--ocean-400);outline-offset:3px;border-radius:2px"><svg width="56" height="20" viewBox="0 0 56 20"><polyline points="0,16 12,12 24,14 36,7 48,8 56,3" fill="none" stroke="var(--ocean-500)" stroke-width="1.5"/></svg></span>
+              </div>
+              <div style="margin-top:10px;font-size:11px;color:var(--ocean-700);outline:1px dashed var(--ocean-400);outline-offset:3px;border-radius:2px;display:inline-block">▴ footer</div>
+            </div>
+            <table style="border-collapse:collapse;font-size:11.5px;color:var(--ocean-700);min-width:300px">
+              <tbody>
+                <tr><td style="padding:4px 12px 4px 0;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">label</td><td style="padding:4px 0">Top-left. What the card measures. Inter 500 · 12px.</td></tr>
+                <tr><td style="padding:4px 12px 4px 0;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">context</td><td style="padding:4px 0">Top-right. Eyebrow / chip / module tag (e.g. <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px">FINANCE</code>) or a count. Optional.</td></tr>
+                <tr><td style="padding:4px 12px 4px 0;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">value</td><td style="padding:4px 0">Hero, bottom-left. The number/answer. Manrope 800 · 28px · tabular.</td></tr>
+                <tr><td style="padding:4px 12px 4px 0;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">visual</td><td style="padding:4px 0">Bottom-right, baseline-aligned to value. Spark / bar / ring. Optional.</td></tr>
+                <tr><td style="padding:4px 12px 4px 0;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)">footer</td><td style="padding:4px 0">Delta + time-basis caption. Inter · 11px. Mandatory on numeric cards.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="note" style="margin-top:14px">
+            <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v.01M12 12v4"/></svg>
+            <div>These five slot names — <b>label · context · value · visual · footer</b> — are the prop contract for <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">Card.tsx</code>. Every variant fills the same slots; only <b>visual</b> changes shape.</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Visual types
+            <span class="hint">The <b>visual</b> slot takes one of four shapes. Pick by what the number means, not by decoration.</span>
+          </div>
+          <div class="row-content col">
+            <table style="border-collapse:collapse;font-size:11.5px;color:var(--ocean-700);width:100%;max-width:720px">
+              <thead>
+                <tr style="text-align:left">
+                  <th style="padding:6px 12px 6px 0;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ocean-700);opacity:0.7">Shape</th>
+                  <th style="padding:6px 12px 6px 0;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ocean-700);opacity:0.7">Use for</th>
+                  <th style="padding:6px 0;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ocean-700);opacity:0.7">How it's computed</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-top:1px solid var(--surface-3)">
+                  <td style="padding:8px 12px 8px 0;vertical-align:top"><span style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)"><svg width="40" height="16" viewBox="0 0 40 16"><polyline points="0,12 10,9 20,11 30,4 40,6" fill="none" stroke="var(--ocean-500)" stroke-width="1.5"/></svg>line</span></td>
+                  <td style="padding:8px 12px 8px 0;vertical-align:top">A <b>trend over time</b> — the direction matters. Utilization, bookings, fleet value.</td>
+                  <td style="padding:8px 0;vertical-align:top">Last <i>N</i> period buckets of the metric, min→max normalized. Spark = no axes; promote to full line chart (with axes + legend) when the shape itself is the insight.</td>
+                </tr>
+                <tr style="border-top:1px solid var(--surface-3)">
+                  <td style="padding:8px 12px 8px 0;vertical-align:top"><span style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)"><svg width="40" height="16" viewBox="0 0 40 16"><rect x="0" y="6" width="6" height="10" fill="var(--ocean-500)"/><rect x="10" y="3" width="6" height="13" fill="var(--ocean-500)"/><rect x="20" y="9" width="6" height="7" fill="var(--ocean-400)"/><rect x="30" y="5" width="6" height="11" fill="var(--ocean-500)"/></svg>bar</span></td>
+                  <td style="padding:8px 12px 8px 0;vertical-align:top"><b>Discrete comparison</b> across categories — per-type counts, per-day volume. When buckets are few and independent.</td>
+                  <td style="padding:8px 0;vertical-align:top">One bar per category, shared y-scale. Stacked bars when sub-states sum to the whole (avail/lent/issue).</td>
+                </tr>
+                <tr style="border-top:1px solid var(--surface-3)">
+                  <td style="padding:8px 12px 8px 0;vertical-align:top"><span style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)"><span style="width:14px;height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden;display:inline-flex"><span style="width:60%;background:var(--ocean-500)"></span></span>bar (linear)</span></td>
+                  <td style="padding:8px 12px 8px 0;vertical-align:top">A <b>ratio / fill</b> 0–100% — utilization, capacity, completion. One value against its max.</td>
+                  <td style="padding:8px 0;vertical-align:top"><code style="background:var(--surface-2);padding:1px 4px;border-radius:3px">value ÷ max × 100</code>. Segment it when sub-parts matter; always label both ends.</td>
+                </tr>
+                <tr style="border-top:1px solid var(--surface-3)">
+                  <td style="padding:8px 12px 8px 0;vertical-align:top"><span style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-ui);font-weight:700;color:var(--ocean-900)"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7" fill="none" stroke="var(--surface-2)" stroke-width="3"/><circle cx="9" cy="9" r="7" fill="none" stroke="var(--ocean-500)" stroke-width="3" stroke-dasharray="44" stroke-dashoffset="16" transform="rotate(-90 9 9)"/></svg>ring</span></td>
+                  <td style="padding:8px 12px 8px 0;vertical-align:top">A <b>single headline ratio</b> you want to feel "complete/incomplete" — readiness, % serviced. One number, emphatic.</td>
+                  <td style="padding:8px 0;vertical-align:top">Same <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px">value ÷ max</code> as linear, drawn as arc. Use sparingly — one ring per card max, never a grid of them.</td>
+                </tr>
+              </tbody>
+            </table>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px">
+              <!-- line example -->
+              <div style="width:170px;background:var(--surface-1);border:1px solid var(--surface-3);border-radius:14px;padding:14px 16px">
+                <div style="font-size:11.5px;color:var(--ocean-700);margin-bottom:6px">Utilization · line</div>
+                <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:6px">
+                  <span class="tabular" style="font-family:var(--font-ui);font-weight:800;font-size:22px;color:var(--ocean-900)">38%</span>
+                  <svg width="64" height="20" viewBox="0 0 64 20"><polyline points="0,16 12,14 24,17 36,9 48,10 64,4" fill="none" stroke="var(--ocean-500)" stroke-width="1.5"/></svg>
+                </div>
+              </div>
+              <!-- bar example -->
+              <div style="width:170px;background:var(--surface-1);border:1px solid var(--surface-3);border-radius:14px;padding:14px 16px">
+                <div style="font-size:11.5px;color:var(--ocean-700);margin-bottom:6px">Per-type · bar</div>
+                <svg width="100%" height="34" viewBox="0 0 130 34">
+                  <rect x="0" y="14" width="16" height="20" fill="var(--ocean-500)"/><rect x="24" y="6" width="16" height="28" fill="var(--ocean-500)"/><rect x="48" y="20" width="16" height="14" fill="var(--ocean-400)"/><rect x="72" y="10" width="16" height="24" fill="var(--ocean-500)"/><rect x="96" y="24" width="16" height="10" fill="var(--ocean-400)"/>
+                </svg>
+              </div>
+              <!-- ring example -->
+              <div style="width:170px;background:var(--surface-1);border:1px solid var(--surface-3);border-radius:14px;padding:14px 16px">
+                <div style="font-size:11.5px;color:var(--ocean-700);margin-bottom:6px">Readiness · ring</div>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <svg width="44" height="44" viewBox="0 0 44 44"><circle cx="22" cy="22" r="17" fill="none" stroke="var(--surface-2)" stroke-width="5"/><circle cx="22" cy="22" r="17" fill="none" stroke="var(--safety-green)" stroke-width="5" stroke-dasharray="107" stroke-dashoffset="24" transform="rotate(-90 22 22)" stroke-linecap="round"/></svg>
+                  <span class="tabular" style="font-family:var(--font-ui);font-weight:800;font-size:20px;color:var(--ocean-900)">78%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">KPI / numeric
+            <span class="hint">Headline number, optional spark, delta footer. Delta colour is meaning-aware (green = good, red = bad) and respects inverted metrics (a falling outage rate is good).</span>
+          </div>
+          <div class="row-content">
+            <div style="width:230px;background:var(--surface-1);border:1px solid var(--surface-3);border-radius:14px;padding:16px 18px">
+              <div style="font-size:12px;color:var(--ocean-700);font-weight:500;margin-bottom:8px">Utilization rate</div>
+              <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:8px">
+                <span class="tabular" style="font-family:var(--font-ui);font-weight:800;font-size:28px;color:var(--ocean-900);letter-spacing:-0.02em;line-height:1">38.2%</span>
+                <svg width="72" height="22" viewBox="0 0 72 22"><polyline points="0,18 12,16 24,19 36,11 48,12 60,6 72,7" fill="none" stroke="var(--ocean-500)" stroke-width="1.5"/></svg>
+              </div>
+              <div style="margin-top:8px;display:flex;align-items:center;gap:6px">
+                <span class="tabular" style="font-size:11px;font-weight:700;color:var(--safety-green)">▴ +4.1%</span>
+                <span style="font-size:11px;color:var(--ocean-700);opacity:0.6">vs prior period</span>
+              </div>
+            </div>
+            <div style="width:230px;background:var(--surface-1);border:1px solid var(--surface-3);border-radius:14px;padding:16px 18px;position:relative">
+              <span style="position:absolute;top:-9px;left:14px;font-family:var(--font-ui);font-size:9px;font-weight:800;letter-spacing:0.08em;color:var(--accent-teal);background:var(--accent-teal-bg);padding:2px 7px;border-radius:3px">FINANCE</span>
+              <div style="font-size:12px;color:var(--ocean-700);font-weight:500;margin-bottom:8px">Total fleet value</div>
+              <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:8px">
+                <span class="tabular" style="font-family:var(--font-ui);font-weight:800;font-size:28px;color:var(--ocean-900);letter-spacing:-0.02em;line-height:1">€48,250</span>
+                <svg width="72" height="22" viewBox="0 0 72 22"><polyline points="0,18 12,17 24,15 36,13 48,11 60,8 72,5" fill="none" stroke="var(--safety-green)" stroke-width="1.5"/></svg>
+              </div>
+              <div style="margin-top:8px;display:flex;align-items:center;gap:6px">
+                <span class="tabular" style="font-size:11px;font-weight:700;color:var(--safety-green)">▴ +6.2%</span>
+                <span style="font-size:11px;color:var(--ocean-700);opacity:0.6">all-time · now</span>
+              </div>
+            </div>
+          </div>
+          <div class="note" style="margin-top:14px">
+            <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v.01M12 12v4"/></svg>
+            <div><b>Time-basis footnote is mandatory.</b> Every numeric card states whether it's a <i>flow</i> ("vs prior period") or a <i>balance</i> ("all-time · now"). Finance-gated cards carry the <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">FINANCE</code> eyebrow. Numbers are always tabular.</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Progress
+            <span class="hint">A ratio the operator reads at a glance. The number + the bar say the same thing; the bar segments encode sub-states (utilized / lent / issue) when relevant. Always label both ends.</span>
+          </div>
+          <div class="row-content">
+            <div style="width:240px;background:var(--surface-1);border:1px solid var(--surface-3);border-radius:12px;padding:14px 16px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+                <span style="font-family:var(--font-ui);font-weight:700;font-size:13.5px;color:var(--ocean-900)">BCD</span>
+                <span class="tabular" style="font-family:var(--font-ui);font-weight:800;font-size:15px;color:var(--ocean-500)">42%</span>
+              </div>
+              <div style="font-size:10.5px;color:var(--ocean-700);opacity:0.6;margin-bottom:9px">utilized over the period</div>
+              <div style="height:6px;background:var(--surface-2);border-radius:3px;overflow:hidden;margin-bottom:8px">
+                <div style="height:100%;width:42%;background:var(--ocean-500)"></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:14px;font-size:11px;color:var(--ocean-700)">
+                <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:2px;background:var(--ocean-500)"></span>Utilized <strong class="tabular" style="color:var(--ocean-900)">42%</strong></span>
+                <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:2px;background:var(--surface-2);border:1px solid var(--surface-3)"></span>Idle <strong class="tabular" style="color:var(--ocean-900)">58%</strong></span>
+              </div>
+            </div>
+            <div style="width:240px;background:var(--surface-1);border:1px solid var(--surface-3);border-radius:12px;padding:14px 16px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
+                <span style="font-family:var(--font-ui);font-weight:700;font-size:13.5px;color:var(--ocean-900)">Regulator Sets</span>
+                <span class="tabular" style="font-size:11px;color:var(--ocean-700)">28 / 36 avail.</span>
+              </div>
+              <div style="height:6px;background:var(--surface-2);border-radius:3px;overflow:hidden;display:flex">
+                <div style="width:67%;background:var(--safety-green)"></div>
+                <div style="width:19%;background:var(--ocean-400)"></div>
+                <div style="width:14%;background:var(--amber-alert)"></div>
+              </div>
+              <div style="display:flex;gap:12px;font-size:11px;color:var(--ocean-700);margin-top:8px">
+                <span style="color:var(--safety-green)">▪ 24 avail</span>
+                <span style="color:var(--ocean-500)">▪ 7 lent</span>
+                <span style="color:var(--amber-alert)">▪ 5 issue</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Graph
+            <span class="hint">When the shape matters more than a single number. Axes + legend required if it reports real data; if it's an explainer, caption it as illustrative. Big graph cards may split <b>2/3 chart · 1/3 reading guide</b> (see Analytics convergence).</span>
+          </div>
+          <div class="row-content col">
+            <div style="width:100%;max-width:560px;background:var(--surface-1);border:1px solid var(--surface-3);border-radius:12px;padding:16px 18px">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent-teal)" stroke-width="1.7" stroke-linecap="round"><path d="m23 6-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>
+                <span style="font-family:var(--font-ui);font-weight:700;font-size:13px;color:var(--ocean-900)">Booking trend</span>
+                <span style="margin-left:auto;font-size:10.5px;color:var(--ocean-700);opacity:0.55">last 30 days · count</span>
+              </div>
+              <svg width="100%" viewBox="0 0 520 120" style="display:block">
+                <line x1="28" y1="100" x2="520" y2="100" stroke="var(--surface-3)"/>
+                <line x1="28" y1="60" x2="520" y2="60" stroke="var(--surface-3)" stroke-dasharray="3 3" opacity="0.6"/>
+                <line x1="28" y1="20" x2="520" y2="20" stroke="var(--surface-3)" stroke-dasharray="3 3" opacity="0.6"/>
+                <text x="22" y="103" font-size="9" fill="var(--ocean-700)" text-anchor="end" opacity="0.6">0</text>
+                <text x="22" y="63" font-size="9" fill="var(--ocean-700)" text-anchor="end" opacity="0.6">30</text>
+                <text x="22" y="23" font-size="9" fill="var(--ocean-700)" text-anchor="end" opacity="0.6">60</text>
+                <polyline points="28,86 90,80 150,72 210,58 270,50 330,40 390,30 450,26 510,16" fill="none" stroke="var(--ocean-500)" stroke-width="2"/>
+              </svg>
+              <div style="display:flex;gap:16px;margin-top:8px;font-size:11px;color:var(--ocean-700)">
+                <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:18px;height:3px;background:var(--ocean-500);border-radius:2px"></span>Bookings/day</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Dependency-gated
+            <span class="hint">When a card's value can't be computed because a prerequisite (module / activity / setting) is off. Never shows fake zeros — states what's missing and where to enable it.</span>
+          </div>
+          <div class="row-content">
+            <div style="width:260px;background:var(--surface-0);border:1px dashed var(--surface-3);border-radius:14px;padding:16px 18px;opacity:0.85">
+              <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px">
+                <span class="act-tag act-snorkeling" style="opacity:0.5">Snorkeling</span>
+                <span style="margin-left:auto"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ocean-700)" stroke-width="1.8" stroke-linecap="round" style="opacity:0.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+              </div>
+              <div style="font-size:12px;color:var(--ocean-700);opacity:0.7;line-height:1.45">
+                <strong style="color:var(--ocean-900)">Snorkeling</strong> is not enabled for this center. Turn it on in <span style="color:var(--ocean-500);font-weight:600">Settings · Planning</span> to compute its cost-per-use.
+              </div>
+            </div>
+          </div>
+          <div class="note" style="margin-top:14px">
+            <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v.01M12 12v4"/></svg>
+            <div><b>Rule.</b> Dashed border · <code style="background:var(--surface-2);padding:1px 4px;border-radius:3px;font-size:11px">surface-0</code> bg · ~0.85 opacity · lock glyph top-right · one line naming the missing dependency + the Settings link. Applies to finance-gated, activity-gated, and planning-gated cards alike.</div>
+          </div>
+        </div>
+
+        <div class="prod">
+          <span class="prod-key">PROD</span>
+          <span class="k">File</span><code>apps/web/src/components/ui/Card.tsx</code>
+          <span class="k">Variants</span><code>kpi · progress · graph · gated</code>
+          <span class="k">Props</span><code>label · context? · value · spark? · delta? · basis: 'flow'|'balance' · gated?: { reason, settingsLink }</code>
+          <span class="tag">proposed</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ INPUTS -->
+    <section id="inputs" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Inputs &amp; forms</h2>
+          <div class="desc">10px radius, 38px tall, surface-3 border, ocean-500 focus ring. Toggles 36×20.</div>
+        </div>
+        <span class="status-chip exist">Existing</span>
+      </div>
+      <div class="section-body">
+        <div class="row">
+          <div class="row-label">Text input</div>
+          <div class="row-content">
+            <input class="input-demo" placeholder="Search members…"/>
+            <input class="input-demo" value="hugues.leclercq@gmail.com"/>
+            <input class="input-demo" disabled value="Read-only" style="background:var(--surface-2)"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="row-label">Toggle</div>
+          <div class="row-content">
+            <span class="toggle"></span>
+            <span class="toggle on"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ COUNTER PILLS -->
+    <section id="counters" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Counter pills</h2>
+          <div class="desc">Two distinct jobs — don't confuse them: <b>numeric counters</b> (round, tabular, "how many") and <b>indicator dots</b> (round, no number, "there's something"). Both come in solid (high attention) and soft (low attention) tones.</div>
+        </div>
+        <span class="status-chip new">Proposed</span>
+      </div>
+      <div class="section-body">
+
+        <div class="row">
+          <div class="row-label">Numeric · solid
+            <span class="hint">Top-bar bells, rail badges, anything in chrome where the count is the message.</span>
+          </div>
+          <div class="row-content">
+            <span class="cnt cnt-ocean">3</span>
+            <span class="cnt cnt-amber">7</span>
+            <span class="cnt cnt-red">12</span>
+            <span class="cnt cnt-red">99+</span>
+            <span class="cnt cnt-lg cnt-ocean tabular">142</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Numeric · soft
+            <span class="hint">Inside content — subnav rows, tab labels, table headers. Low attention, lets the number sit beside text without shouting.</span>
+          </div>
+          <div class="row-content">
+            <span class="cnt cnt-soft">8</span>
+            <span class="cnt cnt-soft tabular">142</span>
+            <span class="cnt cnt-soft-amber">3</span>
+            <span class="cnt cnt-soft-red">2</span>
+            <span class="cnt">11</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Indicator dot
+            <span class="hint">No number — just "something to look at". Use on tabs / buttons that don't need a precise count.</span>
+          </div>
+          <div class="row-content">
+            <span class="cnt cnt-dot cnt-ocean"></span>
+            <span class="cnt cnt-dot cnt-amber"></span>
+            <span class="cnt cnt-dot cnt-red"></span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">In context</div>
+          <div class="row-content">
+            <button class="btn btn-secondary"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/></svg>Notifications<span class="cnt cnt-red">7</span></button>
+            <button class="btn btn-ghost">Bookings<span class="cnt cnt-soft">142</span></button>
+            <span style="display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;background:var(--surface-2);font-size:13px;color:var(--ocean-900);font-weight:500"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M16 21v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1"/><circle cx="9.5" cy="7.5" r="3.5"/></svg>Pending verify <span class="cnt cnt-soft-amber">3</span></span>
+          </div>
+        </div>
+
+        <div class="note">
+          <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v.01M12 12v4"/></svg>
+          <div>Existing console already uses three different count styles (rail badges, action-btn badges, subnav .count). Recommendation: collapse all of them into <b>this</b> single counter primitive, with tone driven by context (chrome → solid, content → soft).</div>
+        </div>
+
+        <div class="prod">
+          <span class="prod-key">PROD</span>
+          <span class="k">File</span><code>apps/web/src/components/ui/Counter.tsx</code>
+          <span class="k">Props</span><code>value?: number · tone · emphasis: 'solid'|'soft' · size · dot?</code>
+          <span class="tag">proposed</span>
+        </div>
+        <div class="prod">
+          <span class="prod-key">TW</span>
+          <code>inline-flex items-center justify-center min-w-[18px] h-[18px] px-1.5 rounded-full text-[10.5px] font-bold tabular-nums bg-ocean-500 text-white leading-none</code>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ CONTEXTUAL INFO -->
+    <section id="info" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Contextual info icons</h2>
+          <div class="desc">Tiny <b>i</b> next to a label that opens a tooltip explaining what the field is for. Used for jargon, units, safety implications. Three tones: <b>neutral</b> (default), <b>solid</b> (when the info is structural), <b>amber</b> (when ignoring it has consequences).</div>
+        </div>
+        <span class="status-chip new">Proposed</span>
+      </div>
+      <div class="section-body">
+
+        <div class="row">
+          <div class="row-label">Tones &amp; sizes</div>
+          <div class="row-content">
+            <span class="info-i">i</span>
+            <span class="info-i lg">i</span>
+            <span class="info-i solid">i</span>
+            <span class="info-i amber">!</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">In labels
+            <span class="hint">Inline with field labels and table headers.</span>
+          </div>
+          <div class="row-content col">
+            <div style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ocean-700);font-weight:500">Declared agency <span class="info-i">i</span></div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ocean-700);font-weight:500">Allergies <span class="info-i amber">!</span> <span style="font-size:11px;opacity:0.55;font-weight:400">— safety-critical</span></div>
+            <div style="display:flex;align-items:center;gap:6px;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ocean-700);opacity:0.85">Max depth <span class="info-i" style="opacity:1">i</span></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">With visible tooltip</div>
+          <div class="row-content stage" style="padding:36px 28px">
+            <span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ocean-900);font-weight:500;position:relative">
+              Declared certification
+              <span class="tip" style="display:inline-flex">
+                <span class="info-i">i</span>
+                <span class="tip-body tip-top rich">
+                  <span class="title">Declared vs verified</span>
+                  Anything the diver claims when they sign up. Stays "declared" until you scan their card.
+                </span>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ TOOLTIPS -->
+    <section id="tooltips" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Tooltips</h2>
+          <div class="desc">Ocean-900 background, white text, 6px radius. Arrow pointing back to the trigger. Two flavours: <b>plain</b> (a few words, one line) and <b>rich</b> (title + body, fixed width).</div>
+        </div>
+        <span class="status-chip new">Proposed</span>
+      </div>
+      <div class="section-body">
+
+        <div class="row">
+          <div class="row-label">Positions
+            <span class="hint">Top default. Right/left for rail-style nav. Bottom only when the trigger sits near the viewport top.</span>
+          </div>
+          <div class="row-content stage" style="min-height:200px;padding:60px;gap:80px;justify-content:space-around">
+            <span class="tip"><button class="btn btn-secondary btn-sm">Trigger</button><span class="tip-body tip-top">Tooltip top</span></span>
+            <span class="tip"><button class="btn btn-secondary btn-sm">Trigger</button><span class="tip-body tip-bottom">Tooltip bottom</span></span>
+            <span class="tip"><button class="btn btn-secondary btn-sm">Trigger</button><span class="tip-body tip-right">Tooltip right</span></span>
+            <span class="tip"><button class="btn btn-secondary btn-sm">Trigger</button><span class="tip-body tip-left">Tooltip left</span></span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Plain</div>
+          <div class="row-content stage" style="padding:48px">
+            <span class="tip" style="margin-right:120px">
+              <span style="font-size:13px;color:var(--ocean-900);text-decoration:underline;text-decoration-color:var(--surface-3);text-underline-offset:3px">Save changes</span>
+              <span class="tip-body tip-top">⌘S</span>
+            </span>
+            <span class="tip">
+              <span class="chip chip-teal">NX32</span>
+              <span class="tip-body tip-top">Nitrox 32% — extended bottom time</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Rich
+            <span class="hint">220px wide, multi-line, optional kbd shortcut chip.</span>
+          </div>
+          <div class="row-content stage" style="padding:60px 48px">
+            <span class="tip">
+              <button class="btn btn-secondary"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Search</button>
+              <span class="tip-body tip-top rich">
+                <span class="title">Omnisearch <span class="kbd">⌘K</span></span>
+                Find any member, trip, booking, or setting. Works from every page.
+              </span>
+            </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Light variant
+            <span class="hint">Use on dark backgrounds only — e.g. on the rail's ocean-deep gradient, where dark-on-dark is unreadable.</span>
+          </div>
+          <div class="row-content stage dark" style="padding:48px">
+            <span class="tip">
+              <button style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,0.10);color:white;display:grid;place-items:center;border:1px solid rgba(255,255,255,0.10)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></button>
+              <span class="tip-body tip-right light">Dashboard</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="prod">
+          <span class="prod-key">PROD</span>
+          <span class="k">File</span><code>apps/web/src/components/ui/Tooltip.tsx</code>
+          <span class="k">Lib</span><code>@radix-ui/react-tooltip</code>
+          <span class="k">Props</span><code>content · side · variant: 'plain'|'rich' · theme: 'dark'|'light'</code>
+          <span class="tag">proposed</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ ALERTS -->
+    <section id="alerts" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Inline alerts</h2>
+          <div class="desc">Persistent, in-flow messages — never floating. Four tones (info / success / warn / error) and two densities (with title, or slim single-line).</div>
+        </div>
+        <span class="status-chip new">Proposed</span>
+      </div>
+      <div class="section-body">
+
+        <div class="row">
+          <div class="row-label">Full
+            <span class="hint">Title + body + optional actions. Dismiss with × when the user can act on it.</span>
+          </div>
+          <div class="row-content col">
+            <div class="alert">
+              <div class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v.01M12 12v4"/></svg></div>
+              <div style="flex:1;min-width:0">
+                <div class="title">Hub review in progress</div>
+                <div class="body">Suspension request for Hugo Leclercq was filed 2 hours ago. Hub admins typically respond within 24h.</div>
+                <div class="actions"><button class="btn btn-secondary btn-sm">View request</button></div>
+              </div>
+              <button class="x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+            </div>
+
+            <div class="alert alert-success">
+              <div class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+              <div style="flex:1;min-width:0">
+                <div class="title">Cert verified</div>
+                <div class="body">PADI Advanced Open Water Diver added to Hugo's record. Specialty unlocks updated.</div>
+              </div>
+            </div>
+
+            <div class="alert alert-warn">
+              <div class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17v.01"/></svg></div>
+              <div style="flex:1;min-width:0">
+                <div class="title">Gear not yet assigned</div>
+                <div class="body">3 divers on tomorrow's Coral Wall trip have no BCD or wetsuit allocated. Auto-suggestions are available.</div>
+                <div class="actions">
+                  <button class="btn btn-primary btn-sm" style="background:var(--amber-alert)">Apply suggestions</button>
+                  <button class="btn btn-ghost btn-sm">Review manually</button>
+                </div>
+              </div>
+              <button class="x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+            </div>
+
+            <div class="alert alert-error">
+              <div class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg></div>
+              <div style="flex:1;min-width:0">
+                <div class="title">Sync failed</div>
+                <div class="body">Could not push 4 bookings to the Koosto Hub. The center can continue, but cross-center visibility is delayed.</div>
+                <div class="actions"><button class="btn btn-danger btn-sm">Retry now</button><button class="btn btn-ghost btn-sm">See details</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Slim
+            <span class="hint">Single-line, no title. For lighter contextual notes — top of a form, inside a panel.</span>
+          </div>
+          <div class="row-content col">
+            <div class="alert slim">
+              <div class="ic"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v.01M12 12v4"/></svg></div>
+              <div class="body">Changes are saved automatically as you edit.</div>
+            </div>
+            <div class="alert alert-warn slim">
+              <div class="ic"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"><path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17v.01"/></svg></div>
+              <div class="body"><b style="color:#6e3e02">No emergency contact on file.</b> Add one before the next trip.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="prod">
+          <span class="prod-key">PROD</span>
+          <span class="k">File</span><code>apps/web/src/components/ui/Alert.tsx</code>
+          <span class="k">Props</span><code>tone: 'info'|'success'|'warn'|'error' · density: 'full'|'slim' · dismissible? · actions?</code>
+          <span class="tag">proposed</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ TOASTS -->
+    <section id="toasts" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Toasts</h2>
+          <div class="desc">Transient confirmations and errors. Floating, bottom-right, auto-dismiss after ~4s unless an action is offered. Always white with a coloured left border — same tone language as alerts, lighter visual weight.</div>
+        </div>
+        <span class="status-chip new">Proposed</span>
+      </div>
+      <div class="section-body">
+
+        <div class="row">
+          <div class="row-label">Tones</div>
+          <div class="row-content col">
+            <div class="toast">
+              <div class="ic"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v.01M12 12v4"/></svg></div>
+              <div style="flex:1;min-width:0">
+                <div class="title">Draft saved</div>
+                <div class="sub">Tomorrow's Coral Wall trip — 11 divers, 2 boats</div>
+              </div>
+              <button class="x"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+            </div>
+
+            <div class="toast toast-success">
+              <div class="ic"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+              <div style="flex:1;min-width:0">
+                <div class="title">Trip validated</div>
+                <div class="sub">11 manifests printed · €1,840 reconciled</div>
+              </div>
+              <button class="x"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+            </div>
+
+            <div class="toast toast-warn">
+              <div class="ic"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"><path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17v.01"/></svg></div>
+              <div style="flex:1;min-width:0">
+                <div class="title">2 spots left on Coral Wall</div>
+                <div class="sub">Auto-waitlist is on.</div>
+              </div>
+              <button class="x"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+            </div>
+
+            <div class="toast toast-error">
+              <div class="ic"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg></div>
+              <div style="flex:1;min-width:0">
+                <div class="title">Could not delete booking</div>
+                <div class="sub">Payment is partially captured. Refund first.</div>
+              </div>
+              <button class="x"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">With undo
+            <span class="hint">Whenever an action is reversible — deletion, archive, status change — offer Undo. Toast lingers 7s instead of 4s.</span>
+          </div>
+          <div class="row-content col">
+            <div class="toast">
+              <div class="ic" style="background:var(--ocean-700)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></div>
+              <div style="flex:1;min-width:0">
+                <div class="title">Note deleted</div>
+                <div class="sub">By Adrien L. · just now</div>
+              </div>
+              <button class="undo">Undo</button>
+              <button class="x"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Stack
+            <span class="hint">Max 3 visible. Older toasts collapse — counter pill shows how many are queued.</span>
+          </div>
+          <div class="row-content stage" style="padding:18px;justify-content:flex-end;min-height:240px">
+            <div class="toast-stack">
+              <div class="toast toast-success">
+                <div class="ic"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+                <div style="flex:1;min-width:0"><div class="title">Cert verified for Hugo Leclercq</div><div class="sub">PADI AOWD added</div></div>
+                <button class="x"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+              </div>
+              <div class="toast">
+                <div class="ic"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v.01M12 12v4"/></svg></div>
+                <div style="flex:1;min-width:0"><div class="title">Manifest exported</div><div class="sub">PDF · 4 pages</div></div>
+                <button class="x"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+              </div>
+              <div style="font-size:11px;color:var(--ocean-700);background:white;border:1px solid var(--surface-3);border-radius:8px;padding:5px 10px;align-self:flex-end;display:inline-flex;align-items:center;gap:6px"><span class="cnt cnt-soft">+2</span> more notifications</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="prod">
+          <span class="prod-key">PROD</span>
+          <span class="k">File</span><code>apps/web/src/components/ui/Toast.tsx</code>
+          <span class="k">Lib</span><code>sonner</code> <span style="opacity:0.6">or</span> <code>@radix-ui/react-toast</code>
+          <span class="k">Hook</span><code>useToast() → toast.success(...) / toast.error(...)</code>
+          <span class="tag">proposed</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ DIALOGS -->
+    <section id="dialogs" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Dialogs</h2>
+          <div class="desc">Three sizes: <b>sm</b> (single field or yes/no), <b>md</b> (default — form with 2-4 fields), <b>lg</b> (data-heavy — multi-section forms, choosers). Always have a header strip with an icon-tile + title, scrollable body, and a footer with actions right-aligned. Backdrop is ocean-tinted blur (matches the existing Suspend modal). <b>Form constraint:</b> dialog bodies use a <b>one-column form layout</b> — stack fields vertically. No side-by-side fields, even for short pairs like first/last name. Predictable scan path, friendlier on narrow widths, and matches the prod form pattern.</div>
+        </div>
+        <span class="status-chip new">Proposed</span>
+      </div>
+      <div class="section-body">
+
+        <div class="row">
+          <div class="row-label">Small · single field</div>
+          <div class="row-content stage" style="padding:32px">
+            <div class="dlg dlg-sm">
+              <div class="dlg-head">
+                <div class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+                <div><div class="dlg-title">Rename trip</div></div>
+                <button class="x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+              </div>
+              <div class="dlg-body">
+                <div class="field">
+                  <label>Trip name</label>
+                  <input class="input" value="Coral Wall · morning"/>
+                </div>
+              </div>
+              <div class="dlg-foot">
+                <button class="btn btn-ghost btn-sm">Cancel</button>
+                <button class="btn btn-primary btn-sm">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Medium · form
+            <span class="hint">The default. The current Suspend modal is this size — moves to the system spec.</span>
+          </div>
+          <div class="row-content stage" style="padding:32px">
+            <div class="dlg dlg-md">
+              <div class="dlg-head">
+                <div class="ic green"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M16 21v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M21 21v-1a4 4 0 0 0-3-3.87"/></svg></div>
+                <div>
+                  <div class="dlg-title">Add member to roster</div>
+                  <div class="dlg-sub">Affiliates them with AlmaDiving Puerto Galera.</div>
+                </div>
+                <button class="x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+              </div>
+              <div class="dlg-body">
+                <div class="field"><label>Email or diver ID</label><input class="input" placeholder="diver@example.com or DV-…"/></div>
+                <div class="field"><label>First name</label><input class="input"/></div>
+                <div class="field"><label>Last name</label><input class="input"/></div>
+              </div>
+              <div class="dlg-foot">
+                <button class="btn btn-ghost btn-sm">Cancel</button>
+                <button class="btn btn-primary btn-sm">Add to roster</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Large · with backdrop</div>
+          <div class="row-content">
+            <div class="backdrop" style="width:100%">
+              <div class="dlg dlg-lg">
+                <div class="dlg-head">
+                  <div class="ic amber"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17v.01"/></svg></div>
+                  <div>
+                    <div class="dlg-title">Assign gear for Coral Wall — 28 Apr</div>
+                    <div class="dlg-sub">11 divers · 2 boats · drafts auto-saved</div>
+                  </div>
+                  <button class="x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+                </div>
+                <div class="dlg-body">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                    <div style="display:flex;gap:6px"><span class="chip chip-amber">3 MISSING</span><span class="chip chip-ocean">8 DRAFT</span></div>
+                    <button class="btn btn-secondary btn-sm">Auto-suggest all</button>
+                  </div>
+                  <div style="border:1px solid var(--surface-3);border-radius:10px;overflow:hidden">
+                    <div style="display:grid;grid-template-columns:1fr 60px 80px 80px 80px;padding:8px 12px;background:var(--surface-2);font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ocean-700);opacity:0.85">
+                      <div>Diver</div><div>BCD</div><div>Wetsuit</div><div>Fins</div><div>Mask</div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 60px 80px 80px 80px;padding:10px 12px;align-items:center;border-bottom:1px solid var(--surface-3);font-size:13px">
+                      <div style="display:flex;align-items:center;gap:8px"><span class="av av-sm av-ocean">HL</span>Hugo Leclercq</div>
+                      <div><span class="chip chip-ocean">L</span></div>
+                      <div><span class="chip chip-ocean">M</span></div>
+                      <div><span class="chip chip-amber">—</span></div>
+                      <div><span class="chip chip-ocean">M</span></div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 60px 80px 80px 80px;padding:10px 12px;align-items:center;font-size:13px">
+                      <div style="display:flex;align-items:center;gap:8px"><span class="av av-sm av-teal">CM</span>Claire Martin</div>
+                      <div><span class="chip">S</span></div>
+                      <div><span class="chip">S</span></div>
+                      <div><span class="chip">36</span></div>
+                      <div><span class="chip">S</span></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="dlg-foot">
+                  <button class="btn btn-ghost btn-sm">Cancel</button>
+                  <button class="btn btn-secondary btn-sm">Save draft</button>
+                  <button class="btn btn-primary btn-sm">Apply &amp; close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Large · complex form
+            <span class="hint">Three thematic sections, one-column body. Section dividers cue the user that they're moving to a new theme. Within each section, fields follow conventional micro-order.</span>
+          </div>
+          <div class="row-content stage" style="padding:32px">
+            <div class="dlg dlg-lg">
+              <div class="dlg-head">
+                <div class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M16 21v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M21 21v-1a4 4 0 0 0-3-3.87"/></svg></div>
+                <div>
+                  <div class="dlg-title">Hire new staff member</div>
+                  <div class="dlg-sub">Personal details, role &amp; rights, payroll. All required unless marked optional.</div>
+                </div>
+                <button class="x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+              </div>
+              <div class="dlg-body">
+
+                <div style="font-family:var(--font-ui);font-size:10.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ocean-700);opacity:0.7;margin-bottom:10px">Personal information</div>
+                <div class="field"><label>First name</label><input class="input" placeholder="Hugo"/></div>
+                <div class="field"><label>Last name</label><input class="input" placeholder="Leclercq"/></div>
+                <div class="field"><label>Date of birth</label><input class="input" placeholder="DD/MM/YYYY"/></div>
+                <div class="field"><label>Email</label><input class="input" placeholder="hugo@example.com"/></div>
+                <div class="field"><label>Phone <span style="color:var(--ocean-700);opacity:0.55;font-weight:400">(optional)</span></label><input class="input" placeholder="+33 6 …"/></div>
+
+                <div style="height:1px;background:var(--surface-3);margin:18px 0"></div>
+
+                <div style="font-family:var(--font-ui);font-size:10.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ocean-700);opacity:0.7;margin-bottom:10px">Role &amp; rights</div>
+                <div class="field"><label>Staff role</label><input class="input" value="Instructor — Open Water"/></div>
+                <div class="field"><label>Start date</label><input class="input" placeholder="22/05/2026"/></div>
+                <div class="field"><label>Weekly hours <span style="color:var(--ocean-700);opacity:0.55;font-weight:400">(optional)</span></label><input class="input" placeholder="35"/></div>
+
+                <div style="height:1px;background:var(--surface-3);margin:18px 0"></div>
+
+                <div style="font-family:var(--font-ui);font-size:10.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ocean-700);opacity:0.7;margin-bottom:10px">Payroll</div>
+                <div class="field"><label>IBAN</label><input class="input" placeholder="FR76 …"/></div>
+                <div class="field"><label>Tax ID</label><input class="input" placeholder="National ID number"/></div>
+              </div>
+              <div class="dlg-foot">
+                <button class="btn btn-ghost btn-sm">Cancel</button>
+                <button class="btn btn-secondary btn-sm">Save draft</button>
+                <button class="btn btn-primary btn-sm">Hire</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note">
+          <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v.01M12 12v4"/></svg>
+          <div><b>Form sequencing rules.</b> (1) Group fields by theme — personal · role · payroll, never interleaved. (2) Within a section, follow conventional micro-order: first name → last name → DOB → email → phone; street → city → postcode → country; username → password. (3) Use an uppercase eyebrow as the section header and a 1px hairline between sections — no nested cards, no second header level. (4) One column always — stacking gives a predictable scan path and a constant-width input target.</div>
+        </div>
+
+        <div class="prod">
+          <span class="prod-key">PROD</span>
+          <span class="k">File</span><code>apps/web/src/components/ui/Dialog.tsx</code>
+          <span class="k">Lib</span><code>@radix-ui/react-dialog</code>
+          <span class="k">Props</span><code>size: 'sm'|'md'|'lg' · title · description? · icon? · tone?: 'info'|'warn'|'red'|'green'</code>
+          <span class="tag">proposed</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ CONFIRMS -->
+    <section id="confirms" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Confirm pop-ins</h2>
+          <div class="desc">Compact, 340px, one prompt + two buttons. Three flavours by intent: <b>info</b> (neutral), <b>warn</b> (review before continuing), <b>destructive</b> (default red, requires explicit confirm).</div>
+        </div>
+        <span class="status-chip new">Proposed</span>
+      </div>
+      <div class="section-body">
+
+        <div class="row">
+          <div class="row-label">Destructive
+            <span class="hint">Default red icon. Confirm button is solid red (the 2nd stage of the destructive pattern from Buttons).</span>
+          </div>
+          <div class="row-content stage" style="padding:32px">
+            <div class="confirm">
+              <div class="row-top">
+                <div class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
+                <div class="title">Delete this note?</div>
+              </div>
+              <div class="desc">Notes are not recoverable. The author and timestamp will also be removed from the audit log.</div>
+              <div class="foot">
+                <button class="btn btn-ghost btn-sm">Cancel</button>
+                <button class="btn btn-danger-solid btn-sm">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Warn
+            <span class="hint">Used for risky-but-reversible actions: changing a trip's date once divers have booked, etc.</span>
+          </div>
+          <div class="row-content stage" style="padding:32px">
+            <div class="confirm warn">
+              <div class="row-top">
+                <div class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"><path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17v.01"/></svg></div>
+                <div class="title">Reschedule Coral Wall to 30 Apr?</div>
+              </div>
+              <div class="desc">11 divers will be notified by email. Boat allocation will be preserved, gear drafts will be re-suggested for the new tide window.</div>
+              <div class="foot">
+                <button class="btn btn-ghost btn-sm">Keep current date</button>
+                <button class="btn btn-primary btn-sm" style="background:var(--amber-alert)">Reschedule</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-label">Info
+            <span class="hint">Plain confirmation — "are you sure" for anything that just causes friction, not harm.</span>
+          </div>
+          <div class="row-content stage" style="padding:32px">
+            <div class="confirm info">
+              <div class="row-top">
+                <div class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></div>
+                <div class="title">Export all bookings to CSV?</div>
+              </div>
+              <div class="desc">Will include every booking from the last 12 months — 482 rows. The file is generated server-side, may take a few seconds.</div>
+              <div class="foot">
+                <button class="btn btn-ghost btn-sm">Cancel</button>
+                <button class="btn btn-primary btn-sm">Export</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="prod">
+          <span class="prod-key">PROD</span>
+          <span class="k">File</span><code>apps/web/src/components/ui/Confirm.tsx</code>
+          <span class="k">Helper</span><code>confirm({ tone, title, description, confirmLabel }) =&gt; Promise&lt;boolean&gt;</code>
+          <span class="tag">proposed</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ CONSISTENCY -->
+    <section id="consistency" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Consistency issues to fix</h2>
+          <div class="desc">Spotted while auditing the existing console. Each one is small in isolation, but they accumulate into "every screen looks slightly different".</div>
+        </div>
+        <span class="status-chip rev">Action items</span>
+      </div>
+      <div class="section-body">
+        <div class="issues">
+          <div class="issue"><span class="num">1</span><div><b>Primary CTA is rendered three different ways.</b> <code style="background:white;padding:1px 5px;border-radius:3px;font-size:11.5px">.btn.btn-primary</code> in chrome, an inline-styled "Submit request" button in the Suspend modal, and an inline-styled "Add note" button in Notes. → Consolidate to the class.</div></div>
+          <div class="issue"><span class="num">2</span><div><b>Counters / badges are rendered four different ways.</b> Rail badge, action-btn badge-num, subnav .count, table .chip — different sizes, weights, and corner radii. → Replace all with the proposed counter primitive (§ Counter pills).</div></div>
+          <div class="issue"><span class="num">3</span><div><b>Suspend modal &amp; tip-of-the-day card both invent their own header strip.</b> Neither uses the <code style="background:white;padding:1px 5px;border-radius:3px;font-size:11.5px">.card-head</code> pattern. → Migrate to the standard dialog header.</div></div>
+          <div class="issue"><span class="num">4</span><div><b>Warning iconography is ambiguous.</b> Today, the info-circle is used for both informational and warning states. The new <code style="background:white;padding:1px 5px;border-radius:3px;font-size:11.5px">alert_triangle</code> and <code style="background:white;padding:1px 5px;border-radius:3px;font-size:11.5px">alert_circle</code> icons now ship in <code style="background:white;padding:1px 5px;border-radius:3px;font-size:11.5px">icons.jsx</code> \u2014 swap warn/error usages to use them.</div></div>
+          <div class="issue"><span class="num">5</span><div><b>Screens now carry a machine-readable label.</b> <code style="background:white;padding:1px 5px;border-radius:3px;font-size:11.5px">data-screen-label</code> is now set on the wrapper of every page (Dashboard, Users → tab, Planning → mode, Settings → group · subsection). Review comments inherit this through the DOM ancestry. ✓</div></div>
+          <div class="issue"><span class="num">6</span><div><b>Modal backdrop varies.</b> The Suspend modal uses <code style="background:white;padding:1px 5px;border-radius:3px;font-size:11.5px">rgba(10,37,64,0.45) + blur(6px)</code>; nothing else uses anything. → Standardise on the gradient backdrop shown in § Dialogs · Large.</div></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- =============================== ICON GRID JS ============================ -->
+<script>
+const ICONS = {
+  dashboard: '<rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/>',
+  users: '<path d="M16 21v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M21 21v-1a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  book: '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5v-17z"/><path d="M4 21.5A2.5 2.5 0 0 1 6.5 19H20"/>',
+  equipment: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+  calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  bookings: '<path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+  finance: '<path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+  settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+  search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+  bell: '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',
+  message: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  moon: '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>',
+  chevron_down: '<path d="m6 9 6 6 6-6"/>',
+  chevron_right: '<path d="m9 18 6-6-6-6"/>',
+  chevron_left: '<path d="m15 18-6-6 6-6"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  x: '<path d="M18 6 6 18M6 6l12 12"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  panel_left: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/>',
+  arrow_up_right: '<path d="M7 17 17 7M7 7h10v10"/>',
+  download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>',
+  filter: '<path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>',
+  boat: '<path d="M2 20a2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1"/><path d="M4 18 2 14h20l-2 4"/><path d="M12 10v4M5 14V8h14v6"/>',
+  map_pin: '<path d="M20 10c0 7-8 12-8 12s-8-5-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/>',
+  tag: '<path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1"/>',
+  award: '<circle cx="12" cy="8" r="6"/><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5"/>',
+  activity: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
+  clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  trending: '<path d="m23 6-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/>',
+  mail: '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/>',
+  phone: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+  id: '<rect x="2" y="4" width="20" height="16" rx="2"/><circle cx="9" cy="11" r="2.5"/><path d="M5 17c1-2 3-3 4-3s3 1 4 3M15 9h4M15 13h3"/>',
+  edit: '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>',
+  trash: '<path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+  shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+  chart: '<path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 5-6"/>',
+  layers: '<path d="m12 2 10 6-10 6L2 8z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/>',
+  waves: '<path d="M2 6c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 18c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>',
+  refresh: '<path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/>',
+  sparkle: '<path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3z"/>',
+  grid: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>',
+  list: '<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',
+  info: '<circle cx="12" cy="12" r="10"/><path d="M12 8v.01M12 12v4"/>',
+  diving: '<circle cx="12" cy="6" r="3"/><path d="M9 9 6 21M15 9l3 12M9 15h6"/>',
+  tank: '<rect x="6" y="3" width="12" height="18" rx="3"/><path d="M9 9h6M9 13h6"/>',
+  shirt: '<path d="M8 3 4 6l2 4 2-1v11h8V9l2 1 2-4-4-3-2 1a3 3 0 0 1-4 0z"/>',
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+  file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>',
+  key: '<circle cx="7.5" cy="15.5" r="3.5"/><path d="m21 2-9.6 9.6M16 7l3 3"/>',
+  globe: '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+  bolt: '<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>',
+  lock: '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+  bank: '<path d="M3 10 12 3l9 7"/><path d="M5 10v9M9 10v9M15 10v9M19 10v9M3 21h18"/>',
+  palette: '<circle cx="13.5" cy="6.5" r="1.5"/><circle cx="17.5" cy="10.5" r="1.5"/><circle cx="8.5" cy="7.5" r="1.5"/><circle cx="6.5" cy="12.5" r="1.5"/><path d="M12 2A10 10 0 1 0 22 12c0-2-1-3-3-3h-2c-2 0-2-1-2-2 0-3-1-5-3-5z"/>',
+  branch: '<circle cx="6" cy="3" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M6 8v8M6 5c0 5 6 5 6 11"/>',
+  plug: '<path d="M9 2v6M15 2v6"/><path d="M5 8h14v3a7 7 0 0 1-14 0V8z"/><path d="M12 18v4"/>',
+  home: '<path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2V10z"/>',
+  package: '<path d="m21 8-9 4-9-4 9-4 9 4z"/><path d="M3 8v8l9 4 9-4V8M12 12v12"/>',
+  receipt: '<path d="M5 2v20l3-2 3 2 3-2 3 2 3-2V2H5z"/><path d="M9 7h6M9 11h6M9 15h4"/>',
+};
+
+const NEW_ICONS = {};
+
+const grid = document.getElementById('iconGrid');
+const make = (name, paths, isNew) => {
+  const cell = document.createElement('div');
+  cell.className = 'ico-cell' + (isNew ? ' new' : '');
+  cell.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${paths}</svg><span>${name}</span>`;
+  return cell;
+};
+// alert_triangle + alert_circle live alongside the rest now (icons.jsx + Koosto Console.html)
+ICONS.alert_triangle = '<path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17v.01"/>';
+ICONS.alert_circle   = '<circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16v.01"/>';
+
+for (const [n, p] of Object.entries(ICONS)) grid.appendChild(make(n, p, false));
+for (const [n, p] of Object.entries(NEW_ICONS)) grid.appendChild(make(n, p, true));
+
+/* ─── Theme toggle ─────────────────────────────────────────────────── */
+const SUN = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+const MOON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+const applyTheme = (mode) => {
+  document.documentElement.setAttribute('data-theme', mode);
+  document.getElementById('themeLabel').textContent = mode === 'dark' ? 'Dark' : 'Light';
+  document.getElementById('themeIcon').outerHTML = (mode === 'dark' ? MOON : SUN).replace('<svg', '<svg id="themeIcon"');
+};
+const saved = localStorage.getItem('koosto.review.theme') || 'light';
+applyTheme(saved);
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('koosto.review.theme', next);
+  applyTheme(next);
+});
+</script>
+
+</body>
+</html>

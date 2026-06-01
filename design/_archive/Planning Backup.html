@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Koosto — Planning Backup (verification)</title>
+
+<link rel="stylesheet" href="colors_and_type.css"/>
+<link rel="stylesheet" href="styles.css"/>
+<link rel="stylesheet" href="styles-planning.css"/>
+<link rel="stylesheet" href="styles-planning-locked.css"/>
+
+<style>
+  html, body { background: var(--surface-2); min-height: 100vh; }
+  body {
+    margin: 0;
+    color: var(--ocean-900);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-wrap: pretty;
+  }
+  #root {
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 28px 32px 64px;
+  }
+  .pax-scrim, .pax-panel { display: none; }
+
+  .verify-banner {
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 14px 32px 0;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px;
+    color: var(--ocean-700);
+  }
+  .verify-banner .tag {
+    font-family: var(--font-ui);
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber-alert);
+    background: var(--amber-alert-bg);
+    padding: 3px 7px;
+    border-radius: 4px;
+  }
+  .verify-banner code {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    background: var(--surface-1);
+    border: 1px solid var(--surface-3);
+    color: var(--ocean-900);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+  .verify-controls {
+    margin-left: auto;
+    display: inline-flex; gap: 6px;
+    font-family: var(--font-ui); font-weight: 700; font-size: 11px;
+  }
+  .verify-controls button {
+    background: var(--surface-1);
+    border: 1px solid var(--surface-3);
+    border-radius: 6px;
+    padding: 4px 8px;
+    cursor: pointer;
+    color: var(--ocean-700);
+    font: inherit;
+  }
+  .verify-controls button.active {
+    background: var(--ocean-500);
+    border-color: var(--ocean-500);
+    color: white;
+  }
+</style>
+</head>
+<body>
+
+<div class="verify-banner">
+  <span class="tag">Backup verification</span>
+  <span>This page loads <code>design/page-planning.locked.jsx</code> (extracted verbatim from <code>Koosto Console.html</code>) — your real locked design. The outdated standalone <code>page-planning.jsx</code> file is preserved at <code>page-planning.standalone.bak.jsx</code> for reference.</span>
+  <span class="verify-controls" id="modeControls"></span>
+</div>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="icons.jsx"></script>
+<script type="text/babel" src="page-planning.locked.jsx"></script>
+
+<script type="text/babel">
+  const root = ReactDOM.createRoot(document.getElementById("root"));
+  root.render(<PlanningPage />);
+</script>
+
+</body>
+</html>
